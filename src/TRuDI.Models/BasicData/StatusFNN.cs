@@ -2,6 +2,13 @@
 {
     using System;
 
+    /// <summary>
+    /// Kombiniertes Statuswort zu einem Messwert (nach FNN LH SMGw).
+    /// </summary>
+    /// <remarks>
+    /// Soweit ein Messwert ein Statuswort mitführt, muss dieses als kombiniertes Statuswort aus dem Statuswort des Messwert-Gebers (i.d.R. ein Sensor bzw. Zähler)
+    /// und dem Statuswort des SMGW gebildet werden.
+    /// </remarks>
     public class StatusFNN
     {
         public const string SMGWMASK = "00000000000000000xxx00xx000001x1";
@@ -45,7 +52,9 @@
                 return StatusPTB.CriticalTemporaryError;
             }
 
-            if (this.SmgwStatusWord.HasFlag(SmgwStatusWord.PTB_Temp_Error_signed_invalid))
+            if (this.SmgwStatusWord.HasFlag(SmgwStatusWord.PTB_Temp_Error_signed_invalid) ||
+                this.BzStatusWord.HasFlag(BzStatusWord.Manipulation_KD_PS) ||
+                this.BzStatusWord.HasFlag(BzStatusWord.Magnetically_Influenced))
             {
                 return StatusPTB.TemporaryError;
             }
@@ -59,10 +68,11 @@
         }
     }
 
+    // 0x00002005
     [Flags]
     public enum SmgwStatusWord : uint
     {
-        Identification_LSB = 0x1,
+        SmgwStatusWordIdentification = 0x05,
         Transparency_Bit = 0x2,
         Fatal_Error = 0x100,
         Systemtime_Invalid = 0x200,
@@ -74,6 +84,7 @@
     [Flags]
     public enum BzStatusWord : uint
     {
+        BzStatusWordIdentification = 0x04,
         Start_Up = 0x100,
         Magnetically_Influenced = 0x200,
         Manipulation_KD_PS = 0x400,
