@@ -109,16 +109,16 @@
                 foreach (var component in this.FirmwareComponents)
                 {
                     var elem = new XElement(this.ar + "FirmwareComponent");
-                    elem.Add(this.ar + "name", component.Name);
+                    elem.Add(new XElement(this.ar + "name", component.Name));
 
                     if (!string.IsNullOrWhiteSpace(component.Version))
                     {
-                        elem.Add(this.ar + "name", component.Version);
+                        elem.Add(new XElement(this.ar + "version", component.Version));
                     }
 
                     if (!string.IsNullOrWhiteSpace(component.Checksum))
                     {
-                        elem.Add(this.ar + "checksum", component.Checksum);
+                        elem.Add(new XElement(this.ar + "checksum", component.Checksum));
                     }
 
                     smgw.Add(elem);
