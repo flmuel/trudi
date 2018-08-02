@@ -148,7 +148,7 @@ ______________________________________________________
         <xs:sequence>
           <xs:element name="name" type="espi:String64" minOccurs="1"/>
           <xs:element name="version" type="espi:String64" minOccurs="0"/>
-          <xs:element name="checksum" type="espi:String64" minOccurs="0"/>
+          <xs:element name="checksum" type="espi:String256" minOccurs="0"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
