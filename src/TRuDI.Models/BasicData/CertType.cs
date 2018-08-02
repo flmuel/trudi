@@ -8,7 +8,7 @@
     public enum CertType : byte
     {
         Signatur = 1,
-        SubCA,
-        SmgwHan
+        SubCA = 2,
+        SmgwHan = 3
     }
 }

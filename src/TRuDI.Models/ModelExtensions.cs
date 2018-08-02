@@ -232,8 +232,7 @@
                 }
             }
         }
-
-
+        
         /// <summary>
         /// Validiert den FNNStatus 
         /// </summary>
@@ -241,27 +240,7 @@
         /// <returns>True wenn der FNN Status gültig ist, False falls nicht</returns>
         public static bool ValidateFNNStatus(this StatusFNN statusFNN)
         {
-            var binaryString = Convert.ToString(Convert.ToInt64(statusFNN.Status, 16), 2).PadLeft(64, '0');
-            var mask = StatusFNN.SMGWMASK + StatusFNN.BZMASK;
-
-            for (int index = 0; index < 64; index++)
-            {
-                if (mask[index] == 'x')
-                {
-                    continue;
-                }
-                else if (binaryString[index] == mask[index])
-                {
-                    continue;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-
-            return true;
+            return statusFNN.Validate();
         }
 
         public static DateTime GetDateTimeFromSpecialDayProfile(SpecialDayProfile sdp, DayTimeProfile dtp)

@@ -1,6 +1,5 @@
 ﻿namespace TRuDI.Models
 {
-    using System;
     using System.Collections.Generic;
     using System.Text;
     using System.Xml.Linq;
@@ -19,11 +18,16 @@
         public string CustomerId { get; set; }
         public string InvoicingPartyId { get; set; }
         public string SmgwId { get; set; }
-        public int CertId { get; set; }
-        public int CertType { get; set; }
-        public string Certificate { get; set; }
+
+        public string FirmwareVersion { get; set; }
+        public List<FirmwareComponent> FirmwareComponents { get; set; } = new List<FirmwareComponent>();
+
+        public List<Certificate> Certificates { get; } = new List<Certificate>();
+
         public string TariffName { get; set; }
         public string UsagePointId { get; set; }
+
+        public byte[] SignedTafProfile { get; set; }
 
         public List<LogEntry> LogList { get; set; }
         public List<MeterReading> MeterReadings { get; set; }
@@ -47,7 +51,7 @@
                 sb.Append("SmgwId ");
             }
 
-            if (string.IsNullOrEmpty(this.Certificate))
+            if (this.Certificates.Count == 0)
             {
                 sb.Append("Certificate ");
             }
@@ -71,9 +75,9 @@
                 !string.IsNullOrEmpty(this.CustomerId) &&
                 !string.IsNullOrEmpty(this.InvoicingPartyId) &&
                 !string.IsNullOrEmpty(this.SmgwId) &&
-                !string.IsNullOrEmpty(this.Certificate) &&
                 !string.IsNullOrEmpty(this.UsagePointId) &&
-                !string.IsNullOrEmpty(this.TariffName);
+                !string.IsNullOrEmpty(this.TariffName) &&
+                this.Certificates.Count > 0;
         }
 
         public XDocument GenerateXmlDocument()
@@ -88,8 +92,38 @@
             var invoicingParty = new XElement(this.ar + "InvoicingParty", new XElement(this.ar + "invoicingPartyId", this.InvoicingPartyId));
 
             var smgw = new XElement(this.ar + "SMGW");
-            smgw.Add(new XElement(this.ar + "certId", this.CertId));
+            foreach (var cert in this.Certificates)
+            {
+                smgw.Add(new XElement(this.ar + "certId", cert.CertId));
+            }
+
             smgw.Add(new XElement(this.ar + "smgwId", this.SmgwId.WithNameExtension()));
+
+            if (!string.IsNullOrWhiteSpace(this.FirmwareVersion))
+            {
+                smgw.Add(new XElement(this.ar + "FirmwareVersion", this.FirmwareVersion));
+            }
+
+            if (this.FirmwareComponents.Count > 0)
+            {
+                foreach (var component in this.FirmwareComponents)
+                {
+                    var elem = new XElement(this.ar + "FirmwareComponent");
+                    elem.Add(this.ar + "name", component.Name);
+
+                    if (!string.IsNullOrWhiteSpace(component.Version))
+                    {
+                        elem.Add(this.ar + "name", component.Version);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(component.Checksum))
+                    {
+                        elem.Add(this.ar + "checksum", component.Checksum);
+                    }
+
+                    smgw.Add(elem);
+                }
+            }
 
             var usagePoint = new XElement(
                 this.ar + "UsagePoint",
@@ -99,6 +133,31 @@
                 invoicingParty,
                 smgw);
 
+            if (this.SignedTafProfile != null)
+            {
+                var vendorConfig = new XElement(this.ar + "VendorConfig");
+                vendorConfig.Add(new XElement(this.ar + "tafProfile", this.SignedTafProfile.ToHexBinary()));
+                usagePoint.Add(vendorConfig);
+            }
+
+            // Certificates
+            foreach (var cert in this.Certificates)
+            {
+                var cer = new XElement(
+                    this.ar + "Certificate",
+                    new XElement(this.ar + "certId", cert.CertId),
+                    new XElement(this.ar + "certType", (int)cert.CertType.Value));
+
+                if (cert.ParentCertId != null)
+                {
+                    cer.Add(new XElement(this.ar + "parentCertId", cert.ParentCertId.Value));
+                }
+
+                cer.Add(new XElement(this.ar + "certContent", cert.CertContent.ToHexBinary()));
+
+                usagePoint.Add(cer);
+            }
+
             var trudiXml = new XDocument(new XElement(
                 this.ar + "UsagePoints",
                 new XAttribute("xmlns", this.ar),
@@ -107,11 +166,6 @@
                 new XAttribute(XNamespace.Xmlns + "espi", this.espi),
                 new XAttribute(XNamespace.Xmlns + "atom", this.atom),
                 usagePoint));
-
-            // Certificate
-            var cer = new XElement(this.ar + "Certificate", new XElement(this.ar + "certId", this.CertId), new XElement(this.ar + "certType", this.CertType));
-            cer.Add(new XElement(this.ar + "certContent", this.Certificate));
-            usagePoint.Add(cer);
 
             usagePoint.Add(new XElement(this.ar + "tariffName", this.TariffName));
 
@@ -190,6 +244,11 @@
                             intervalReading.Add(new XElement(this.ar + "targetTime", iReading.TargetTime.Value.ToString("yyyy-MM-ddTHH:mm:ssK")));
                         }
 
+                        if (iReading.MeasurementTimeMeter.HasValue)
+                        {
+                            intervalReading.Add(new XElement(this.ar + "measurementTimeMeter", iReading.MeasurementTimeMeter.Value.ToString("yyyy-MM-ddTHH:mm:ssK")));
+                        }
+
                         if (!string.IsNullOrWhiteSpace(iReading.MeterSignature))
                         {
                             intervalReading.Add(new XElement(this.ar + "meterSig", iReading.MeterSignature));
@@ -200,10 +259,20 @@
                             intervalReading.Add(new XElement(this.ar + "signature", iReading.Signature));
                         }
 
-                        intervalReading.Add(
-                            iReading.StatusPTB.HasValue
-                                ? new XElement(this.ar + "statusPTB", (int)iReading.StatusPTB)
-                                : new XElement(this.ar + "statusFNN", iReading.StatusFNN.Status));
+                        if (iReading.StatusFNN != null)
+                        {
+                            intervalReading.Add(new XElement(this.ar + "statusFNN", iReading.StatusFNN.Status));
+                        }
+
+                        if (iReading.StatusPTB.HasValue)
+                        {
+                            intervalReading.Add(new XElement(this.ar + "statusPTB", (int)iReading.StatusPTB));
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(iReading.StatusVendor))
+                        {
+                            intervalReading.Add(new XElement(this.ar + "statusVendor", iReading.StatusVendor));
+                        }
 
                         intervalBlock.Add(intervalReading);
                     }
@@ -215,14 +284,6 @@
             }
 
             return trudiXml;
-        }
-    }
-
-    public static class XmlBuilderExtensions
-    {
-        public static string WithNameExtension(this string id)
-        {
-            return id ?? (id.EndsWith(".sm") ? id : $"{id}.sm");
         }
     }
 }

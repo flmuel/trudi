@@ -12,14 +12,12 @@
     /// </summary>
     public class SMGW
     {
-
         /// <summary>
         /// Im Konstruktor wird sichergestellt, dass alle vorhandenen Listen 
         /// vor dem ersten Zugriff initialisert werden.
         /// </summary>
         public SMGW()
         {
-            this.CertIds = new List<byte>();
         }
 
         /// <summary>
@@ -43,9 +41,16 @@
         /// Sofern eine Signaturprüfung durchgeführt werden soll, müssen sowohl das WAN SIG als auch das zugehörige 
         /// SubCA Zertifikat referenziert werden.
         /// </summary>
-        public List<byte> CertIds
-        {
-            get; set;
-        }
+        public List<byte> CertIds { get; set; } = new List<byte>();
+
+        /// <summary>
+        /// Firmware-Version des SMGW.
+        /// </summary>
+        public string FirmwareVersion { get; set; }
+
+        /// <summary>
+        /// Versionen bzw. Checksummen von ggf. vorhandenen Firmware-Komponenten (Betriebsystem, Applikation, etc.).
+        /// </summary>
+        public List<FirmwareComponent> FirmwareComponents { get; set; } = new List<FirmwareComponent>();
     }
 }

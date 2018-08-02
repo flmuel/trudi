@@ -413,6 +413,13 @@
                           .SpecialDayDate.DayOfMonth = Convert.ToByte(e.Value);
                         break;
 
+                    case "VendorConfig":
+                    case "tafProfile":
+                    case "statusVendor":
+                    case "measurementTimeMeter":
+                        // Ignored here: not displayed by TRuDI.
+                        break;
+
                     default:
                         if (usagePoint == null)
                         {

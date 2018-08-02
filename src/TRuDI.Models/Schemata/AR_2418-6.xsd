@@ -7,7 +7,7 @@ XSD schema definition for interfaces IF_Adapter_TRuDI and IF_Lieferant_TRuDI
 
 Schema:  AR_2418-6.xsd
 Version: 1.2 (Entwurf)     
-Author:  OFFIS, Dr. Martin Kahmann (PTB), Dominik Weingardt (EnBW), IVU
+Author:  OFFIS, Dr. Martin Kahmann (PTB), Dominik Weingardt (EnBW), Thomas Müller (IVU)
 =====================================================================================================
 
 
@@ -21,9 +21,14 @@ v0.98 - 08.06.2017 - D. Weingardt - Adaption & changes for interface IF_Adapter_
 v0.99 - 09.06.2017 - D. Weingardt - Minor corrections and merge with if_3d_con v1.0 XSD from OFFIS
 v1.0  - 14.06.2017 - D. Weingardt - Minor corrections for interface IF_Adapter_TRuDI according to AK BD meeting from 14.06.2017
 v1.1  - 05.12.2017 - IVU - Neue optionale Elemente "measurementPeriod" (ReadingType) und "targetTime" (IntervalReading) aufgenommen.
-v1.2  - 11.07.2018 - IVU - customerId und invoicingPartyId auf 64 Zeichen erweitert.
-
-
+v1.2  - 27.07.2018 - IVU - customerId und invoicingPartyId auf 64 Zeichen erweitert. 
+                         - Das Element Certificate darf nun beliebig oft vorkommen.
+                         - FirmwareComponent (SMGW) als optinales Element aufgenommen.
+                         - measurementTimeMeter (IntervalReading) als optinales Element aufgenommen.
+                         - LogEvent: Element subjectIdentity: Typ von uint32 geändert zu String256
+                         - LogEvent: neue Elemente aufgenommen: destination, userIdentity, eventKindVendor
+                         - LogEvent: Elemente evidence: Typ von espi:HexBinary128 geändert zu xs:hexBinary
+                         - IntervalReading: Element signature: Typ von espi:String512 zu xs:hexBinary geändert
 
  NOTICE
 ______________________________________________________
@@ -120,12 +125,34 @@ ______________________________________________________
 					<!-- Change: Elemente "Manufacturer", "FirmwareVersion" und "SystemTime" optional aufgenommen (v0.96, 16.05.2017) -->
 					<xs:element name="Manufacturer" type="espi:String32" minOccurs="0"/>
 					<xs:element name="FirmwareVersion" type="espi:String32" minOccurs="0"/>
+				  <xs:element name="FirmwareComponent" type="FirmwareComponent" minOccurs="0" maxOccurs="unbounded"/>
 					<!-- Change: Element "SystemTime"auf von Datentyp "espi:TimeType" auf "xs:dateTime" angepasst (v0.98, 08.06.2017) -->
 					<xs:element name="SystemTime" type="xs:dateTime" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+  <!-- Change: neues Object VendorConfig aufgenommen (v1.2, 26.07.2018) -->
+  <xs:complexType name="VendorConfig">
+    <xs:complexContent>
+      <xs:extension base="espi:Object">
+        <xs:sequence>
+          <xs:element name="tafProfile" type="xs:hexBinary" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="FirmwareComponent">
+    <xs:complexContent>
+      <xs:extension base="espi:Object">
+        <xs:sequence>
+          <xs:element name="name" type="espi:String64" minOccurs="1"/>
+          <xs:element name="version" type="espi:String64" minOccurs="0"/>
+          <xs:element name="checksum" type="espi:String64" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
 	<xs:complexType name="Certificate">
 		<xs:complexContent>
 			<xs:extension base="espi:Object">
@@ -373,7 +400,8 @@ ______________________________________________________
 		<xs:complexContent>
 			<xs:extension base="espi:Object">
 				<xs:sequence>
-					<xs:element name="evidence" type="espi:HexBinary128" minOccurs="0"/>
+				  <!-- Change: Element "evidence": Typ von "espi:HexBinary128" geändert zu "xs:hexBinary" (v1.2, 27.07.2018) -->
+					<xs:element name="evidence" type="xs:hexBinary" minOccurs="0"/>
 					<xs:element name="type" type="Evis" minOccurs="0"/>
 					<xs:element name="level" type="espi:UInt8" minOccurs="0">
 						<xs:annotation>
@@ -395,10 +423,17 @@ ______________________________________________________
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="secondsIndex" type="espi:UInt32" minOccurs="0"/>
-					<xs:element name="subjectIdentity" type="espi:UInt32" minOccurs="0"/>
+				  <!-- Change: Element "subjectIdentity" Typ geändert von espi:UInt32 zu espi:String256 (v1.2, 27.07.2018) -->
+					<xs:element name="subjectIdentity" type="espi:String256" minOccurs="0"/>
 					<!-- Change: Element "timestamp" auf von Datentyp "espi:TimeType" auf "xs:dateTime" angepasst (v0.98, 08.06.2017) -->
 					<xs:element name="timestamp" type="xs:dateTime" minOccurs="0"/>
-				</xs:sequence>
+				  <!-- Change: Element "destination" optional aufgenommen (v1.2, 27.07.2018) -->
+				  <xs:element name="destination" type="espi:String256" minOccurs="0"/>
+				  <!-- Change: Element "userIdentity" optional aufgenommen (v1.2, 27.07.2018) -->
+				  <xs:element name="userIdentity" type="espi:String256" minOccurs="0"/>
+				  <!-- Change: Element "eventKindVendor" optional aufgenommen (v1.2, 27.07.2018) -->
+				  <xs:element name="eventKindVendor" type="espi:String256" minOccurs="0"/>
+        </xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -536,7 +571,8 @@ ______________________________________________________
 					<xs:element name="Customer" type="Customer" minOccurs="0"/>
 					<xs:element name="InvoicingParty" type="InvoicingParty" minOccurs="0"/>
 					<xs:element name="SMGW" type="SMGW" minOccurs="0"/>
-					<xs:element name="Certificate" type="Certificate" minOccurs="0"/>
+				  <xs:element name="VendorConfig" type="VendorConfig" minOccurs="0"/>
+					<xs:element name="Certificate" type="Certificate" minOccurs="0" maxOccurs="unbounded"/>
 					<!-- Change: Neues Element "tariffName" optional aufgenommen (v0.98, 07.06.2017) -->
 					<xs:element name="tariffName" type="espi:String256" minOccurs="0"/>
 					<xs:element name="MathOperation" type="MathOperation" minOccurs="0"/>
@@ -573,12 +609,15 @@ ______________________________________________________
 							<xs:documentation>The date time and duration of a reading. If not specified, readings for each “intervalLength” in ReadingType are present.</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-          <!-- Change. Element "targetTime" hinzugefügt (v1.1, 05.12.2017) -->
+          <!-- Change: Element "targetTime" hinzugefügt (v1.1, 05.12.2017) -->
 				  <xs:element name="targetTime" type="xs:dateTime" minOccurs="0"/>
+				  <!-- Change: Element "measurementTimeMeter" hinzugefügt (v1.2, 27.07.2018) -->
+				  <xs:element name="measurementTimeMeter" type="xs:dateTime" minOccurs="0"/>
           <xs:element name="certId" type="espi:UInt8" minOccurs="0"/>
-					<!-- Change: Elemente "meterSig" uund "signature" analog if_3d_con v1.0 von Datentyp "String256" auf "String512" angepasst (v0.99, 09.06.2017) -->
-					<xs:element name="meterSig" type="espi:String512" minOccurs="0"/>
-					<xs:element name="signature" type="espi:String512" minOccurs="0"/>
+					<!-- Change: Elemente "meterSig" und "signature" analog if_3d_con v1.0 von Datentyp "String256" auf "String512" angepasst (v0.99, 09.06.2017) -->
+				  <!-- Change: Elemente "meterSig" und "signature" analog if_3d_con v1.0 von Datentyp "String512" auf "xs:hexBinary" angepasst (v1.2, 27.07.2018) -->
+					<xs:element name="meterSig" type="xs:hexBinary" minOccurs="0"/>
+					<xs:element name="signature" type="xs:hexBinary" minOccurs="0"/>
 					<!-- Change: Element "status" in "statusFNN" umbenannt (v1.0, 14.06.2017) -->
 					<xs:element name="statusFNN" type="espi:String256" minOccurs="0"/>
 					<!-- Change: Neues Element "statusPTB" optional aufgenommen (v1.0, 14.06.2017) -->
@@ -592,6 +631,9 @@ ______________________________________________________
 							</xs:documentation>
 						</xs:annotation>
 					</xs:element>
+				  <!-- Change: Neues Element "statusVendor" optional aufgenommen (v1.2, 26.07.2018) -->
+				  <!-- Info: Dient dem Transport von Status-Informationen für die Signaturprüfung, falls diese nicht zurück aus statusPTB oder statusFNN ermittelt werden können. -->
+				  <xs:element name="statusVendor" type="espi:String256" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>

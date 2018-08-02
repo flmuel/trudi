@@ -45,6 +45,12 @@
         public DateTime? TargetTime { get; set; }
 
         /// <summary>
+        /// Aufzeichnungszeitpunkt des Sensors/Zählers, falls vorhanden.
+        /// Optional.
+        /// </summary>
+        public DateTime? MeasurementTimeMeter { get; set; }
+
+        /// <summary>
         /// Tatsächlicher Ablesezeitpunkt des Wertes (=> TimePeriod.Start).
         /// </summary>
         public DateTime CaptureTime => this.TimePeriod.Start;
@@ -95,5 +101,10 @@
         {
             get; set;
         }
+
+        /// <summary>
+        /// Herstellerspezifscher Status bzw. Original-Status, welcher bei der Signaturbildung verwendet wurde.
+        /// </summary>
+        public string StatusVendor { get; set; }
     }
 }
