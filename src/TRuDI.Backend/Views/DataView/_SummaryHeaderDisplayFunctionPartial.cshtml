@@ -99,20 +99,40 @@
         <th>Beschreibung</th>
     </tr>
 
-    @foreach (var reading in meterReadings.MeterReadings)
-            {
-                var obisId = new ObisId(reading.ReadingType.ObisCode);
-                var status = reading.IntervalBlocks.FirstOrDefault()?.IntervalReadings.FirstOrDefault();
+    @{
+        var meterReadingsSorted = meterReadings.MeterReadings.ToList().GroupBy(mr => mr.IsOriginalValueList(), mr => mr, (key, values) => new { IsOriginalValueList = key, Values = values }).ToList();
+        meterReadingsSorted.Sort((x, y) => x.IsOriginalValueList ? 1 : -1);
+    }
 
-        <tr class="@status.ToStatusBackground()">
-            <td style="white-space: nowrap;">@obisId.ToString()</td>
-            <td style="white-space: nowrap;">
-                @reading.IntervalBlocks.FirstOrDefault()?.IntervalReadings.FirstOrDefault()?.Value.GetDisplayValue(reading.ReadingType.Uom ?? Uom.Not_Applicable, reading.ReadingType.PowerOfTenMultiplier ?? PowerOfTenMultiplier.None, reading.ReadingType.Scaler)
-            </td>
-            <td>@reading.ReadingType.Uom.GetDisplayUnit(@reading.ReadingType.PowerOfTenMultiplier ?? PowerOfTenMultiplier.None)</td>
-            <td style="white-space: nowrap;"><i class="@status.ToStatusIcon()"></i> @status.ToStatusString()</td>
-            <td>@obisId.GetLabel()</td>
-        </tr>
+    @foreach (var readingGroup in meterReadingsSorted)
+    {
+
+        if (meterReadingsSorted.Count == 2)
+        {
+            if (readingGroup.IsOriginalValueList)
+            {
+                <tr>
+                    <th colspan="5">Aktuelle Registerwerte des Zählers</th>
+                </tr>
             }
+        }
+
+        foreach (var reading in readingGroup.Values)
+        {
+            var obisId = new ObisId(reading.ReadingType.ObisCode);
+            var status = reading.IntervalBlocks.FirstOrDefault()?.IntervalReadings.FirstOrDefault();
+            var description = obisId.GetLabel() + " " + (reading.IsOriginalValueList() ? "" : "Meter");
+
+            <tr class="@status.ToStatusBackground()">
+                <td style="white-space: nowrap;">@obisId.ToString()</td>
+                <td style="white-space: nowrap;">
+                    @reading.IntervalBlocks.FirstOrDefault()?.IntervalReadings.FirstOrDefault()?.Value.GetDisplayValue(reading.ReadingType.Uom ?? Uom.Not_Applicable, reading.ReadingType.PowerOfTenMultiplier ?? PowerOfTenMultiplier.None, reading.ReadingType.Scaler)
+                </td>
+                <td>@reading.ReadingType.Uom.GetDisplayUnit(@reading.ReadingType.PowerOfTenMultiplier ?? PowerOfTenMultiplier.None)</td>
+                <td style="white-space: nowrap;"><i class="@status.ToStatusIcon()"></i> @status.ToStatusString()</td>
+                <td>@description</td>
+            </tr>
+        }
+    }
 </table>
 }
