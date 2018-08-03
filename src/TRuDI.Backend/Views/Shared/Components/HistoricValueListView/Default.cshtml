@@ -11,7 +11,7 @@ else
     <table class="table-condensed">
         <tr>
             <th>Beschreibung</th>
-            <th>Wert</th>
+            <th class="text-right">Wert</th>
             <th>Einheit</th>
         </tr>
 
@@ -21,7 +21,7 @@ else
             {
                 <tr>
                     <td>@entry.ToHistoricValueDescription()</td>
-                    <td>@entry.Value.GetDisplayValue(Model.Uom, Model.PowerOfTenMultiplier, Model.Scaler)</td>
+                    <td class="text-right">@entry.Value.GetDisplayValue(Model.Uom, Model.PowerOfTenMultiplier, Model.Scaler)</td>
                     <td>@Model.DisplayUnit</td>
                 </tr>
             }
