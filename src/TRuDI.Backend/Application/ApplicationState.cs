@@ -520,22 +520,32 @@
                 throw;
             }
 
-            this.CurrentDataResult.OriginalValueLists =
+            var originalValueLists = 
                 this.CurrentDataResult.Model.MeterReadings.Where(mr => mr.IsOriginalValueList()).Select(mr => new OriginalValueList(mr, this.CurrentDataResult.Model.ServiceCategory.Kind ?? Kind.Electricity)).ToList();
-
-            foreach (var ovl in this.CurrentDataResult.OriginalValueLists)
-            {
-                Log.Information("Original value list: meter: {0}, OBIS: {1}, {2} values", ovl.Meter, ovl.Obis, ovl.ValueCount);
-            }
 
             var meterReadings = this.CurrentDataResult.Model.MeterReadings.Where(mr => !mr.IsOriginalValueList()).ToList();
             meterReadings.Sort((a, b) => string.Compare(a.ReadingType.ObisCode, b.ReadingType.ObisCode, StringComparison.InvariantCultureIgnoreCase));
+
+            var ovlRegisters = originalValueLists.Where(ovl => ovl.MeterReading?.IntervalBlocks?.FirstOrDefault()?.Interval.Duration == 0).ToList();
+
+            meterReadings.AddRange(ovlRegisters.Select(ovl => ovl.MeterReading));
+
+            if (ovlRegisters.Count < originalValueLists.Count)
+            {
+                ovlRegisters.ForEach(ovl => originalValueLists.Remove(ovl));
+            }
+
+            foreach (var ovl in originalValueLists)
+            {
+                Log.Information("Original value list: meter: {0}, OBIS: {1}, {2} values", ovl.Meter, ovl.Obis, ovl.ValueCount);
+            }
 
             foreach (var mr in meterReadings)
             {
                 Log.Information("Meter reading: {@Meters}, OBIS: {1}", mr.Meters, mr.ReadingType.ObisCode);
             }
 
+            this.CurrentDataResult.OriginalValueLists = originalValueLists;
             this.CurrentDataResult.MeterReadings = meterReadings;
             this.CurrentDataResult.Begin = meterReadings.FirstOrDefault()?.IntervalBlocks?.FirstOrDefault()?.Interval?.Start;
 
@@ -675,6 +685,9 @@
             model.MeterReadings.Sort((a, b) => string.Compare(a.ReadingType.ObisCode, b.ReadingType.ObisCode, StringComparison.InvariantCultureIgnoreCase));
             this.CurrentDataResult.MeterReadings = model.MeterReadings;
             this.CurrentDataResult.Begin = model.MeterReadings.FirstOrDefault()?.IntervalBlocks?.FirstOrDefault()?.Interval?.Start;
+            var usagePoint = this.CurrentDataResult.Raw.Root.Elements().FirstOrDefault();
+            var readings = raw?.Root?.Elements().FirstOrDefault().Elements().Where(e => e.Name.LocalName == "MeterReading");
+            usagePoint.Add(readings);
 
             if (this.CurrentDataResult.Begin != null)
             {

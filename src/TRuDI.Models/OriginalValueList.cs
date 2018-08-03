@@ -56,7 +56,11 @@
             }
 
             this.Meter = this.MeterReading.Meters.FirstOrDefault()?.MeterId;
-            this.HistoricValues = this.CalculateHistoricConsumption();
+
+            if (this.Start.HasValue && this.End.HasValue)
+            {
+                this.HistoricValues = this.CalculateHistoricConsumption();
+            }
         }
 
         public Kind ServiceCategory { get; set; }
