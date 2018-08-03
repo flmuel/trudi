@@ -5,12 +5,12 @@
 <table class="table">
     <tr>
         <th>Ausgestellt für</th>
-        <td>@Model.GetNameInfo(X509NameType.SimpleName, true)</td>
+        <td>@Model.GetNameInfo(X509NameType.SimpleName, false)</td>
     </tr>
 
     <tr>
         <th>Ausgestellt von</th>
-        <td>@Model.GetNameInfo(X509NameType.SimpleName, false)</td>
+        <td>@Model.GetNameInfo(X509NameType.SimpleName, true)</td>
     </tr>
 
     <tr>
