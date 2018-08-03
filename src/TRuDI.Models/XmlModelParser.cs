@@ -417,6 +417,11 @@
                     case "tafProfile":
                     case "statusVendor":
                     case "measurementTimeMeter":
+                    case "FirmwareComponent":
+                    case "name":
+                    case "version":
+                    case "checksum":
+                    case "FirmwareVersion":
                         // Ignored here: not displayed by TRuDI.
                         break;
 
