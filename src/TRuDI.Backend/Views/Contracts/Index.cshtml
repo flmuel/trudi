@@ -8,6 +8,10 @@
     int contractIndex = 0;
 }
 
+<script type="text/javascript">
+    var selectedBillingPeriods = [];
+</script>
+
 @foreach (var cnt in StateService.Contracts)
 {
     var hasParamErrors = false;
@@ -144,6 +148,10 @@
                         {
                             int billingPeriodIndex = 0;
 
+                            <script type="text/javascript">
+                                selectedBillingPeriods.push(@contractIndex, { BillingPeriod: @billingPeriodIndex, Mode: "BP" });
+                            </script>
+
                             <div role="tabpanel" class="tab-pane active" id="@string.Format("tab_billingperiods_{0}", contractIndex)">
                                 <table class="table table-fixed">
                                     <thead>
@@ -180,6 +188,11 @@
                         @if (hasDayValues)
                         {
                             int billingPeriodIndex = 0;
+
+                            <script type="text/javascript">
+                                selectedBillingPeriods.push(@contractIndex, { BillingPeriod: @billingPeriodIndex, Mode: "TAF6" });
+                            </script>
+
 
                             <div role="tabpanel" class="tab-pane" id="@string.Format("tab_dayvalues_{0}", contractIndex)">
                                 <table class="table table-fixed">
@@ -267,7 +280,7 @@
                                     }
                                     else
                                     {
-                                        <button type="button" class="btn btn-default" id="btnRead" onclick="startReading();" @(hasParamErrors ? "disabled" : "")>Auslesung starten...</button>
+                                        <button type="button" class="btn btn-default" id="btnRead" onclick="startReading(@contractIndex);" @(hasParamErrors ? "disabled" : "")>Auslesung starten...</button>
                                     }
                                 </div>
                             </td>
@@ -331,6 +344,7 @@
     contractIndex++;
 }
 
+
 <script type="text/javascript">
 
     jQuery(document).ready(function () {
@@ -338,16 +352,10 @@
         jQuery(".table4").clone(true).appendTo("#table4").addClass("clone2");
     });
 
-    var selectedContract = -1;
-    var selectedBillingPeriod = -1;
-    var selectedMode = '';
-
     function selectBillingPeriod(contractIndex, billingPeriodIndex, startTime, endTime, mode) {
         console.log("start = " + startTime + ", end = " + endTime);
 
-        selectedContract = contractIndex;
-        selectedBillingPeriod = billingPeriodIndex;
-        selectedMode = mode;
+        selectedBillingPeriods[contractIndex] = { BillingPeriod: billingPeriodIndex, Mode: mode };
 
         $("#dtp_start_" + contractIndex).data("DateTimePicker").maxDate(false);
         $("#dtp_start_" + contractIndex).data("DateTimePicker").minDate(false);
@@ -361,20 +369,23 @@
         $("#dtp_end_" + contractIndex).data("DateTimePicker").date(moment(endTime));
     }
 
-    function startReading() {
-        if (selectedBillingPeriod == -1 || selectedContract == -1) {
+    function startReading(contractIndex) {
+        if (contractIndex == -1) {
             return;
         }
+
+        var billingPeriod = selectedBillingPeriods[contractIndex].BillingPeriod;
+        var mode = selectedBillingPeriods[contractIndex].Mode;
 
         $.ajax({
             url: '/Contracts/StartReadout',
             type: "POST",
             data:
-                "contractIndex=" + selectedContract +
-                "&billingPeriodIndex=" + selectedBillingPeriod +
-                "&startTime=" + encodeURIComponent($("#dtp_start_" + selectedContract).data("DateTimePicker").date().toISOString()) +
-                "&endTime=" + encodeURIComponent($("#dtp_end_" + selectedContract).data("DateTimePicker").date().toISOString()) +
-                "&mode=" + selectedMode,
+                "contractIndex=" + contractIndex +
+                "&billingPeriodIndex=" + billingPeriod +
+                "&startTime=" + encodeURIComponent($("#dtp_start_" + contractIndex).data("DateTimePicker").date().toISOString()) +
+                "&endTime=" + encodeURIComponent($("#dtp_end_" + contractIndex).data("DateTimePicker").date().toISOString()) +
+                "&mode=" + mode,
             contentType: 'application/x-www-form-urlencoded',
             processData: false,
             success: function (result) {
