@@ -13,33 +13,33 @@
 
 
         @if (StateService.LastConnectResult?.FirmwareVersions != null)
-            {
-                <table class="table">
+        {
+            <table class="table">
+                <tr>
+                    <th>Komponente</th>
+                    <th>Version/Prüfsumme</th>
+                </tr>
+                @foreach (var versionItem in StateService.LastConnectResult.FirmwareVersions)
+                {
                     <tr>
-                        <th>Komponente</th>
-                        <th>Version/Prüfsumme</th>
-                    </tr>
-                    @foreach (var versionItem in StateService.LastConnectResult.FirmwareVersions)
-                    {
-                        <tr>
-                            <td>
-                                @versionItem.Component
-                            </td>
-                            <td>
-                                <div>
-                                    @versionItem.Version
+                        <td>
+                            @versionItem.Component
+                        </td>
+                        <td>
+                            <div>
+                                @versionItem.Version
+                            </div>
+                            @if (!string.IsNullOrWhiteSpace(versionItem.Hash))
+                            {
+                                <div style="font-family: monospace; word-break: break-all;">
+                                    @versionItem.Hash
                                 </div>
-                                @if (!string.IsNullOrWhiteSpace(versionItem.Hash))
-                                {
-                                    <div style="font-family: monospace; word-break: break-all;">
-                                        @versionItem.Hash
-                                    </div>
-                                }
-                            </td>
-                        </tr>
-                    }
+                            }
+                        </td>
+                    </tr>
+                }
 
-                </table>
+            </table>
         }
         else
         {
@@ -61,3 +61,4 @@
 
 <a href="/BreadCrumb/ClosePage">Zurück</a>
 
+@await Html.PartialAsync("~/Views/DataView/_ExportDataDialog.cshtml")

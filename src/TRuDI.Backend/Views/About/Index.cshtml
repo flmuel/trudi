@@ -169,8 +169,8 @@
 <a href="/BreadCrumb/ClosePage">Zurück</a>
 
 <script language="javascript" type="text/javascript">
-    $(document).ready(function() {
-        var interval = setInterval(function(){ updateDigest() }, 300);
+    $(document).ready(function () {
+        var interval = setInterval(function () { updateDigest() }, 300);
 
         function updateDigest() {
             $.ajax({
@@ -182,8 +182,7 @@
                     console.log(result);
 
                     var unprocessedItems = 0;
-                    for (var i = 0; i < result.length; i++)
-                    {
+                    for (var i = 0; i < result.length; i++) {
                         if (result[i].digest) {
                             document.getElementById(result[i].filename).innerHTML = result[i].digest;
                         } else {
@@ -202,3 +201,5 @@
         updateDigest();
     });
 </script>
+
+@await Html.PartialAsync("~/Views/DataView/_ExportDataDialog.cshtml")

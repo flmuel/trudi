@@ -29,8 +29,8 @@
 <h3>Smart-Meter-Gateway</h3>
 
 <p>
-    In einem intelligenten Messsystem bildet die Kommunikationseinheit, das Smart Meter Gateway (SMGW) mit, 
-    die zentrale Komponente, welche Messdaten von Zählern empfängt, speichert und diese für Marktakteure aufbereitet. 
+    In einem intelligenten Messsystem bildet die Kommunikationseinheit, das Smart Meter Gateway (SMGW) mit,
+    die zentrale Komponente, welche Messdaten von Zählern empfängt, speichert und diese für Marktakteure aufbereitet.
 </p>
 
 <h3>Messwert-Status</h3>
@@ -42,21 +42,21 @@
         <th>Status</th>
         <th>Beschreibung</th>
     </tr>
-    
+
     <tr>
         <td><i class="@StatusPTB.NoError.ToStatusIcon()"></i></td>
         <td>OK</td>
         <td>0</td>
         <td>Kein Fehler.</td>
     </tr>
-    
+
     <tr>
         <td><i class="@StatusPTB.Warning.ToStatusIcon()"></i></td>
         <td>Warnung</td>
         <td>1</td>
         <td>Warnung, keine (eichrechtliche) Aktion notwendig, Messwert gültig.</td>
     </tr>
-    
+
     <tr>
         <td><i class="@StatusPTB.TemporaryError.ToStatusIcon()"></i></td>
         <td>temp. Fehler</td>
@@ -67,7 +67,7 @@
             im Backend als Ersatzwert verwendet werden.
         </td>
     </tr>
-    
+
     <tr>
         <td><i class="@StatusPTB.CriticalTemporaryError.ToStatusIcon()"></i></td>
         <td>kritischer temp. Fehler</td>
@@ -77,7 +77,7 @@
             Ersatzwert verwendet werden.
         </td>
     </tr>
-    
+
     <tr>
         <td><i class="@StatusPTB.FatalError.ToStatusIcon()"></i></td>
         <td>fataler Fehler</td>
@@ -96,21 +96,21 @@
             des Bundesamt für Sicherheit in der Informationstechnik entwickelt wurde.
         </p>
     </li>
-    
+
     <li>
         <strong>Technische Richtlinie TR-03109</strong>
         <p>
             Die Technischen Richtlinie TR-03109 beinhaltet die funktionalen Anforderungen, die ein Smart-Meter-Gateway mindestens erfüllen muss.
         </p>
     </li>
-    
+
     <li>
         <strong>Anwendungsregel AR2418-6</strong>
         <p>
-            Für den Roll Out der intelligenten Messsysteme (iMSys) gemäß des Geseztes zur Digitalisierung der Energiewende wird eine gegen 
+            Für den Roll Out der intelligenten Messsysteme (iMSys) gemäß des Geseztes zur Digitalisierung der Energiewende wird eine gegen
             Manipulation geschützte und eichrechtskonforme Anzeige der Verbrauchs- und Erzeugungsdaten für Zwecke der Rechnungsprüfung benötigt.
             Mit Hilfe dieser sollen Letztverbraucher in die Lage versetzt werden, beweissichere Überprüfungen von Abrechnungen der Energieversorgungsunternehmen
-            vornehmen zu können. Zusätzlich soll dem Letztverbraucher die Möglichkeit gegeben werden, seine derzeitigen Verbrauchswerte abzurufen. 
+            vornehmen zu können. Zusätzlich soll dem Letztverbraucher die Möglichkeit gegeben werden, seine derzeitigen Verbrauchswerte abzurufen.
             Diese Anwendungsregel beschreibt diese Thematik.
         </p>
     </li>
@@ -126,32 +126,32 @@
     <li>
         <strong>Zählpunkt</strong>
         <p>
-            In der Energiewirtschaft wird der Punkt, an dem Versorgungsleistungen wie z.B. Elektrizität oder Erdgas an Verbraucher geleistet werden oder 
-            von Erzeugern bezogen werden als Zählpunkt bezeichnet. Jedem Zählpunkt wird eine eindeutige Bezeichnung, die Zählpunktbezeichnung zugeordnet. 
+            In der Energiewirtschaft wird der Punkt, an dem Versorgungsleistungen wie z.B. Elektrizität oder Erdgas an Verbraucher geleistet werden oder
+            von Erzeugern bezogen werden als Zählpunkt bezeichnet. Jedem Zählpunkt wird eine eindeutige Bezeichnung, die Zählpunktbezeichnung zugeordnet.
         </p>
     </li>
-    
+
     <li>
         <strong>TAF, Tarifanwendungsfall</strong>
         <p>
-            Das Bundesamt für Sicherheit in der Informationstechnik hat verschiedene Tarifanwendungsfälle für Tarifierung, Bilanzierung und 
+            Das Bundesamt für Sicherheit in der Informationstechnik hat verschiedene Tarifanwendungsfälle für Tarifierung, Bilanzierung und
             Netzzustandsdatenerhebung definiert, die als Minimalanforderung von SMGW durch Regelwerke umgesetz werden müssen. Es gibt aktuell
             12 Tarifanwendungsfälle.
         </p>
     </li>
-    
+
     <li>
         <strong>WAN, Wide Area Netz</strong>
         <p>
-            Die WAN-Schnittstelle ist als IP-Schnittstelle ausgeführt. Aus Gründen der Sicherheit gehen sämtliche Kommunikationsverbindungen vom 
-            Smart Meter Gateway aus. Diese können bei Bedarf oder zu festgelegten Zeitpunkten durch das Gateway etabliert werden. Um aber auch auf 
+            Die WAN-Schnittstelle ist als IP-Schnittstelle ausgeführt. Aus Gründen der Sicherheit gehen sämtliche Kommunikationsverbindungen vom
+            Smart Meter Gateway aus. Diese können bei Bedarf oder zu festgelegten Zeitpunkten durch das Gateway etabliert werden. Um aber auch auf
             spontane Ereignisse reagieren zu können, kann das Smart Meter Gateway über einen Wake-Up Dienst zu einem Verbindungsaufbau veranlasst werden.
         </p>
         <p>
             Über die WAN-Schnittstelle ist das Smart Meter Gateway in eine Public-Key-Infrastruktur eingebunden und jegliche Kommunikation ist mit TLS verschlüsselt.
         </p>
     </li>
-    
+
     <li>
         <strong>LMN, Lokales metrologisches Netz</strong>
         <p>
@@ -163,11 +163,11 @@
         <strong>HAN, Home Area Network</strong>
         <p>
             Home Area Networks sind Netzwerke, die in Smart Homes und in Heimbüros für die Vernetzung von Computern und deren Peripiheriegeräte sorgen. Ursprünglich hatte das
-            National Institute of Standards and Technology (NIST) Home Area Networks als ein reines Energie-Steuer-Netz im Rahmen der Smart Grids und des Smart Metering 
+            National Institute of Standards and Technology (NIST) Home Area Networks als ein reines Energie-Steuer-Netz im Rahmen der Smart Grids und des Smart Metering
             definiert.
         </p>
     </li>
-    
+
     <li>
         <strong>PKI, Public-Key-Infrastruktur</strong>
         <p>
@@ -179,3 +179,4 @@
 </ul>
 <a href="/BreadCrumb/ClosePage">Zurück</a>
 
+@await Html.PartialAsync("~/Views/DataView/_ExportDataDialog.cshtml")

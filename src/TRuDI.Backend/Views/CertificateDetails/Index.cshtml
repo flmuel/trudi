@@ -9,7 +9,7 @@
 }
 
 @if (!certs.Any())
-            {
+{
     <div class="panel panel-primary">
         <div class="panel-heading">Zertifikate</div>
         <div class="panel-body">
@@ -54,3 +54,4 @@ else
 
 <a href="/BreadCrumb/ClosePage">Zurück</a>
 
+@await Html.PartialAsync("~/Views/DataView/_ExportDataDialog.cshtml")
