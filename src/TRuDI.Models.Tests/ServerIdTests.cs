@@ -123,7 +123,7 @@ namespace TRuDI.Models.Tests
 
 
         [TestMethod]
-        public void TestServerEMH_WMBus()
+        public void TestServerWMBusWithoutTypeLgb()
         {
             var target = new ServerId("e230197600150003");
             Assert.IsTrue(target.IsValid);
@@ -132,6 +132,19 @@ namespace TRuDI.Models.Tests
             Assert.AreEqual(15007619u, target.Number);
             Assert.AreEqual("LGB 15007619", target.ToString());
             Assert.AreEqual("E230197600150003", target.ToHexString());
+            Assert.AreEqual(ServerId.ServerIdType.WirelessMBusAddress, target.Type);
+        }
+
+        [TestMethod]
+        public void TestServerWMBusWithoutTypeEsy()
+        {
+            var target = new ServerId("7916802852601001");
+            Assert.IsTrue(target.IsValid);
+            Assert.AreEqual(ObisMedium.Abstract, target.Medium);
+            Assert.AreEqual("ESY", target.FlagId);
+            Assert.AreEqual(60522880u, target.Number);
+            Assert.AreEqual("ESY 60522880", target.ToString());
+            Assert.AreEqual("7916802852601001", target.ToHexString());
             Assert.AreEqual(ServerId.ServerIdType.WirelessMBusAddress, target.Type);
         }
     }

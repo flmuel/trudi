@@ -60,29 +60,8 @@
                 return;
             }
 
-            // Check M-Bus address
-            var serverIdTmp = serverId.Length == 18 ? serverId : $"02{serverId}"; //EMH MBus Naming convention WORKAROUND
-            match = Regex.Match(serverIdTmp.ToUpperInvariant(), "^02[0-9]{8}[0-9A-F]{8}$");
-            if (match.Success)
-            {
-                // 0  2        10   14 16
-                // XX SSSSSSSS FFFF VV MM
-                this.Medium = this.ConvertMBusMediumToObisMedium(byte.Parse(serverIdTmp.Substring(16, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture));
-                this.FlagId = this.ConvertMBusManufacturerId(
-                    byte.Parse(serverIdTmp.Substring(10, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture),
-                    byte.Parse(serverIdTmp.Substring(12, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture));
-                this.Number = uint.Parse(serverIdTmp.Substring(2, 8), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
-                this.Number = uint.Parse(
-                    ((uint)((this.Number & 0xFF) << 24) | ((this.Number & 0xFF00) << 8)
-                     | ((this.Number & 0xFF0000) >> 8) | ((this.Number & 0xFF000000) >> 24)).ToString("X8"));
-
-                this.IsValid = true;
-                this.Type = ServerIdType.WiredMBusAddress;
-                return;
-            }
-
             // Check Wireless-M-Bus address
-            serverIdTmp = serverId.Length == 18 ? serverId : $"01{serverId}"; //EMH W-MBus Naming convention WORKAROUND
+            var serverIdTmp = serverId.Length == 18 ? serverId : $"01{serverId}";
             match = Regex.Match(serverIdTmp.ToUpperInvariant(), "^01[0-9A-F]{4}[0-9]{8}[0-9A-F]{4}$");
             if (match.Success)
             {
@@ -99,6 +78,26 @@
 
                 this.IsValid = true;
                 this.Type = ServerIdType.WirelessMBusAddress;
+                return;
+            }
+
+            // Check M-Bus address
+            match = Regex.Match(serverId.ToUpperInvariant(), "^02[0-9]{8}[0-9A-F]{8}$");
+            if (match.Success)
+            {
+                // 0  2        10   14 16
+                // XX SSSSSSSS FFFF VV MM
+                this.Medium = this.ConvertMBusMediumToObisMedium(byte.Parse(serverId.Substring(16, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture));
+                this.FlagId = this.ConvertMBusManufacturerId(
+                    byte.Parse(serverId.Substring(10, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture),
+                    byte.Parse(serverId.Substring(12, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture));
+                this.Number = uint.Parse(serverId.Substring(2, 8), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+                this.Number = uint.Parse(
+                    ((uint)((this.Number & 0xFF) << 24) | ((this.Number & 0xFF00) << 8)
+                                                        | ((this.Number & 0xFF0000) >> 8) | ((this.Number & 0xFF000000) >> 24)).ToString("X8"));
+
+                this.IsValid = true;
+                this.Type = ServerIdType.WiredMBusAddress;
                 return;
             }
 
