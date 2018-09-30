@@ -470,7 +470,8 @@
                                 {
                                     ir.TargetTime = ModelExtensions.GetAlignedTimestamp(
                                         ir.TimePeriod.Start,
-                                        measurementPeriod);
+                                        measurementPeriod, 
+                                        3);
                                 }
                                 else
                                 {

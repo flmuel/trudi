@@ -275,7 +275,12 @@
         {
             Assert.IsTrue(ModelExtensions.IsValidMeasurementPeriodTimestamp(new DateTime(2016, 12, 31, 23, 53, 5, DateTimeKind.Local), 86400));
             Assert.IsFalse(ModelExtensions.IsValidMeasurementPeriodTimestamp(new DateTime(2016, 12, 31, 23, 40, 5, DateTimeKind.Local), 86400));
+            Assert.IsFalse(ModelExtensions.IsValidMeasurementPeriodTimestamp(new DateTime(2016, 12, 31, 23, 00, 5, DateTimeKind.Local), 86400));
+            Assert.IsTrue(ModelExtensions.IsValidMeasurementPeriodTimestamp(new DateTime(2017, 01, 01, 00, 03, 7, DateTimeKind.Local), 86400));
             Assert.IsTrue(ModelExtensions.IsValidMeasurementPeriodTimestamp(new DateTime(2016, 12, 31, 17, 45, 5, DateTimeKind.Local), 900));
+            Assert.IsTrue(ModelExtensions.IsValidMeasurementPeriodTimestamp(new DateTime(2016, 12, 31, 17, 44, 55, DateTimeKind.Local), 900));
+            Assert.IsFalse(ModelExtensions.IsValidMeasurementPeriodTimestamp(new DateTime(2016, 12, 31, 17, 40, 5, DateTimeKind.Local), 900));
+            Assert.IsFalse(ModelExtensions.IsValidMeasurementPeriodTimestamp(new DateTime(2016, 12, 31, 17, 45, 30, DateTimeKind.Local), 900));
         }
 
         /// <summary>

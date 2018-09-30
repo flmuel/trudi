@@ -137,8 +137,9 @@
         /// </summary>
         /// <param name="timestamp">Der auszurichtende Zeitstempel.</param>
         /// <param name="interval">Das Messperiodenintervall.</param>
+        /// <param name="toleranceLimit">Toleranzgrenze in Prozent.</param>
         /// <returns>Der ausgerichtete Zeitstempel.</returns>
-        public static DateTime GetAlignedTimestamp(DateTime timestamp, int interval = 900)
+        public static DateTime GetAlignedTimestamp(DateTime timestamp, int interval = 900, int toleranceLimit = 1)
         {
             if (interval <= 0)
             {
@@ -162,7 +163,7 @@
                 }
 
                 var previousPeriod = captureTimeUtc.Date.AddSeconds((diffSpan / interval) * interval);
-                var window = interval / 100;
+                var window = interval * toleranceLimit / 100;
                 if (diff <= window)
                 {
                     captureTimeUtc = captureTimeUtc.AddSeconds(diff);
@@ -181,14 +182,18 @@
 
             if (interval == 86400)
             {
-                if (timestamp.Hour == 23 && timestamp.Minute >= 45)
+                var limit = 86400 * toleranceLimit / 100;
+
+                var thisDay = timestamp.Date;
+                if (timestamp >= thisDay.AddSeconds(-limit) && timestamp <= thisDay.AddSeconds(limit))
                 {
-                    return timestamp.Date.AddDays(1);
+                    return thisDay;
                 }
 
-                if (timestamp.Hour == 0 && timestamp.Minute < 15)
+                var nextDay = thisDay.AddDays(1);
+                if (timestamp >= nextDay.AddSeconds(-limit) && timestamp <= nextDay.AddSeconds(limit))
                 {
-                    return timestamp.Date;
+                    return nextDay;
                 }
             }
 
@@ -200,19 +205,65 @@
         /// </summary>
         /// <param name="timestamp">The timestmap to check.</param>
         /// <param name="interval">The period interval.</param>
+        /// <param name="toleranceLimit">Tolerance limit in percent.</param>
         /// <returns><c>true</c> if the timestamp is valid.</returns>
-        public static bool IsValidMeasurementPeriodTimestamp(this DateTime timestamp, int interval = 900)
+        public static bool IsValidMeasurementPeriodTimestamp(this DateTime timestamp, int interval = 900, int toleranceLimit = 1)
         {
-            var diffSpan = (int)(timestamp - timestamp.Date).TotalSeconds;
-            var diff = interval - (diffSpan % interval);
-            if (diff == 0 || diff == interval)
+            if (interval == 0)
             {
                 return true;
             }
 
-            var window = interval == 900 ? 240 : interval / 100;
-            
-            return diff <= window || diff >= (interval - window);
+            if (interval < 86400)
+            {
+                var isUtc = timestamp.Kind == DateTimeKind.Utc;
+                var captureTimeUtc = timestamp.ToUniversalTime();
+                if (!isUtc)
+                {
+                    captureTimeUtc += TimeZoneInfo.Local.GetUtcOffset(timestamp);
+                }
+
+                var diffSpan = (int)(captureTimeUtc - captureTimeUtc.Date).TotalSeconds;
+                var diff = interval - (diffSpan % interval);
+                if (diff == 0 || diff == interval)
+                {
+                    return true;
+                }
+
+                var previousPeriod = captureTimeUtc.Date.AddSeconds((diffSpan / interval) * interval);
+                var window = interval * toleranceLimit / 100;
+                if (diff <= window)
+                {
+                    return true;
+                }
+                else if (interval - diff <= window)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            if (interval == 86400)
+            {
+                var limit = 86400 * toleranceLimit / 100;
+
+                var thisDay = timestamp.Date;
+                if (timestamp >= thisDay.AddSeconds(-limit) && timestamp <= thisDay.AddSeconds(limit))
+                {
+                    return true;
+                }
+
+                var nextDay = thisDay.AddDays(1);
+                if (timestamp >= nextDay.AddSeconds(-limit) && timestamp <= nextDay.AddSeconds(limit))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -220,12 +271,13 @@
         /// </summary>
         /// <param name="readings">List of readings.</param>
         /// <param name="interval">The measurement period.</param>
-        public static void FilterIntervalReadings(this List<IntervalReading> readings, int interval)
+        /// <param name="toleranceLimit">Tolerance limit in percent.</param>
+        public static void FilterIntervalReadings(this List<IntervalReading> readings, int interval, int toleranceLimit = 1)
         {
             for (int i = 1; i < readings.Count; i++)
             {
                 var reading = readings[i];
-                if (!reading.TimePeriod.Start.IsValidMeasurementPeriodTimestamp(interval))
+                if (!reading.TimePeriod.Start.IsValidMeasurementPeriodTimestamp(interval, toleranceLimit))
                 {
                     readings.RemoveAt(i);
                     i--;
