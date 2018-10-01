@@ -7,6 +7,7 @@ echo.
 echo ===========================================================================
 echo.
 
+setlocal EnableExtensions
 setlocal EnableDelayedExpansion
 
 echo Build started at: %DATE% %TIME%
@@ -17,6 +18,8 @@ IF %ERRORLEVEL% EQU 0 (
 	echo Last commit hash: 
 	git rev-parse HEAD
 )
+
+echo CERTIFICATE_SUBJECT_NAME=%CERTIFICATE_SUBJECT_NAME%
 
 echo.
 echo ===========================================================================
@@ -105,7 +108,12 @@ echo.
 echo ===========================================================================
 echo.
 
-call node_modules\.bin\electron-builder.cmd --x64
+if defined CERTIFICATE_SUBJECT_NAME (
+	call node_modules\.bin\electron-builder.cmd --x64 --config.win.certificateSubjectName="%CERTIFICATE_SUBJECT_NAME%"
+) else (
+	call node_modules\.bin\electron-builder.cmd --x64
+)
+
 if errorlevel 1 goto error
 
 echo.
@@ -211,7 +219,12 @@ echo.
 echo ===========================================================================
 echo.
 
-call node_modules\.bin\electron-builder.cmd --ia32
+if defined CERTIFICATE_SUBJECT_NAME (
+	call node_modules\.bin\electron-builder.cmd --ia32 --config.win.certificateSubjectName="%CERTIFICATE_SUBJECT_NAME%"
+) else (
+	call node_modules\.bin\electron-builder.cmd --ia32
+)
+
 if errorlevel 1 goto error
 
 echo Rename the create file to add the target architecture to the filename
