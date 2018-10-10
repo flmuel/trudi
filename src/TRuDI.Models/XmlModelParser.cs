@@ -417,15 +417,30 @@
                           .SpecialDayDate.DayOfMonth = Convert.ToByte(e.Value);
                         break;
 
+                    case "FirmwareComponent":
+                        usagePoint.Smgw.FirmwareComponents.Add(new FirmwareComponent());
+                        break;
+
+                    case "name":
+                        usagePoint.Smgw.FirmwareComponents.Last().Name = e.Value;
+                        break;
+
+                    case "version":
+                        usagePoint.Smgw.FirmwareComponents.Last().Version = e.Value;
+                        break;
+
+                    case "checksum":
+                        usagePoint.Smgw.FirmwareComponents.Last().Checksum = e.Value;
+                        break;
+
+                    case "FirmwareVersion":
+                        usagePoint.Smgw.FirmwareVersion = e.Value;
+                        break;
+
                     case "VendorConfig":
                     case "tafProfile":
                     case "statusVendor":
                     case "measurementTimeMeter":
-                    case "FirmwareComponent":
-                    case "name":
-                    case "version":
-                    case "checksum":
-                    case "FirmwareVersion":
                         // Ignored here: not displayed by TRuDI.
                         break;
 

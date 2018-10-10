@@ -11,8 +11,36 @@
     <div class="panel-heading">Firmware-Version</div>
     <div class="panel-body">
 
+        @if (StateService?.CurrentDataResult?.Model?.Smgw.FirmwareComponents != null && StateService?.CurrentDataResult?.Model?.Smgw.FirmwareComponents.Count != 0)
+        {
+            <table class="table">
+                <tr>
+                    <th>Komponente</th>
+                    <th>Version/Prüfsumme</th>
+                </tr>
+                @foreach (var versionItem in StateService?.CurrentDataResult?.Model?.Smgw.FirmwareComponents)
+                {
+                    <tr>
+                        <td>
+                            @versionItem.Name
+                        </td>
+                        <td>
+                            <div>
+                                @versionItem.Version
+                            </div>
+                            @if (!string.IsNullOrWhiteSpace(versionItem.Checksum))
+                            {
+                                <div style="font-family: monospace; word-break: break-all;">
+                                    @versionItem.Checksum
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
 
-        @if (StateService.LastConnectResult?.FirmwareVersions != null)
+            </table>
+        }
+        else if (StateService.LastConnectResult?.FirmwareVersions != null)
         {
             <table class="table">
                 <tr>
