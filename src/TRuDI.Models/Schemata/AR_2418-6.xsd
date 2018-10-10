@@ -29,6 +29,7 @@ v1.2  - 27.07.2018 - IVU - customerId und invoicingPartyId auf 64 Zeichen erweit
                          - LogEvent: neue Elemente aufgenommen: destination, userIdentity, eventKindVendor
                          - LogEvent: Elemente evidence: Typ von espi:HexBinary128 geändert zu xs:hexBinary
                          - IntervalReading: Element signature: Typ von espi:String512 zu xs:hexBinary geändert
+                         - Datentyp von dayId in DayProfile, SpecialDayProfile und WeekProfile String256 geändert
 
  NOTICE
 ______________________________________________________
@@ -54,7 +55,8 @@ ______________________________________________________
 		<xs:complexContent>
 			<xs:extension base="espi:Object">
 				<xs:sequence>
-					<xs:element name="UsagePoint" type="UsagePointExtension" maxOccurs="unbounded"/>
+				  <xs:element name="GeneratorVersion" type="espi:String256" minOccurs="0"/>
+          <xs:element name="UsagePoint" type="UsagePointExtension" maxOccurs="unbounded"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -124,7 +126,7 @@ ______________________________________________________
 					<xs:element name="smgwId" type="espi:String32"/>
 					<!-- Change: Elemente "Manufacturer", "FirmwareVersion" und "SystemTime" optional aufgenommen (v0.96, 16.05.2017) -->
 					<xs:element name="Manufacturer" type="espi:String32" minOccurs="0"/>
-					<xs:element name="FirmwareVersion" type="espi:String32" minOccurs="0"/>
+					<xs:element name="FirmwareVersion" type="espi:String64" minOccurs="0"/>
 				  <xs:element name="FirmwareComponent" type="FirmwareComponent" minOccurs="0" maxOccurs="unbounded"/>
 					<!-- Change: Element "SystemTime"auf von Datentyp "espi:TimeType" auf "xs:dateTime" angepasst (v0.98, 08.06.2017) -->
 					<xs:element name="SystemTime" type="xs:dateTime" minOccurs="0"/>
@@ -147,7 +149,7 @@ ______________________________________________________
       <xs:extension base="espi:Object">
         <xs:sequence>
           <xs:element name="name" type="espi:String64" minOccurs="1"/>
-          <xs:element name="version" type="espi:String64" minOccurs="0"/>
+          <xs:element name="version" type="espi:String256" minOccurs="0"/>
           <xs:element name="checksum" type="espi:String256" minOccurs="0"/>
         </xs:sequence>
       </xs:extension>
@@ -262,13 +264,13 @@ ______________________________________________________
 			<xs:extension base="espi:Object">
 				<xs:sequence>
 					<xs:element name="weekProfileName" type="espi:String32"/>
-					<xs:element name="monday" type="espi:UInt32" minOccurs="0"/>
-					<xs:element name="tuesday" type="espi:UInt32" minOccurs="0"/>
-					<xs:element name="wednesday" type="espi:UInt32" minOccurs="0"/>
-					<xs:element name="thursday" type="espi:UInt32" minOccurs="0"/>
-					<xs:element name="friday" type="espi:UInt32" minOccurs="0"/>
-					<xs:element name="saturday" type="espi:UInt32" minOccurs="0"/>
-					<xs:element name="sunday" type="espi:UInt32" minOccurs="0"/>
+					<xs:element name="monday" type="espi:String256" minOccurs="0"/>
+					<xs:element name="tuesday" type="espi:String256" minOccurs="0"/>
+					<xs:element name="wednesday" type="espi:String256" minOccurs="0"/>
+					<xs:element name="thursday" type="espi:String256" minOccurs="0"/>
+					<xs:element name="friday" type="espi:String256" minOccurs="0"/>
+					<xs:element name="saturday" type="espi:String256" minOccurs="0"/>
+					<xs:element name="sunday" type="espi:String256" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -278,7 +280,7 @@ ______________________________________________________
 			<xs:extension base="espi:Object">
 				<xs:sequence>
 					<xs:element name="specialDayDate" type="DayVarType"/>
-					<xs:element name="dayId" type="espi:UInt16"/>
+					<xs:element name="dayId" type="espi:String256"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -352,7 +354,7 @@ ______________________________________________________
 		<xs:complexContent>
 			<xs:extension base="espi:Object">
 				<xs:sequence>
-					<xs:element name="dayId" type="espi:UInt16" maxOccurs="unbounded"/>
+					<xs:element name="dayId" type="espi:String256" maxOccurs="unbounded"/>
 					<xs:element name="DayTimeProfile" type="DayTimeProfile" maxOccurs="unbounded"/>
 				</xs:sequence>
 			</xs:extension>
