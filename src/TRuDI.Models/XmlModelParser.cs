@@ -19,13 +19,17 @@
             var exceptions = new List<Exception>();
             var logEventAlreadyExists = false;
             var dayIdAlreadyExists = false;
+            string generatorVersion = null;
 
             foreach (XElement e in elements)
             {
                 switch (e.Name.LocalName)
                 {
                     case "UsagePoint":
-                        usagePoint = new UsagePointAdapterTRuDI();
+                        usagePoint = new UsagePointAdapterTRuDI() { GeneratorVersion = generatorVersion };
+                        break;
+                    case "GeneratorVersion":
+                        generatorVersion = e.Value;
                         break;
                     case "usagePointId":
                         usagePoint.UsagePointId = e.Value;

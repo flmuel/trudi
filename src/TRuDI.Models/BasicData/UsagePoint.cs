@@ -35,6 +35,11 @@
         }
 
         /// <summary>
+        /// TRuDI-Version bzw. Version des Programmes, welches die Datei erzeugt hat.
+        /// </summary>
+        public string GeneratorVersion { get; set; }
+
+        /// <summary>
         /// Die Klasse InvoicingParty repräsentiert den Rechnungssteller bzw. die Marktrolle, die für die Tarifierung
         /// der Messdaten für den Letztverbraucher verantwortlich ist. 
         /// 

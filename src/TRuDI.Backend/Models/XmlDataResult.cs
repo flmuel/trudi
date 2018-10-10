@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Xml.Linq;
 
     using TRuDI.HanAdapter.Interface;
@@ -57,10 +58,14 @@
             {
                 if (this.Raw != null)
                 {
-                    var versionText = $" TRuDI {Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion} on {System.Runtime.InteropServices.RuntimeInformation.OSDescription}";
-                    var versionedXml = new XDocument(this.Raw);
-                    versionedXml.Root.AddBeforeSelf(new XComment(versionText));
-                    return versionedXml;
+                    var ar = XNamespace.Get("http://vde.de/AR_2418-6.xsd");
+
+                    var generatorVersion = this.Raw.Root.Descendants().FirstOrDefault(n => n.Name.LocalName == "GeneratorVersion");
+                    if(generatorVersion == null)
+                    {
+                        var versionText = $"TRuDI {Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion} on {System.Runtime.InteropServices.RuntimeInformation.OSDescription}".Trim();
+                        this.Raw.Root.AddFirst(new XElement(ar + "GeneratorVersion", versionText));
+                    }
                 }
 
                 return this.Raw;

@@ -29,6 +29,7 @@ v1.2  - 27.07.2018 - IVU - customerId und invoicingPartyId auf 64 Zeichen erweit
                          - LogEvent: neue Elemente aufgenommen: destination, userIdentity, eventKindVendor
                          - LogEvent: Elemente evidence: Typ von espi:HexBinary128 geändert zu xs:hexBinary
                          - IntervalReading: Element signature: Typ von espi:String512 zu xs:hexBinary geändert
+                         - GeneratorVersion (String256) aufgenommen
                          - Datentyp von dayId in DayProfile, SpecialDayProfile und WeekProfile String256 geändert
 
  NOTICE
