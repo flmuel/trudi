@@ -299,6 +299,11 @@
         {
             this.LastErrorMessages.Clear();
             this.LoadDataFromXml(raw, null);
+
+            if (this.CurrentDataResult?.Model?.Smgw?.SmgwId != null)
+                {
+                this.LoadAdapter(this.CurrentDataResult?.Model?.Smgw?.SmgwId);
+            }
         }
 
         public void LoadData(AdapterContext ctx)
