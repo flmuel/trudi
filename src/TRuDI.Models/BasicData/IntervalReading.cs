@@ -48,7 +48,7 @@
         /// Aufzeichnungszeitpunkt des Sensors/Zählers, falls vorhanden.
         /// Optional.
         /// </summary>
-        public DateTime? MeasurementTimeMeter { get; set; }
+        public DateTimeOffset? MeasurementTimeMeter { get; set; }
 
         /// <summary>
         /// Tatsächlicher Ablesezeitpunkt des Wertes (=> TimePeriod.Start).
