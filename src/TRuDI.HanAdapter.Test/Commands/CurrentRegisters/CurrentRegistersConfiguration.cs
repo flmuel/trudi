@@ -16,7 +16,7 @@ namespace TRuDI.HanAdapter.Test.Commands.CurrentRegisters
 
         public void Init(CommandLineApplication app)
         {
-            this.usagePointId = app.Option("--usagepointid <usagePointId>", "Zählpunktsbezeichnung (optional)", CommandOptionType.SingleValue);
+            this.usagePointId = app.Option("--usagepointid <usagePointId>", "Messlokation (optional)", CommandOptionType.SingleValue);
             this.tariffName = app.Option("--tariffname <tariffName>", "Identifikation des Tarifs", CommandOptionType.SingleValue);
             this.skipValidation = app.Option("--skip-validation", "XML-Validierung nicht durchführen", CommandOptionType.NoValue);
         }

@@ -254,7 +254,7 @@
         {
             if (model.UsagePointId != supplier.UsagePointId)
             {
-                exceptions.Add(new InvalidOperationException($"TAF-7: Die ID des Zählpunkts \"{model.UsagePointId}\" stimmt nicht mit der ID des Zählpunkts \"{supplier.UsagePointId}\" aus der Tarifdatei des Lieferanten überein."));
+                exceptions.Add(new InvalidOperationException($"TAF-7: Die ID der Messlokation \"{model.UsagePointId}\" stimmt nicht mit der ID der Messlokation \"{supplier.UsagePointId}\" aus der Tarifdatei des Lieferanten überein."));
             }
 
             if (model.InvoicingParty.InvoicingPartyId != supplier.InvoicingParty.InvoicingPartyId)

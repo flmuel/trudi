@@ -20,12 +20,12 @@
 
         @if (!string.IsNullOrWhiteSpace(cnt.Contract.MeteringPointId))
         {
-            <div class="panel-heading">Zählpunkt @cnt.Contract.MeteringPointId</div>
+            <div class="panel-heading">Messlokation @cnt.Contract.MeteringPointId</div>
         }
         else
         {
             hasParamErrors = true;
-            <div class="error">Zählpunkt: (Parameterierung nicht vollständig)</div>
+            <div class="error">Messlokation: (Parameterierung nicht vollständig)</div>
         }
         <div class="panel-body">
 

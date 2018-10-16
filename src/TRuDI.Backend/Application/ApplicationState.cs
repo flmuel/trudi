@@ -247,7 +247,7 @@
                             if (!taf7Contracts.Any())
                             {
                                 Log.Error("No contract found: no TAF-7 contract found");
-                                this.LastErrorMessages.Add($"Vertrag mit der ID \"{this.CurrentSupplierFile.Model.AnalysisProfile.TariffId}\" für Zählpunkt \"{this.CurrentSupplierFile.Model.UsagePointId}\" konnte nicht im Smart Meter Gateway gefunden werden: Kein TAF-7-Profil vorhanden.");
+                                this.LastErrorMessages.Add($"Vertrag mit der ID \"{this.CurrentSupplierFile.Model.AnalysisProfile.TariffId}\" für Messlokation \"{this.CurrentSupplierFile.Model.UsagePointId}\" konnte nicht im Smart Meter Gateway gefunden werden: Kein TAF-7-Profil vorhanden.");
                                 await this.LoadNextPageAfterProgress("/Error");
                                 return;
                             }
@@ -259,7 +259,7 @@
                             if (tariffContract == null)
                             {
                                 Log.Error("No contract found");
-                                this.LastErrorMessages.Add($"Vertrag mit der ID \"{this.CurrentSupplierFile.Model.AnalysisProfile.TariffId}\" für Zählpunkt \"{this.CurrentSupplierFile.Model.UsagePointId}\" konnte nicht im Smart Meter Gateway gefunden werden.");
+                                this.LastErrorMessages.Add($"Vertrag mit der ID \"{this.CurrentSupplierFile.Model.AnalysisProfile.TariffId}\" für Messlokation \"{this.CurrentSupplierFile.Model.UsagePointId}\" konnte nicht im Smart Meter Gateway gefunden werden.");
                                 await this.LoadNextPageAfterProgress("/Error");
                                 return;
                             }

@@ -24,7 +24,7 @@ namespace TRuDI.HanAdapter.Test.Commands.LoadData
 
         public void Init(CommandLineApplication app)
         {
-            this.usagePointId = app.Option("--usagepointid <usagePointId>", "Zählpunktsbezeichnung (optional)", CommandOptionType.SingleValue);
+            this.usagePointId = app.Option("--usagepointid <usagePointId>", "Messlokation (optional)", CommandOptionType.SingleValue);
             this.tariffName = app.Option("--tariffname <tariffName>", "Identifikation des Tarifs", CommandOptionType.SingleValue);
             this.billingperiod = app.Option("--billingperiod <index>", "Index der Abrechnungsperiode (bei TAF-7 nicht benötigt)", CommandOptionType.SingleValue);
             this.start = app.Option("--start <start>", "Zeitstempel, formatiert nach ISO8601", CommandOptionType.SingleValue);
