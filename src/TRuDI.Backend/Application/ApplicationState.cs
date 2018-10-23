@@ -7,6 +7,8 @@
     using System.Threading.Tasks;
     using System.Xml.Linq;
 
+    using Newtonsoft.Json;
+
     using Serilog;
 
     using TRuDI.Backend.Exceptions;
@@ -205,7 +207,8 @@
                         Log.Information("Loading available contracts from SMGW {0}", this.ConnectData.DeviceId);
                         var contracts = await this.activeHanAdapter.LoadAvailableContracts(ct, this.ProgressCallback);
 
-                        Log.Verbose("Contracts received: {@Contracts}", contracts);
+                        Log.Debug("Contracts received: {@Contracts}", contracts);
+
                         var containers = contracts.Where(c => c.TafId != TafId.Taf6)
                             .Select(c => new ContractContainer { Contract = c }).ToList();
 
