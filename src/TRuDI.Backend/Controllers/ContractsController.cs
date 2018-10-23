@@ -42,10 +42,12 @@
                 return this.NotFound();
             }
 
+            var billingPeriods = contract.BillingPeriods.OrderByDescending(bp => bp.Begin).ToArray();
+
             var ctx = new AdapterContext
             {
                 Contract = contract,
-                BillingPeriod = contract.BillingPeriods[billingPeriodIndex],
+                BillingPeriod = billingPeriods[billingPeriodIndex],
                 Start = startTime,
                 End = endTime,
             };
