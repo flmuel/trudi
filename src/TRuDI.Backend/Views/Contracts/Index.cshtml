@@ -344,6 +344,18 @@
     contractIndex++;
 }
 
+@if (StateService.Contracts.Count == 0)
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">Keine Vertragsdaten vorhanden</div>
+        <div class="panel-body">
+        
+            <p>Dem angegebenen Benutzer sind keine Vertragsdaten zugeordnet.</p>
+
+        </div>
+    </div>
+}
+
 
 <script type="text/javascript">
 
