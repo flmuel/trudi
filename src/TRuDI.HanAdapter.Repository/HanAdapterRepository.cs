@@ -3,9 +3,10 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using TRuDI.HanAdapter.Discovergy;
     using TRuDI.HanAdapter.DrNeuhaus;
     using TRuDI.HanAdapter.Efr;
-	using TRuDI.HanAdapter.Emh;
+    using TRuDI.HanAdapter.Emh;
     using TRuDI.HanAdapter.Example;
     using TRuDI.HanAdapter.Kiwigrid;
     using TRuDI.HanAdapter.LandisGyr;
@@ -23,6 +24,7 @@
         /// </summary>
         private static readonly List<HanAdapterInfo> availableAdapters = new List<HanAdapterInfo>
             {
+                new HanAdapterInfo("DGY", "Discovergy GmbH", typeof(HanAdapterDiscovergy)),
                 new HanAdapterInfo("DNT", "Sagemcom Dr. Neuhaus GmbH", typeof(HanAdapterDrNeuhaus)),
                 new HanAdapterInfo("DVL", "devolo AG", typeof(HanAdapterKiwigrid)),
                 new HanAdapterInfo("EFR", "EFR - Europäische Funk-Rundsteuerung GmbH", typeof(HanAdapterEfr)),
