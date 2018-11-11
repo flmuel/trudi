@@ -36,7 +36,7 @@ namespace IVU.Http.Headers.Managed
 
             HttpConnectionPool pool = _connectionPools.GetOrAddPool(key);
             ValueTask<HttpConnection> connectionTask = pool.GetConnectionAsync(
-                state => state.handler.CreateConnection(state.request, state.key, state.pool),
+                state => state.handler.CreateConnection(state.request, state.key, state.pool, cancellationToken),
                 (handler: this, request: request, key: key, pool: pool));
 
             return connectionTask.IsCompletedSuccessfully ?
@@ -51,7 +51,7 @@ namespace IVU.Http.Headers.Managed
             return await connection.SendAsync(request, cancellationToken).ConfigureAwait(false);
         }
 
-        private async ValueTask<TlsStream> EstablishSslConnection(string host, HttpRequestMessage request, Stream stream)
+        private async ValueTask<TlsStream> EstablishSslConnection(string host, HttpRequestMessage request, Stream stream, CancellationToken cancellationToken)
         {
             logger.Trace("HTTP connection handler: Establish TLS connection");
 
@@ -93,7 +93,7 @@ namespace IVU.Http.Headers.Managed
             var tlsSession = new SecureSession(stream, secParams);
             try
             {
-                await tlsSession.PerformClientHandshake(CancellationToken.None);
+                await tlsSession.PerformClientHandshake(cancellationToken);
                 logger.Trace("HTTP connection handler: TLS connection successfull establish");
             }
             catch (Exception ex)
@@ -106,7 +106,7 @@ namespace IVU.Http.Headers.Managed
             return new TlsStream(tlsSession);
         }
 
-        private async ValueTask<HttpConnection> CreateConnection(HttpRequestMessage request, HttpConnectionKey key, HttpConnectionPool pool)
+        private async ValueTask<HttpConnection> CreateConnection(HttpRequestMessage request, HttpConnectionKey key, HttpConnectionPool pool, CancellationToken cancellationToken)
         {
             logger.Trace("HTTP connection handler: Create connection");
 
@@ -118,7 +118,7 @@ namespace IVU.Http.Headers.Managed
 
             if (uri.Scheme == UriScheme.Https)
             {
-                stream = await this.EstablishSslConnection(uri.IdnHost, request, stream).ConfigureAwait(false);
+                stream = await this.EstablishSslConnection(uri.IdnHost, request, stream, cancellationToken).ConfigureAwait(false);
             }
 
             return new HttpConnection(pool, key, uri.IdnHost, stream, transportContext, false);
