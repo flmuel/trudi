@@ -31,6 +31,16 @@
             this._password = password;
         }
 
+        public static void ClearCachedAuthorizationParameter(Uri requestUri)
+        {
+            for (int i = requestUri.Segments.Length - 1; i > 0; i--)
+            {
+                var path = string.Join(string.Empty, requestUri.Segments.Take(i)).TrimEnd('/');
+                _authorizationCache.TryRemove(path, out _);
+            }
+        }
+
+
         public override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             AuthorizationParameter authorizationParameter;
