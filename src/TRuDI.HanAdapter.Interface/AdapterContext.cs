@@ -38,5 +38,18 @@ namespace TRuDI.HanAdapter.Interface
         /// Log data can be huge and are probably not always required by the user.
         /// </summary>
         public bool WithLogdata { get; set; }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"Contract: {this.Contract.TafId}: {this.Contract.TafName}, begin: {this.Contract.Begin}, end: {this.Contract.End.ToString() ?? "-"}, " +
+                $"BillingPeriod: begin: {this.BillingPeriod.Begin}, end: {this.BillingPeriod.End.ToString() ?? "-"}, " + 
+                $"Query: begin: {this.Start}, end: {this.End}";
+        }
     }
 }
