@@ -31,6 +31,7 @@ v1.2  - 27.07.2018 - IVU - customerId und invoicingPartyId auf 64 Zeichen erweit
                          - IntervalReading: Element signature: Typ von espi:String512 zu xs:hexBinary geändert
                          - GeneratorVersion (String256) aufgenommen
                          - Datentyp von dayId in DayProfile, SpecialDayProfile und WeekProfile String256 geändert
+                         - Datentyp von tariffId auf String64 geändert
 
  NOTICE
 ______________________________________________________
@@ -69,7 +70,7 @@ ______________________________________________________
 					<!-- Change: Element "tariffUseCase" aus dem Element "TariffStage" eine Ebene nach oben geholt (v0.97, 18.05.2017) -->
 					<!-- Change: Elemente "tariffUseCase" und "tariffId" analog if_3d_con v1.0 nach vorne gezogen (v0.99, 09.06.2017) -->
 					<xs:element name="tariffUseCase" type="espi:UInt16"/>
-					<xs:element name="tariffId" type="espi:String32"/>
+					<xs:element name="tariffId" type="espi:String64"/>
 					<xs:element name="description" type="espi:String256" minOccurs="0"/>
 					<!-- Change: Element "billingPeriod" von Datentyp "espi:DateTimeInterval" auf "DateTimeInterval" angepasst (v0.98, 08.06.2017) -->
 					<xs:element name="billingPeriod" type="DateTimeInterval"/>
