@@ -48,7 +48,7 @@ namespace TRuDI.HanAdapter.Interface
         public override string ToString()
         {
             return $"Contract: {this.Contract.TafId}: {this.Contract.TafName}, begin: {this.Contract.Begin}, end: {this.Contract.End.ToString() ?? "-"}, " +
-                $"BillingPeriod: begin: {this.BillingPeriod.Begin}, end: {this.BillingPeriod.End.ToString() ?? "-"}, " + 
+                $"BillingPeriod: begin: {this.BillingPeriod?.Begin}, end: {this.BillingPeriod?.End?.ToString() ?? "-"}, " + 
                 $"Query: begin: {this.Start}, end: {this.End}";
         }
     }
