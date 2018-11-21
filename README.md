@@ -65,12 +65,15 @@ Linux ([AppImage](https://de.wikipedia.org/wiki/AppImage), 64-Bit) | http://www.
 Linux (deb, 64-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-1.0.38_amd64.deb
 Linux Live-Image | http://www.ivu-software.de/apps/TRuDI/TRuDI_1.0.38_live.iso
 
-### Aktuelle Vorab-Test-Version (1.0.83)
+### Aktuelle Vorab-Test-Version (1.1.0)
 
 System           | Download
 ---              | ---
-Windows (64-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-Setup-1.0.83-x86_64.exe
-Windows (32-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-Setup-1.0.83-x86_32.exe
+Windows (64-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-Setup-1.1.0-x86_64.exe
+Windows (32-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-Setup-1.1.0-x86_32.exe
+Linux ([AppImage](https://de.wikipedia.org/wiki/AppImage), 64-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-1.1.0-x86_64.AppImage
+Linux (deb, 64-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-1.1.0_amd64.deb
+Linux Live-Image | http://www.ivu-software.de/apps/TRuDI/TRuDI_1.1.0_live.iso
 
 ## Dokumentation
 
