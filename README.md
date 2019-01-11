@@ -47,25 +47,15 @@ unter ``packageSources`` aufgenommen werden.
 
 ## Installations-Pakete
 
-Die aktuelle offiziell freigegebene Version von TRuDI ist **1.0.38**.
+Die aktuelle offiziell freigegebene Version von TRuDI ist **1.1.0**.
 
 ### Offizielle Download-Seite der PTB
 
 Die jeweils aktuelle Version kann von der PTB-Seite unter folgenden Link heruntergeladen werden:
 
-https://www.ptb.de/cms/de/ptb/fachabteilungen/abt2/fb-23/ag-234/info-center-234/trudi.html
+https://www.ptb.de/cms/ptb/fachabteilungen/abt2/fb-23/ag-234/info-center-234/trudi1/trudi2.html
 
 ### Weitere Download-Links
-
-System           | Download
----              | ---
-Windows (64-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-Setup-1.0.38-x86_64.exe
-Windows (32-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-Setup-1.0.38-x86_32.exe
-Linux ([AppImage](https://de.wikipedia.org/wiki/AppImage), 64-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-1.0.38-x86_64.AppImage
-Linux (deb, 64-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-1.0.38_amd64.deb
-Linux Live-Image | http://www.ivu-software.de/apps/TRuDI/TRuDI_1.0.38_live.iso
-
-### Aktuelle Vorab-Test-Version (1.1.0)
 
 System           | Download
 ---              | ---
