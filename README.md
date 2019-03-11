@@ -53,7 +53,7 @@ Die aktuelle offiziell freigegebene Version von TRuDI ist **1.1.0**.
 
 Die jeweils aktuelle Version kann von der PTB-Seite unter folgenden Link heruntergeladen werden:
 
-https://www.ptb.de/cms/ptb/fachabteilungen/abt2/fb-23/ag-234/info-center-234/trudi1/trudi2.html
+https://www.ptb.de/cms/ptb/fachabteilungen/abt2/fb-23/ag-234/info-center-234/trudi/trudi110.html
 
 ### Weitere Download-Links
 
