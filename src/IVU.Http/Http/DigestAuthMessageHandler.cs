@@ -171,7 +171,7 @@
         private static void AddAuthenticationHeader(HttpRequestMessage request,
                                                     string username, string password, AuthorizationParameter authorizationParameter)
         {
-            var digestHeader = GetDigestHeader(request.RequestUri.PathAndQuery, username, password, authorizationParameter);
+            var digestHeader = GetDigestHeader(request.Method, request.RequestUri.PathAndQuery, username, password, authorizationParameter);
             request.Headers.Authorization = new AuthenticationHeaderValue("Digest", digestHeader);
 
             logger.Debug("Digest authorization: {0}", digestHeader);
@@ -205,18 +205,22 @@
             return null;
         }
 
-        private static string GetDigestHeader(string path,
+        private static string GetDigestHeader(HttpMethod method,
+                                              string path,
                                               string username, string password,
                                               AuthorizationParameter fragments)
         {
-            return GetDigestHeader(path,
+            return GetDigestHeader(
+                method,
+                path,
                 username, password,
                 fragments.realm, fragments.nonce,
                 fragments.qop, fragments.nc,
                 fragments.cnonce, fragments.opaque, fragments.algorithm, fragments.cnonceDate);
         }
 
-        private static string GetDigestHeader(string path,
+        private static string GetDigestHeader(HttpMethod method,
+                                              string path,
                                               string username, string password,
                                               string realm, string nonce, string qop, int nc,
                                               string cnonce, string opaque, string algorithm, DateTime cnonceDate)
@@ -230,7 +234,7 @@
                 case "MD5":
                     {
                         var ha1 = CalculateMd5Hash($"{username}:{realm}:{password}");
-                        var ha2 = CalculateMd5Hash($"GET:{path}");
+                        var ha2 = CalculateMd5Hash($"{method.Method}:{path}");
                         digestResponse = CalculateMd5Hash($"{ha1}:{nonce}:{nc:00000000}:{cnonce}:{qop}:{ha2}");
                     }
                     break;
@@ -238,7 +242,7 @@
                 case "SHA256":
                     {
                         var ha1 = CalculateSha256Hash($"{username}:{realm}:{password}");
-                        var ha2 = CalculateSha256Hash($"GET:{path}");
+                        var ha2 = CalculateSha256Hash($"{method.Method}:{path}");
                         digestResponse = CalculateSha256Hash($"{ha1}:{nonce}:{nc:00000000}:{cnonce}:{qop}:{ha2}");
                     }
                     break;
