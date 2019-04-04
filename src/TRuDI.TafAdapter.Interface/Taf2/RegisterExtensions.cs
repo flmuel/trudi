@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using TRuDI.HanAdapter.Interface;
     using TRuDI.Models;
 
     public static class RegisterExtensions

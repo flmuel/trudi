@@ -338,6 +338,12 @@
             try
             {
                 var serverId = new ServerId(value);
+
+                if (serverId.IsValid && string.IsNullOrWhiteSpace(serverId.FlagId))
+                {
+                    return serverId.Number.ToString();
+                }
+
                 return serverId.ToString();
             }
             catch
@@ -353,15 +359,24 @@
         /// <returns>The medium.</returns>
         public static string GetMedium(this ContractInfo contract)
         {
-            var meter = contract.Meters?.FirstOrDefault();
-            if (string.IsNullOrWhiteSpace(meter))
+            ObisMedium medium;
+            if (contract.Medium.HasValue)
             {
-                return "unbekannt";
+                medium = contract.Medium.Value;
+            }
+            else
+            {
+                var meter = contract.Meters?.FirstOrDefault();
+                if (string.IsNullOrWhiteSpace(meter))
+                {
+                    return "unbekannt";
+                }
+
+                var serverId = new ServerId(meter);
+                medium = serverId.Medium;
             }
 
-            var serverId = new ServerId(meter);
-
-            switch (serverId.Medium)
+            switch (medium)
             {
                 case ObisMedium.Electricity:
                     return "Strom";

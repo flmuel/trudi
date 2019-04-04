@@ -60,5 +60,10 @@
         /// Available billing periods for this contract. 
         /// </summary>
         public IReadOnlyList<BillingPeriod> BillingPeriods { get; set; }
+
+        /// <summary>
+        /// The medium of the TAF.
+        /// </summary>
+        public ObisMedium? Medium { get; set; }
     }
 }

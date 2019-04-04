@@ -4,6 +4,8 @@
     using System.Globalization;
     using System.Text.RegularExpressions;
 
+    using TRuDI.HanAdapter.Interface;
+
     public class ObisId
     {
         public ObisId()

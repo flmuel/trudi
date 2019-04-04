@@ -1,5 +1,7 @@
 ﻿namespace TRuDI.Models
 {
+    using TRuDI.HanAdapter.Interface;
+
     public static class ObisIdExtensions
     {
         public static string ToFormattedObis(this string hexId)

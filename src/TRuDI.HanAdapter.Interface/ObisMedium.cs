@@ -1,4 +1,4 @@
-﻿namespace TRuDI.Models
+﻿namespace TRuDI.HanAdapter.Interface
 {
     /// <summary>
     /// Medium definitions based on the OBIS system.

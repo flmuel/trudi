@@ -1,8 +1,9 @@
 ﻿namespace TRuDI.Models
 {
-    using System;
     using System.Globalization;
     using System.Text.RegularExpressions;
+
+    using TRuDI.HanAdapter.Interface;
 
     /// <summary>
     /// Identification number for measuring devices.

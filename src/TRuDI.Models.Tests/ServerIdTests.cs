@@ -1,7 +1,7 @@
 namespace TRuDI.Models.Tests
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+    using TRuDI.HanAdapter.Interface;
     using TRuDI.Models;
 
     [TestClass]
