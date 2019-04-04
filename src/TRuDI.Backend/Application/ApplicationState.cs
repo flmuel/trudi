@@ -361,10 +361,13 @@
                             }
                             catch (HanAdapterException ex)
                             {
-                                if (ex.AdapterError.Type != ErrorType.SensorNotConnected)
+                                if (ex.AdapterError.Type != ErrorType.SensorNotConnected &&
+                                    ex.AdapterError.Type != ErrorType.NoDataInSelectedTimeRange)
                                 {
                                     throw;
                                 }
+
+                                this.HandleHanAdapterException(ex);
                             }
 
                             try

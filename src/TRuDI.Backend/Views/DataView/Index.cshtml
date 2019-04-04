@@ -15,7 +15,20 @@
 
 </script>
 
+@if (StateService.LastErrorMessages.Count > 0)
+{
+    <div class="panel panel-danger">
+        <div class="panel-heading">Fehler</div>
+        <div class="panel-body">
 
+            @foreach (var error in StateService.LastErrorMessages)
+            {
+                <p>@error</p>
+            }
+
+        </div>
+    </div>
+}
 
 <div class="panel panel-primary">
     <div class="panel-heading">Messlokation @StateService.CurrentDataResult.Model.UsagePointId</div>
