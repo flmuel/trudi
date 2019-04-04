@@ -96,7 +96,7 @@
 
     foreach (var readingGroup in meterReadingsSorted)
     {
-        if (readingGroup.IsOriginalValueList)
+        if (readingGroup.IsOriginalValueList || StateService.CurrentDataResult.TafId == TRuDI.HanAdapter.Interface.TafId.Taf1)
         {
             <h3>Aktuelle Registerwerte des Z&auml;hlers</h3>
         }
