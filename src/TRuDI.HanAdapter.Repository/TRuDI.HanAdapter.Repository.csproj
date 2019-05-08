@@ -10,7 +10,7 @@
 	<PackageReference Include="TRuDI.HanAdapter.DrNeuhaus" Version="1.0.15" />
     <PackageReference Include="TRuDI.HanAdapter.Kiwigrid" Version="1.0.2" />
     <PackageReference Include="TRuDI.HanAdapter.LandisGyr" Version="1.0.10" />
-    <PackageReference Include="TRuDI.HanAdapter.Ppc" Version="1.0.14" />
+    <PackageReference Include="TRuDI.HanAdapter.Ppc" Version="1.0.15" />
     <PackageReference Include="TRuDI.HanAdapter.ThebenAG" Version="1.0.3.15" />
     <PackageReference Include="TRuDI.HanAdapter.Efr" Version="1.0.2" />
 	<PackageReference Include="TRuDI.HanAdapter.Emh" Version="1.0.8" />
