@@ -444,6 +444,18 @@
                         // Ignored here: not displayed by TRuDI.
                         break;
 
+                    // LogEvent
+                    case "type":
+                    case "eventId":
+                    case "vendorId":
+                    case "eventSubId":
+                    case "subjectIdentity":
+                    case "userIdentity":
+                    case "eventKindVendor":
+                    case "secondsIndex":
+                    case "evidence":
+                        break;
+
                     default:
                         if (usagePoint == null)
                         {
