@@ -32,6 +32,7 @@ v1.2  - 27.07.2018 - IVU - customerId und invoicingPartyId auf 64 Zeichen erweit
                          - GeneratorVersion (String256) aufgenommen
                          - Datentyp von dayId in DayProfile, SpecialDayProfile und WeekProfile String256 geändert
                          - Datentyp von tariffId auf String64 geändert
+v1.3  - 23.05.2019 - IVU - String8192 durch String16384 ersetzt (wird für Meldungstexte verwendet)
 
  NOTICE
 ______________________________________________________
@@ -231,7 +232,7 @@ ______________________________________________________
 			<xs:extension base="espi:Object">
 				<xs:sequence>
 					<xs:element name="id" type="espi:UInt8"/>
-					<xs:element name="text" type="espi:String256"/>
+					<xs:element name="text" type="xs:string"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -418,7 +419,7 @@ ______________________________________________________
 					</xs:element>
 					<xs:element name="messageExtensions" type="espi:String256" minOccurs="0"/>
 					<!-- Change: Neues Element "text" optional aufgenommen (v0.98, 08.06.2017) -->
-					<xs:element name="text" type="String8192" minOccurs="0"/>
+					<xs:element name="text" type="String16384" minOccurs="0"/>
 					<xs:element name="outcome" type="espi:UInt8" minOccurs="0">
 						<xs:annotation>
 							<xs:documentation>0=SUCCESS
@@ -679,12 +680,13 @@ ______________________________________________________
 		</xs:complexContent>
 	</xs:complexType>
 	<!-- Change: Neuer simpleType "String8192" zur Darstellung der Log-Meldungen aufgenommen (v0.98, 08.06.2017) -->
-	<xs:simpleType name="String8192">
+  <!-- Change: Erweitert auf "String16384", da 8192 Zeichen ggf. nicht ausreichen -->
+	<xs:simpleType name="String16384">
 		<xs:annotation>
-			<xs:documentation>[extension] Character string of max length 8192</xs:documentation>
+			<xs:documentation>[extension] Character string of max length 16384</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
-			<xs:maxLength value="8192"/>
+			<xs:maxLength value="16384"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<!-- Change: Neuer complexType "DateTimeInterval" zur Umstellung aller Zeitstempel auf "xs:dateTime" aufgenommen (v0.98, 08.06.2017) -->
