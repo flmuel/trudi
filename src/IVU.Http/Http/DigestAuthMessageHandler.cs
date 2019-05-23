@@ -235,7 +235,7 @@
                     {
                         var ha1 = CalculateMd5Hash($"{username}:{realm}:{password}");
                         var ha2 = CalculateMd5Hash($"{method.Method}:{path}");
-                        digestResponse = CalculateMd5Hash($"{ha1}:{nonce}:{nc:00000000}:{cnonce}:{qop}:{ha2}");
+                        digestResponse = CalculateMd5Hash($"{ha1}:{nonce}:{nc:X8}:{cnonce}:{qop}:{ha2}");
                     }
                     break;
 
@@ -243,7 +243,7 @@
                     {
                         var ha1 = CalculateSha256Hash($"{username}:{realm}:{password}");
                         var ha2 = CalculateSha256Hash($"{method.Method}:{path}");
-                        digestResponse = CalculateSha256Hash($"{ha1}:{nonce}:{nc:00000000}:{cnonce}:{qop}:{ha2}");
+                        digestResponse = CalculateSha256Hash($"{ha1}:{nonce}:{nc:X8}:{cnonce}:{qop}:{ha2}");
                     }
                     break;
 
@@ -254,11 +254,11 @@
             if (string.IsNullOrWhiteSpace(opaque))
             {
                 return $"username=\"{username}\", realm=\"{realm}\", nonce=\"{nonce}\", uri=\"{path}\", "
-                       + $"algorithm=\"{algorithm}\", response=\"{digestResponse}\", qop=\"{qop}\", nc=\"{nc:00000000}\", cnonce=\"{cnonce}\"";
+                       + $"algorithm=\"{algorithm}\", response=\"{digestResponse}\", qop=\"{qop}\", nc=\"{nc:X8}\", cnonce=\"{cnonce}\"";
             }
 
             return $"username=\"{username}\", realm=\"{realm}\", nonce=\"{nonce}\", uri=\"{path}\", "
-                       + $"algorithm=\"{algorithm}\", response=\"{digestResponse}\", qop=\"{qop}\", nc=\"{nc:00000000}\", cnonce=\"{cnonce}\", opaque=\"{opaque}\"";
+                       + $"algorithm=\"{algorithm}\", response=\"{digestResponse}\", qop=\"{qop}\", nc=\"{nc:X8}\", cnonce=\"{cnonce}\", opaque=\"{opaque}\"";
         }
 
         private static string CalculateMd5Hash(string input)
