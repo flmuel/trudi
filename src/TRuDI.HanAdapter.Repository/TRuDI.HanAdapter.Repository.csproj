@@ -8,7 +8,7 @@
   <ItemGroup>
     <PackageReference Include="TRuDI.HanAdapter.Discovergy" Version="1.0.0" />
 	<PackageReference Include="TRuDI.HanAdapter.DrNeuhaus" Version="1.0.15" />
-    <PackageReference Include="TRuDI.HanAdapter.Kiwigrid" Version="1.0.2" />
+    <PackageReference Include="TRuDI.HanAdapter.Kiwigrid" Version="1.0.4" />
     <PackageReference Include="TRuDI.HanAdapter.LandisGyr" Version="1.0.10" />
     <PackageReference Include="TRuDI.HanAdapter.Ppc" Version="1.0.15" />
     <PackageReference Include="TRuDI.HanAdapter.ThebenAG" Version="1.0.3.15" />
