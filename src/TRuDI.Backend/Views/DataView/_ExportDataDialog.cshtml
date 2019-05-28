@@ -36,7 +36,7 @@
                             @foreach (var ovl in originalValueLists)
                             {
                                 <div class="radio">
-                                    <label><input type="radio" name='ExportDataRadio' value='@ovl.GetOriginalValueListIdent()'>Originäre Messwertliste @ovl.Obis.ToString() von Zähler @ovl.Meter.ToFormattedDeviceId() als CSV-Datei</label>
+                                    <label><input type="radio" name='ExportDataRadio' value='@ovl.GetOriginalValueListIdent()'>Originäre Messwertliste @ovl.Obis.ToReadableString() von Zähler @ovl.Meter.ToFormattedDeviceId() als CSV-Datei</label>
                                 </div>
                             }
 

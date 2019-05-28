@@ -66,7 +66,7 @@
                 <ul class="dropdown-menu" aria-labelledby="tab-dropdown-hvl" id="tab-dropdown-hvl-contents">
                     @foreach (var ovl in originalValueLists ?? new List<OriginalValueList>())
                     {
-                        <li class="@(StateService.CurrentSupplierFile?.TafData == null && originalValueLists.First() == ovl ? "active" : "")"><a href="#tab_hvl_@ovl.GetOriginalValueListIdent()" id="#tab_hvl_@ovl.GetOriginalValueListIdent()-tab" aria-expanded="false" aria-controls="tab_hvl_@ovl.GetOriginalValueListIdent()" role="tab" data-toggle="tab">@ovl.Meter.ToFormattedDeviceId() (@ovl.Obis.ToString())</a></li>
+                        <li class="@(StateService.CurrentSupplierFile?.TafData == null && originalValueLists.First() == ovl ? "active" : "")"><a href="#tab_hvl_@ovl.GetOriginalValueListIdent()" id="#tab_hvl_@ovl.GetOriginalValueListIdent()-tab" aria-expanded="false" aria-controls="tab_hvl_@ovl.GetOriginalValueListIdent()" role="tab" data-toggle="tab">@ovl.Meter.ToFormattedDeviceId() (@ovl.Obis.ToReadableString())</a></li>
                     }
                 </ul>
             </li>
@@ -76,7 +76,7 @@
                 <ul class="dropdown-menu" aria-labelledby="tab-dropdown-ovl" id="tab-dropdown-ovl-contents">
                     @foreach (var ovl in originalValueLists)
                     {
-                        <li class=""><a href="#tab_@ovl.GetOriginalValueListIdent()" id="#tab_@ovl.GetOriginalValueListIdent()-tab" aria-expanded="false" aria-controls="tab_@ovl.GetOriginalValueListIdent()" role="tab" data-toggle="tab">@ovl.Meter.ToFormattedDeviceId() (@ovl.Obis.ToString())</a></li>
+                        <li class=""><a href="#tab_@ovl.GetOriginalValueListIdent()" id="#tab_@ovl.GetOriginalValueListIdent()-tab" aria-expanded="false" aria-controls="tab_@ovl.GetOriginalValueListIdent()" role="tab" data-toggle="tab">@ovl.Meter.ToFormattedDeviceId() (@ovl.Obis.ToReadableString())</a></li>
                     }
                 </ul>
             </li>
@@ -228,7 +228,7 @@
 
                 <div role="tabpanel" class="tab-pane" id="tab_@ovl.GetOriginalValueListIdent()">
                     <div class="panel panel-primary">
-                        <div class="panel-heading">Originäre Messwertliste @ovl.Meter.ToFormattedDeviceId() (@ovl.Obis.ToString())</div>
+                        <div class="panel-heading">Originäre Messwertliste @ovl.Meter.ToFormattedDeviceId() (@ovl.Obis.ToReadableString())</div>
                         <div class="panel-body">
 
                             <table class="table">
@@ -241,7 +241,7 @@
                                 <tr>
                                     <td>@ovl.Meter.ToFormattedDeviceId()</td>
                                     <td>@ovl.MeasurementPeriod.GetMeasurementPeriodString()</td>
-                                    <td>@ovl.Obis.ToString()</td>
+                                    <td>@ovl.Obis.ToReadableString()</td>
                                     <td>@ovl.Obis.GetLabel()</td>
                                 </tr>
 
@@ -372,7 +372,7 @@
             {
                 <div role="tabpanel" class="tab-pane" id="tab_@ovl.GetOriginalValueListIdent()">
                     <div class="panel panel-primary">
-                        <div class="panel-heading">Originäre Messwertliste @ovl.Meter.ToFormattedDeviceId() (@ovl.Obis.ToString())</div>
+                        <div class="panel-heading">Originäre Messwertliste @ovl.Meter.ToFormattedDeviceId() (@ovl.Obis.ToReadableString())</div>
                         <div class="panel-body">
                             <p>Es konnten keine gültigen Messwerte ermittelt werden.</p>
                         </div>
@@ -443,7 +443,7 @@
         {
             <div role="tabpanel" class="tab-pane @(StateService.CurrentSupplierFile?.TafData == null && originalValueLists.First() == ovl ? "active" : "")" id="tab_hvl_@ovl.GetOriginalValueListIdent()">
                 <div class="panel panel-primary">
-                    <div class="panel-heading">Historische Verbrauchswerte @ovl.Meter.ToFormattedDeviceId() (@ovl.Obis.ToString())</div>
+                    <div class="panel-heading">Historische Verbrauchswerte @ovl.Meter.ToFormattedDeviceId() (@ovl.Obis.ToReadableString())</div>
                     <div class="panel-body">
                         <div id="hvl_@ovl.Meter">
                             @await Component.InvokeAsync("HistoricValueListView", new { ovl })

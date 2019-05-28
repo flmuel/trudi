@@ -121,7 +121,7 @@
                 var description = obisId.GetLabel();
 
                 <tr class="@status.ToStatusBackground()">
-                    <td style="white-space: nowrap;">@obisId.ToString()</td>
+                    <td style="white-space: nowrap;">@obisId.ToReadableString()</td>
                     <td style="white-space: nowrap;" class="text-right">
                         @reading.IntervalBlocks.FirstOrDefault()?.IntervalReadings.FirstOrDefault()?.Value.GetDisplayValue(reading.ReadingType.Uom ?? Uom.Not_Applicable, reading.ReadingType.PowerOfTenMultiplier ?? PowerOfTenMultiplier.None, reading.ReadingType.Scaler)
                     </td>

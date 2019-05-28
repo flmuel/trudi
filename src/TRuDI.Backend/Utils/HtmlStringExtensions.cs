@@ -513,5 +513,15 @@
                     return $"{measurementPeriod.TotalSeconds} Sekunden";
             }
         }
+
+        /// <summary>
+        /// Formats the specified OBIS without the F component.
+        /// </summary>
+        /// <param name="obisId">The OBIS to format</param>
+        /// <returns>The formatted OBIS id.</returns>
+        public static string ToReadableString(this ObisId obisId)
+        {
+            return $"{obisId.A}-{obisId.B}:{obisId.C}.{obisId.D}.{obisId.E}";
+        }
     }
 }
