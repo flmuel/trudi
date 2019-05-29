@@ -345,7 +345,7 @@
                             return;
                         }
 
-                        if (ctx.BillingPeriod?.End == null && (ctx.Contract.Begin <= DateTime.Now && (ctx.Contract.End == null || ctx.Contract.End > DateTime.Now)))
+                        if (!ctx.BillingPeriod.IsCompleted() && (ctx.Contract.Begin <= DateTime.Now && (ctx.Contract.End == null || ctx.Contract.End > DateTime.Now)))
                         {
                             Log.Information("Billing period not completed: get current register values", this.ConnectData.DeviceId);
 

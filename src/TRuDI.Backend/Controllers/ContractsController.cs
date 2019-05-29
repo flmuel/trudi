@@ -52,7 +52,7 @@
                 End = endTime,
             };
 
-            if (ctx.BillingPeriod.End == null || ctx.BillingPeriod.End != ctx.End)
+            if (!ctx.BillingPeriod.IsCompleted() || ctx.BillingPeriod.End != ctx.End)
             {
                 ctx.End = ctx.End.NextDayStart();
             }

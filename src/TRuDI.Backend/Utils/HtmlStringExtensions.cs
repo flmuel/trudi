@@ -104,9 +104,9 @@
         /// </summary>
         /// <param name="billingPeriod">The billing period.</param>
         /// <returns>Returns "ja" or "nein".</returns>
-        public static string IsCompleted(this BillingPeriod billingPeriod)
+        public static string IsCompletedText(this BillingPeriod billingPeriod)
         {
-            return billingPeriod.End == null ? "nein" : "ja";
+            return billingPeriod.IsCompleted() ? "nein" : "ja";
         }
 
         /// <summary>
