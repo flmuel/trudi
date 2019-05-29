@@ -106,7 +106,7 @@
         /// <returns>Returns "ja" or "nein".</returns>
         public static string IsCompletedText(this BillingPeriod billingPeriod)
         {
-            return billingPeriod.IsCompleted() ? "nein" : "ja";
+            return billingPeriod.IsCompleted() ? "ja" : "nein";
         }
 
         /// <summary>

@@ -7,7 +7,7 @@
     {
         public static bool IsCompleted(this BillingPeriod billingPeriod)
         {
-            return billingPeriod.End == null || billingPeriod.End > DateTime.Now;
+            return billingPeriod.End != null || billingPeriod.End <= DateTime.Now;
         }
     }
 }
