@@ -59,56 +59,17 @@ namespace IVU.Common.Tls.HandshakeLayer
             // add compressions
             clientHello.CompressionMethods.AddRange(_supportedCompressions);
 
-            // get curve name from client certificate, only add the Curve Extension that corresponds to the client certificate
-            // otherwise the meter may take the curve from the first transmitted extension (ignoring the curve of the certificate)
-            var cert = securityParameters.AvailableCertificates.FirstOrDefault()?[0];
-            if (cert != null)
-            {
-                var data = Asn1Object.FromByteArray(cert.GetKeyAlgorithmParameters());
-                this.logger?.Debug($"Client certificate's key algorithm parameters (OID): {data}");
-                var oid = new DerObjectIdentifier(data.ToString());
-                var curveName = Org.BouncyCastle.Asn1.Sec.SecNamedCurves.GetName(oid);
-
-                switch (curveName.ToUpperInvariant())
-                {
-                    case "SECP256R1":
-                        clientHello.Extensions.Add(new HelloEccExtension(EccNamedCurve.Secp256R1));
-                        break;
-
-                    case "SECP384R1":
-                        clientHello.Extensions.Add(new HelloEccExtension(EccNamedCurve.Secp384R1));
-                        break;
-
-                    case "BRAINPOOLP256R1":
-                        clientHello.Extensions.Add(new HelloEccExtension(EccNamedCurve.BrainpoolP256R1));
-                        break;
-
-                    case "BRAINPOOLP384R1":
-                        clientHello.Extensions.Add(new HelloEccExtension(EccNamedCurve.BrainpoolP384R1));
-                        break;
-
-                    case "BRAINPOOLP512R1":
-                        clientHello.Extensions.Add(new HelloEccExtension(EccNamedCurve.BrainpoolP512R1));
-                        break;
-
-                    default:
-                        throw new NotSupportedException($"ECC Curve {curveName} is not supported");
-                }
-            }
-            else
-            {
-                // add supported elliptic curves
-                clientHello.Extensions.Add(
-                    new HelloEccExtension(
-                        new[]
-                        {
-                            EccNamedCurve.Secp256R1,
-                            EccNamedCurve.Secp384R1,
-                            EccNamedCurve.BrainpoolP256R1,
-                            EccNamedCurve.BrainpoolP384R1,
-                            EccNamedCurve.BrainpoolP512R1
-                        }));
-            }
+            // add supported elliptic curves
+            clientHello.Extensions.Add(
+                new HelloEccExtension(
+                    new[]
+                    {
+                        EccNamedCurve.Secp256R1,
+                        EccNamedCurve.Secp384R1,
+                        EccNamedCurve.BrainpoolP256R1,
+                        EccNamedCurve.BrainpoolP384R1,
+                        EccNamedCurve.BrainpoolP512R1
+                    }));
 
             // add elyptic curves point format
              clientHello.Extensions.Add(
@@ -121,6 +82,7 @@ namespace IVU.Common.Tls.HandshakeLayer
                     {
                         new SignatureAndHashAlgorithm() { HashAlgorithm = HashAlgorithmType.Sha256, SignatureAlgorithm = SignatureAlgorithmType.Ecdsa},
                         new SignatureAndHashAlgorithm() { HashAlgorithm = HashAlgorithmType.Sha384, SignatureAlgorithm = SignatureAlgorithmType.Ecdsa},
+                        new SignatureAndHashAlgorithm() { HashAlgorithm = HashAlgorithmType.Sha512, SignatureAlgorithm = SignatureAlgorithmType.Ecdsa},
                     }));
 
             this.logger?.Debug($"Creating ClientHello with max version {_maxVersion}, " +
