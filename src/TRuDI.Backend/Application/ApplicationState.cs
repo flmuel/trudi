@@ -304,7 +304,7 @@
             this.LoadDataFromXml(raw, null);
 
             if (this.CurrentDataResult?.Model?.Smgw?.SmgwId != null)
-                {
+            {
                 this.LoadAdapter(this.CurrentDataResult?.Model?.Smgw?.SmgwId);
             }
         }
