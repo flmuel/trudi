@@ -65,6 +65,12 @@ Linux ([AppImage](https://de.wikipedia.org/wiki/AppImage), 64-Bit) | http://www.
 Linux (deb, 64-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-1.1.0_amd64.deb
 Linux Live-Image | http://www.ivu-software.de/apps/TRuDI/TRuDI_1.1.0_live.iso
 
+### Aktuelle Test-Version 1.1.11
+
+System           | Download
+---              | ---
+Windows (64-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-Setup-1.1.11-x86_64.exe
+
 ## Dokumentation
 
 [HAN-Adapter](doc/han-adapter.md)
