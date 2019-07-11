@@ -6,7 +6,7 @@ VDE AR 2418-6
 XSD schema definition for interfaces IF_Adapter_TRuDI and IF_Lieferant_TRuDI
 
 Schema:  AR_2418-6.xsd
-Version: 1.2 (Entwurf)     
+Version: 1.4 (Entwurf)     
 Author:  OFFIS, Dr. Martin Kahmann (PTB), Dominik Weingardt (EnBW), Thomas Müller (IVU)
 =====================================================================================================
 
@@ -33,6 +33,7 @@ v1.2  - 27.07.2018 - IVU - customerId und invoicingPartyId auf 64 Zeichen erweit
                          - Datentyp von dayId in DayProfile, SpecialDayProfile und WeekProfile String256 geändert
                          - Datentyp von tariffId auf String64 geändert
 v1.3  - 23.05.2019 - IVU - String8192 durch String16384 ersetzt (wird für Meldungstexte verwendet)
+v1.4  - 11.07.2019 - IVU - usagePointId von String64 auf String256 geändert
 
  NOTICE
 ______________________________________________________
@@ -572,7 +573,7 @@ ______________________________________________________
 		<xs:complexContent>
 			<xs:extension base="espi:UsagePoint">
 				<xs:sequence>
-					<xs:element name="usagePointId" type="espi:String64" minOccurs="0"/>
+					<xs:element name="usagePointId" type="espi:String256" minOccurs="0"/>
 					<xs:element name="Customer" type="Customer" minOccurs="0"/>
 					<xs:element name="InvoicingParty" type="InvoicingParty" minOccurs="0"/>
 					<xs:element name="SMGW" type="SMGW" minOccurs="0"/>
