@@ -362,7 +362,8 @@
                             catch (HanAdapterException ex)
                             {
                                 if (ex.AdapterError.Type != ErrorType.SensorNotConnected &&
-                                    ex.AdapterError.Type != ErrorType.NoDataInSelectedTimeRange)
+                                    ex.AdapterError.Type != ErrorType.NoDataInSelectedTimeRange &&
+                                    ex.AdapterError.Type != ErrorType.DeviceError)
                                 {
                                     throw;
                                 }
