@@ -168,7 +168,7 @@
                                 });
 
                                 $("#logStart").data("DateTimePicker").minDate(moment('@logBegin.DayStart().ToIso8601()'));
-                                $("#logStart").data("DateTimePicker").maxDate(moment('@logSelectedEnd.DayEnd().ToIso8601()'));
+                                $("#logStart").data("DateTimePicker").maxDate(moment('@logEnd.DayEnd().ToIso8601()'));
                                 $("#logStart").data("DateTimePicker").date(moment('@logBegin.DayStart().ToIso8601()'));
 
                                 $("#logEnd").data("DateTimePicker").minDate(moment('@logBegin.DayStart().ToIso8601()'));
@@ -176,12 +176,16 @@
                                 $("#logEnd").data("DateTimePicker").date(moment('@logSelectedEnd.DayEnd().ToIso8601()'));
 
                                 $("#logStart").on("dp.change", function (e) {
-                                    $('#logEnd').data("DateTimePicker").minDate(e.date);
+                                    if (e.date > $('#logEnd').data("DateTimePicker").date()) {
+                                        $('#logEnd').data("DateTimePicker").date(e.date);
+                                    }
                                 });
+
                                 $("#logEnd").on("dp.change", function (e) {
-                                    $('#logStart').data("DateTimePicker").maxDate(e.date);
-                                });
-                            });
+                                    if (e.date < $('#logStart').data("DateTimePicker").date()) {
+                                        $('#logStart').data("DateTimePicker").date(e.date);
+                                    }
+                                });                            });
 
                             function filterLog() {
 
@@ -347,6 +351,10 @@
                                         format: 'DD.MM.YYYY'
                                     });
 
+                                    $("#dp_start_@ovl.GetOriginalValueListIdent()").data("DateTimePicker").minDate(moment('@ovlBegin.Date.ToIso8601()'));
+                                    $("#dp_start_@ovl.GetOriginalValueListIdent()").data("DateTimePicker").maxDate(moment('@ovlEnd.GetDateTimePickerEndDate().ToIso8601()'));
+                                    $("#dp_start_@ovl.GetOriginalValueListIdent()").data("DateTimePicker").date(moment('@ovlBegin.Date.ToIso8601()'));
+
                                     $("#dp_start_@ovl.GetOriginalValueListIdent()").on("dp.change", function (e) {
                                         loadOvlDay("@ovl.GetOriginalValueListIdent()");
                                     });
@@ -357,10 +365,6 @@
                                             ovlStatusVisible = false;
                                         }
                                     });
-
-                                    $("#dp_start_@ovl.GetOriginalValueListIdent()").data("DateTimePicker").minDate(moment('@ovlBegin.Date.ToIso8601()'));
-                                    $("#dp_start_@ovl.GetOriginalValueListIdent()").data("DateTimePicker").maxDate(moment('@ovlEnd.GetDateTimePickerEndDate().ToIso8601()'));
-                                    $("#dp_start_@ovl.GetOriginalValueListIdent()").data("DateTimePicker").date(moment('@ovlBegin.Date.ToIso8601()'));
                                 });
                             </script>
 
