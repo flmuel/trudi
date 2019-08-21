@@ -212,6 +212,24 @@
                 throw new HanAdapterException(result.error);
             }
 
+            if (result.contracts != null)
+            {
+                // Adjust billing period ends to the end of the contract
+                foreach (var contract in result.contracts)
+                {
+                    if (contract.End != null && contract.End < DateTime.Now)
+                    {
+                        foreach (var billingPeriod in contract.BillingPeriods)
+                        {
+                            if (billingPeriod.End == null || billingPeriod.End > contract.End)
+                            {
+                                billingPeriod.End = contract.End;
+                            }
+                        }
+                    }
+                }
+            }
+
             return result.contracts;
         }
     }
