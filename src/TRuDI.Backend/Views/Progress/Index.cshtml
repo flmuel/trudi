@@ -34,55 +34,81 @@
 
 <script src="~/js/WebSocketManager.js"></script>
 <script language="javascript" type="text/javascript">
-    $(document).ready(function () {
-        var connection = new WebSocketManager.Connection('@ViewData["WebSocketProtocol"]//127.0.0.1:' + location.port + '/notifications');
-        connection.enableLogging = true;
 
-        connection.connectionMethods.onConnected = () => {
-            console.log("You are now connected! Connection ID: " + connection.connectionId);
-        }
+    function HandleProgressUpdatesAndCheckForNextPage() {
+        try {
+            var connection =
+                new WebSocketManager.Connection('@ViewData["WebSocketProtocol"]//127.0.0.1:' +
+                    location.port +
+                    '/notifications');
 
-        connection.connectionMethods.onDisconnected = () => {
-            console.log("Disconnected!");
-        }
+            connection.enableLogging = true;
 
-        connection.clientMethods["ProgressUpdate"] = (message, pos) => {
-            console.log(message);
-
-            if (pos == -1) {
-                $('.progress-bar').addClass("progress-bar-striped").addClass("active").removeClass("progress-bar-success").removeClass("progress-bar-info");
-                $('.progress-bar').css('width', '100%').attr('aria-valuenow', 100);
-                $('#status-text').html(message);
+            connection.connectionMethods.onConnected = () => {
+                console.log("You are now connected! Connection ID: " + connection.connectionId);
             }
-            else {
-                $('.progress-bar').removeClass("progress-bar-striped").removeClass("active").removeClass("progress-bar-info").addClass("progress-bar-success");
-                $('.progress-bar').css('width', pos + '%').attr('aria-valuenow', pos);
-                $('#status-text').html(message);
+
+            connection.connectionMethods.onDisconnected = () => {
+                console.log("Disconnected!");
             }
-        };
 
-        connection.clientMethods["LoadNextPage"] = (url) => {
-            console.log(url);
-            this.close();
-            window.location.href = url;
-        };
+            connection.clientMethods["ProgressUpdate"] = (message, pos) => {
+                console.log(message);
 
-        connection.start();
+                if (pos == -1) {
+                    $('.progress-bar').addClass("progress-bar-striped").addClass("active")
+                        .removeClass("progress-bar-success").removeClass("progress-bar-info");
+                    $('.progress-bar').css('width', '100%').attr('aria-valuenow', 100);
+                    $('#status-text').html(message);
+                } else {
+                    $('.progress-bar').removeClass("progress-bar-striped").removeClass("active")
+                        .removeClass("progress-bar-info").addClass("progress-bar-success");
+                    $('.progress-bar').css('width', pos + '%').attr('aria-valuenow', pos);
+                    $('#status-text').html(message);
+                }
+            };
 
-        // check, if the operation is already finished
-        $.ajax({
-            url: '/Progress/GetNextPageToLoad',
-            type: "GET",
-            contentType: false,
-            processData: false,
-            success: function (result) {
-                console.log(result);
-                connection.close();
-                window.location.href = result;
-            },
-            error: function (err) { }
-        });
-    });
+            connection.clientMethods["LoadNextPage"] = (url) => {
+                console.log(url);
+                this.close();
+                window.location.href = url;
+            };
+            
+            connection.start();
+
+            // check, if the operation is already finished
+            $.ajax({
+                url: '/Progress/GetNextPageToLoad',
+                type: "GET",
+                contentType: false,
+                processData: false,
+                success: function(result) {
+                    console.log(result);
+                    connection.close();
+                    window.location.href = result;
+                },
+                error: function(err) {}
+            });
+
+        } catch (ex) {
+            // In case of an error: reestablish the web socket connection after 1 second...
+            setTimeout(HandleProgressUpdatesAndCheckForNextPage, 1000);
+
+            // ...and check for the next page immediately
+            $.ajax({
+                url: '/Progress/GetNextPageToLoad',
+                type: "GET",
+                contentType: false,
+                processData: false,
+                success: function(result) {
+                    console.log(result);
+                    connection.close();
+                    window.location.href = result;
+                },
+                error: function(err) {}
+            });
+        }
+    }
 
     function cancel() {
 
@@ -97,4 +123,7 @@
             error: function (err) { }
         });
     }
+
+    $(document).ready(HandleProgressUpdatesAndCheckForNextPage);
+
 </script>
