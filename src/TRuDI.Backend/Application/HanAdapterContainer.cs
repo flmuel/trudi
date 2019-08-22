@@ -217,7 +217,7 @@
                 // Adjust billing period ends to the end of the contract
                 foreach (var contract in result.contracts)
                 {
-                    if (contract.End != null && contract.End < DateTime.Now)
+                    if (contract.End != null && contract.End < DateTime.Now && contract.BillingPeriods != null)
                     {
                         foreach (var billingPeriod in contract.BillingPeriods)
                         {
