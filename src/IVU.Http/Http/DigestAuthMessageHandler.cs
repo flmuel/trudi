@@ -240,6 +240,7 @@
                     break;
 
                 case "SHA256":
+                case "SHA-256":
                     {
                         var ha1 = CalculateSha256Hash($"{username}:{realm}:{password}");
                         var ha2 = CalculateSha256Hash($"{method.Method}:{path}");
