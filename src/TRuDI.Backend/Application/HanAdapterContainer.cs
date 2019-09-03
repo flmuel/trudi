@@ -221,7 +221,7 @@
                     {
                         foreach (var billingPeriod in contract.BillingPeriods)
                         {
-                            if (billingPeriod.End == null || billingPeriod.End > contract.End)
+                            if (billingPeriod.End == null)
                             {
                                 billingPeriod.End = contract.End;
                             }
