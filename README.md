@@ -47,33 +47,13 @@ unter ``packageSources`` aufgenommen werden.
 
 ## Installations-Pakete
 
-Die aktuelle offiziell freigegebene Version von TRuDI ist **1.1.0**.
+Die aktuelle offiziell freigegebene Version von TRuDI ist **1.2.15**.
 
 ### Offizielle Download-Seite der PTB
 
 Die jeweils aktuelle Version kann von der PTB-Seite unter folgenden Link heruntergeladen werden:
 
-https://www.ptb.de/cms/ptb/fachabteilungen/abt2/fb-23/ag-234/info-center-234/trudi/trudi110.html
-
-### Weitere Download-Links
-
-System           | Download
----              | ---
-Windows (64-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-Setup-1.1.0-x86_64.exe
-Windows (32-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-Setup-1.1.0-x86_32.exe
-Linux ([AppImage](https://de.wikipedia.org/wiki/AppImage), 64-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-1.1.0-x86_64.AppImage
-Linux (deb, 64-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-1.1.0_amd64.deb
-Linux Live-Image | http://www.ivu-software.de/apps/TRuDI/TRuDI_1.1.0_live.iso
-
-### Aktuelle Test-Version 1.2.0
-
-System           | Download
----              | ---
-Windows (64-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-Setup-1.2.0-x86_64.exe
-Windows (32-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-Setup-1.2.0-x86_32.exe
-Linux ([AppImage](https://de.wikipedia.org/wiki/AppImage), 64-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-1.2.0-x86_64.AppImage
-Linux (deb, 64-Bit) | http://www.ivu-software.de/apps/TRuDI/TRuDI-1.2.0_amd64.deb
-Linux Live-Image | http://www.ivu-software.de/apps/TRuDI/TRuDI_1.2.0_live.iso
+https://www.ptb.de/cms/de/ptb/fachabteilungen/abt2/fb-23/ag-234/info-center-234/trudi.html
 
 ## Dokumentation
 
