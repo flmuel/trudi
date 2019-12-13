@@ -617,6 +617,13 @@ Lädt die Ablesung für den in ``AdapterContext`` angegebenen Vertrag.
 
 #### Beispiel für TAF-2
 
+Es werden im Beispiel folgende XSD-Schema-Dateien verwendet:
+
+- [AR_2418-6.xsd](/src/TRuDI.Models/Schemata/AR_2418-6.xsd)
+- [espi_derived.xsd](/src/TRuDI.Models/Schemata/espi_derived.xsd)
+- [atom.xsd](/src/TRuDI.Models/Schemata/atom.xsd)
+- [xml.xsd](/src/TRuDI.Models/Schemata/xml.xsd)
+
 ```xml
 <?xml version='1.0' encoding='UTF-8'?>
 <UsagePoints 
@@ -661,7 +668,42 @@ Lädt die Ablesung für den in ``AdapterContext`` angegebenen Vertrag.
         <SMGW>
             <certId>1</certId>
             <smgwId>EXXX0012345678</smgwId>
+
+            <!-- Enthält die Firmware-Version des SMGW. -->
+            <FirmwareVersion>v1.2.3</FirmwareVersion>
+
+            <!-- 
+            Ist die Firmware des SMGW in mehrere Komponenten unterteilt, können diese 
+            mittels FirmwareComponent-Elementen aufgeführt werden.
+
+            Die Elemente checksum bzw. version sind beide optional: Es sollte jedoch mindest
+            eines der beiden Elemente angegeben werden.
+            -->
+            <FirmwareComponent>
+                <name>Firmware</name>
+                <version>v1.2.3</version>
+                <checksum>ddccd84b5a92122ab3104b11e46704ee887a8e989e8b896ca3802a4d359b9b46</checksum>
+            </FirmwareComponent>
+            <FirmwareComponent>
+                <name>OS</name>
+                <version>1.2.0</version>
+            </FirmwareComponent>
         </SMGW>
+
+        <!-- 
+        Das Element VendorConfig enthält herstellerspezifische Datenstrukturen, 
+        welche von PrüDi benötigt werden. 
+        -->
+        <VendorConfig>
+            <!-- 
+            tafProfile enthält das signierte Original-TAF-Profil wie es im SMGW vom GWA 
+            hinterlegt wurde (z.B. das COSEM-XML-TAF-Profil).
+            Um die das zu übertragene TAF-Profil mit einer Signatur zu versehen, sollte 
+            möglichst CMS (Cryptographic Message Syntax, ) verwendet werden.
+            Zum Signieren ist das Signatur-Zertifikat des SMGW zu verwenden. 
+            -->
+            <tafProfile>30829c0806092a864886f70d .... 6d17dad7e2d8bd98b14f</tafProfile>
+        </VendorConfig>
 
         <Certificate>
             <!-- Zertifikat, dass für die Inhaltsdatensignierung benutzt wurde -->
@@ -829,11 +871,26 @@ Lädt die Ablesung für den in ``AdapterContext`` angegebenen Vertrag.
                     <!-- Sollzeit der Aufzeichnungszeit -->
                     <targetTime>2017-01-01T00:00:00+02:00</targetTime>
 
+                    <!-- 
+                    Optionaler Zeitstempel vom Messgerät, falls dieser durch das SMGW zur 
+                    Bildung der Messwertsignatur verwendet wird 
+                    -->
+                    <measurementTimeMeter>2017-01-01T00:00:00+02:00</measurementTimeMeter>
+
+                    <!--
+                    Das Datenelement signature repräsentiert die innere Signatur des Messwertes. 
+                    Diese wird vom Smart Meter Gateway gebildet und den Messwerten der 
+                    Messwertliste zugeordnet.
+                    -->
                     <signature>00112233 ... FF</signature>
                     
-                    <!-- Statuswort mach FNN -->
-                    <!-- SMGW-Status und Zählerstatus in HEX Notation-->
-                    <statusFNN>0000010500100504</statusFNN>
+                    <!-- 
+                    Statuswort mach FNN
+                    SMGW-Status und Zählerstatus in HEX Notation (<SMGW-Status> + <Zähler-Status>)
+                    Die beiden Statusworte sind Least-Significant-Bit-First-Codiert. 
+                    Im Beispiel sind nur die Statuswort-Identifikation-Bits gesetzt).
+                    -->
+                    <statusFNN>A000000020000000</statusFNN>
 
                     <!-- PTB Teil des Statuswortes -->
                     <statusPTB>0</statusPTB>
