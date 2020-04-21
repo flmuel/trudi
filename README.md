@@ -11,7 +11,7 @@ Ansprechpartner:
 ### Microsoft .Net Core
 
 - Visual Studio 2017 15.6: https://www.visualstudio.com/de/vs/
-- .Net Core SDK 2.1.104: https://www.microsoft.com/net/core/
+- .Net Core SDK 2.2.401: https://www.microsoft.com/net/core/
 - Alternativ zu Visual Studio kann auch Visual Studio Code verwendet werden: https://code.visualstudio.com/
 
 ### Electron
