@@ -85,14 +85,41 @@
                 case TafId.Taf2:
                     return "TAF-2: Zeitvariabler Tarif";
 
+                case TafId.Taf3:
+                    return "TAF-3: Lastvariabler Tarif";
+
+                case TafId.Taf4:
+                    return "TAF-4: Verbrauchsvariabler Tarif";
+
+                case TafId.Taf5:
+                    return "TAF-5: Ereignisvariabler Tarif";
+
                 case TafId.Taf6:
                     return "TAF-6: Ablesung von Messwerten im Bedarfsfall";
 
                 case TafId.Taf7:
                     return "TAF-7: Zählerstandgangmessung";
 
+                case TafId.Taf8:
+                    return "TAF-8: Erfassung von Extremwerten";
+
                 case TafId.Taf9:
                     return "TAF-9: Abruf der IST-Einspeisung";
+
+                case TafId.Taf10:
+                    return "TAF-10: Abruf der Netzzustandsdaten";
+
+                case TafId.Taf11:
+                    return "TAF-11: Steuerung von unterbrechbaren Verbrauchseinrichtungen und Erzeugungsanlagen";
+
+                case TafId.Taf12:
+                    return "TAF-12: Prepaid Tarif";
+
+                case TafId.Taf13:
+                    return "TAF-13: Bereitstellung von Messwertsätzen zur Visualisierung für den Letztverbraucher über die WAN-Schnittstelle";
+
+                case TafId.Taf14:
+                    return "TAF-14: Hochfrequente Messwertbereitstellung";
 
                 default:
                     return id.ToString().ToUpperInvariant();
