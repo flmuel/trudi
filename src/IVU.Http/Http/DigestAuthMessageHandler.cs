@@ -179,30 +179,19 @@
 
         private static string GrabHeaderAuthorizationParameter(string varName, string header)
         {
-            var matchHeader = Regex.Match(
-                header,
-                string.Format("{0}=\"([^\"]*)\"", varName));
-
+            var matchHeader = Regex.Match(header, $"{varName}=\"([^\"]*)\"");
             if (matchHeader.Success)
             {
                 return matchHeader.Groups[1].Value;
             }
 
-            throw new InvalidOperationException(string.Format("Header {0} not found", varName));
-        }
-
-        private static string TryGrabHeaderAuthorizationParameter(string varName, string header)
-        {
-            var matchHeader = Regex.Match(
-                header,
-                string.Format("{0}=\"([^\"]*)\"", varName));
-
+            matchHeader = Regex.Match(header, $"{varName}=([^,]*)");
             if (matchHeader.Success)
             {
                 return matchHeader.Groups[1].Value;
             }
 
-            return null;
+            throw new InvalidOperationException($"Header {varName} not found");
         }
 
         private static string GetDigestHeader(HttpMethod method,
@@ -255,11 +244,11 @@
             if (string.IsNullOrWhiteSpace(opaque))
             {
                 return $"username=\"{username}\", realm=\"{realm}\", nonce=\"{nonce}\", uri=\"{path}\", "
-                       + $"algorithm=\"{algorithm}\", response=\"{digestResponse}\", qop=\"{qop}\", nc=\"{nc:x8}\", cnonce=\"{cnonce}\"";
+                       + $"algorithm=\"{algorithm}\", response=\"{digestResponse}\", qop={qop}, nc={nc:x8}, cnonce=\"{cnonce}\"";
             }
 
             return $"username=\"{username}\", realm=\"{realm}\", nonce=\"{nonce}\", uri=\"{path}\", "
-                       + $"algorithm=\"{algorithm}\", response=\"{digestResponse}\", qop=\"{qop}\", nc=\"{nc:x8}\", cnonce=\"{cnonce}\", opaque=\"{opaque}\"";
+                       + $"algorithm={algorithm}, response=\"{digestResponse}\", qop=\"{qop}\", nc={nc:x8}, cnonce=\"{cnonce}\", opaque=\"{opaque}\"";
         }
 
         private static string CalculateMd5Hash(string input)
