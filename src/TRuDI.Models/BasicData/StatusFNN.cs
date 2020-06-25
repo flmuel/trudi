@@ -31,6 +31,14 @@
             this.Status = Reverse(smgwStat).ToString("X8") + Reverse(bzStat).ToString("X8");
         }
 
+        public StatusFNN(SmgwStatusWord smgwStat, BzStatusWord bzStat)
+        {
+            this.SmgwStatusWord = smgwStat;
+            this.BzStatusWord = bzStat;
+
+            this.Status = Reverse((uint)smgwStat).ToString("X8") + Reverse((uint)bzStat).ToString("X8");
+        }
+
         public string Status
         {
             get; set;

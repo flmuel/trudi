@@ -1,6 +1,7 @@
 ﻿namespace TRuDI.Backend.Utils
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Security.Cryptography;
@@ -149,6 +150,11 @@
                 return string.Empty;
             }
 
+            if (reading.StatusFNN != null)
+            {
+                return GetFnnStatusString(reading.StatusFNN, count);
+            }
+
             var status = reading.StatusPTB ?? reading.StatusFNN.MapToStatusPtb();
             return status.GetStatusString(count);
         }
@@ -227,6 +233,58 @@
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public static string GetFnnStatusString(this StatusFNN status, int count = 0)
+        {
+            var statusItems = new List<string>();
+
+            if (status.BzStatusWord.HasFlag(BzStatusWord.Fatal_Error))
+            {
+                statusItems.Add("Zähler: fataler Fehler");
+            }
+
+            if (status.SmgwStatusWord.HasFlag(SmgwStatusWord.Fatal_Error))
+            {
+                statusItems.Add("SMGw: fataler Fehler");
+            }
+
+            if (status.SmgwStatusWord.HasFlag(SmgwStatusWord.Systemtime_Invalid))
+            {
+                statusItems.Add("SMGw: ungültige Systemzeit");
+            }
+
+            if (status.SmgwStatusWord.HasFlag(SmgwStatusWord.PTB_Temp_Error_signed_invalid))
+            {
+                statusItems.Add("SMGw: temporärer Fehler");
+            }
+
+            if (status.BzStatusWord.HasFlag(BzStatusWord.Manipulation_KD_PS))
+            {
+                statusItems.Add("Zähler: mechanische Beeinflussung");
+            }
+
+            if (status.BzStatusWord.HasFlag(BzStatusWord.Magnetically_Influenced))
+            {
+                statusItems.Add("Zähler: magnetsiche Beeinflussung");
+            }
+
+            if (status.SmgwStatusWord.HasFlag(SmgwStatusWord.PTB_Temp_Error_is_invalid))
+            {
+                statusItems.Add("SMGw: kritischer temporärer Fehler");
+            }
+
+            if (status.SmgwStatusWord.HasFlag(SmgwStatusWord.PTB_Warning))
+            {
+                statusItems.Add("SMGw: Warnung");
+            }
+
+            if (!statusItems.Any())
+            {
+                return "keine Fehler";
+            }
+
+            return string.Join(", ", statusItems);
         }
 
         /// <summary>
