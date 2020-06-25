@@ -62,8 +62,14 @@
 
         private static string GetGasLabel(ObisId id)
         {
-            // 7-0:3.1.0*255
+            // 7-0:3.1.0*255 - Volume, temperature converted
             if (id.C == 3 && id.D == 1 && id.E == 0)
+            {
+                return "Volumen";
+            }
+
+            // 7-0:3.0.0*255 - Volume, measuring conditions
+            if (id.C == 3 && id.D == 0 && id.E == 0)
             {
                 return "Volumen";
             }
@@ -102,7 +108,6 @@
                         return "Strom L3";
                 }
             }
-
 
             string tariff;
             switch (id.E)
