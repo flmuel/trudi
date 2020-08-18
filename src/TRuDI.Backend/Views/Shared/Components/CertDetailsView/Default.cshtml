@@ -1,4 +1,4 @@
-﻿@using System.Security.Cryptography.X509Certificates
+@using System.Security.Cryptography.X509Certificates
 @using TRuDI.Backend.Utils
 @model X509Certificate2
 
@@ -35,7 +35,7 @@
 
     <tr>
         <th>Seriennummer</th>
-        <td>@Model.GetSerialNumberString()</td>
+        <td>@Model.GetHexAndDecimalSerialNumber()</td>
     </tr>
 
     <tr>
