@@ -1,4 +1,4 @@
-﻿namespace TRuDI.Backend.Application
+namespace TRuDI.Backend.Application
 {
     using System.Collections.Generic;
     using System.IO;
@@ -26,13 +26,11 @@
             {
                 items.Add(new DigestItem("../../../../../TRuDI.exe"));
                 items.Add(new DigestItem("../../../../app.asar"));
-                items.Add(new DigestItem("../../../../electron.asar"));
             }
             else
             {
                 items.Add(new DigestItem("../../../../../trudi"));
                 items.Add(new DigestItem("../../../../app.asar"));
-                items.Add(new DigestItem("../../../../electron.asar"));
             }
 
             Task.Run(() =>

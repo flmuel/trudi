@@ -30,6 +30,8 @@ rm -rf bin/dist/linux-x64/zh-Hant
 mkdir bin/dist/linux-x64/netcoredeps
 cp /usr/lib/x86_64-linux-gnu/libunwind.so.8 bin/dist/linux-x64/netcoredeps
 cp /usr/lib/x86_64-linux-gnu/libunwind-x86_64.so.8 bin/dist/linux-x64/netcoredeps
+cp /lib/x86_64-linux-gnu/libssl.so.1.0.0 bin/dist/linux-x64/netcoredeps
+cp /lib/x86_64-linux-gnu/libcrypto.so.1.0.0 bin/dist/linux-x64/netcoredeps
 
 # Copy precompiled Views to self-contained output
 cp bin/Release/netcoreapp2.0/TRuDI.Backend.PrecompiledViews.dll bin/dist/linux-x64/TRuDI.Backend.PrecompiledViews.dll
