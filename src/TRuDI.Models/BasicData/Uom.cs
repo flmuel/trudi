@@ -32,6 +32,7 @@
     {
         Not_Applicable = 0,
         Ampere = 5,
+        AngleDegrees = 9,
         Volltage = 29,
         Joule = 31,
         Frequency = 33,

@@ -1,4 +1,4 @@
-﻿namespace TRuDI.Models
+namespace TRuDI.Models
 {
     using System;
     using System.Collections.Generic;
@@ -363,6 +363,7 @@
                 case Uom.US_Gallons_per_hour:
                 case Uom.Volltage:
                 case Uom.Volts_squared:
+                case Uom.AngleDegrees:
                     break;
 
                 default:

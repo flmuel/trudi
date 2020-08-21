@@ -62,6 +62,9 @@
                 case Uom.Frequency:
                     return "Hz";
 
+                case Uom.AngleDegrees:
+                    return "°";
+
                 case Uom.Real_power:
                     return "W";
 
