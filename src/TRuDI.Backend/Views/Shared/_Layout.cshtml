@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http
 @using TRuDI.Backend.Application
 @using TRuDI.Backend.Utils
 @inject ApplicationState StateService
@@ -126,26 +126,29 @@
         var remote = require('electron').remote;
         var dialog = remote.dialog;
 
-        dialog.showSaveDialog({
-            filters: [
-                { name: fileExtensionDescription, extensions: [fileExtension] },
-            ]
-        }, function (fileName) {
+       dialog.showSaveDialog({
+          title: "Daten exportieren",
+          filters: [
+             { name: fileExtensionDescription, extensions: [fileExtension] },
+          ]
+       }).then((result) => {
+          if (result.filePath === undefined) {
+             return;
+          }
 
-            if (fileName === undefined) {
-                return;
-            }
+          $.ajax({
+             url: url,
+             type: "POST",
+             data: "filename=" + encodeURIComponent(result.filePath),
+             contentType: 'application/x-www-form-urlencoded',
+             processData: false,
+             success: function (result) { },
+             error: function (err) { }
+          });
 
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: "filename=" + encodeURIComponent(fileName),
-                contentType: 'application/x-www-form-urlencoded',
-                processData: false,
-                success: function(result) {},
-                error: function(err) {}
-            });
-        });
+       }).catch((...args) => {
+          console.warn('showSaveDialog failed/rejected with', args)
+       });
     }
 </script>
 

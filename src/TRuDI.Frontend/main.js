@@ -266,7 +266,11 @@ let mainWindow;
 
 // Create the browser window.
 function createWindow() {
-    mainWindow = new BrowserWindow({ width: 1240, height: 740 });
+   mainWindow = new BrowserWindow({
+      width: 1240, height: 740, webPreferences: {
+         nodeIntegration: true,
+         enableRemoteModule: true
+      } });
     mainWindow.removeMenu();
 
     mainWindow.loadURL(url.format({
