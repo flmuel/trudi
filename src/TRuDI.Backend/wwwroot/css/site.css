@@ -264,3 +264,10 @@ textarea {
     float: left;
     border-bottom-width: 0;
 }
+
+.table-container-fixed {
+    max-height: 230px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+}

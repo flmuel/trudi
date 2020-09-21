@@ -153,35 +153,35 @@
                             </script>
 
                             <div role="tabpanel" class="tab-pane active" id="@string.Format("tab_billingperiods_{0}", contractIndex)">
-                                <table class="table table-fixed">
-                                    <thead>
-                                        <tr>
-                                            <th class="col-xs-1">&nbsp;</th>
-                                            <th class="col-xs-3">Von</th>
-                                            <th class="col-xs-3">Bis</th>
-                                            <th class="col-xs-5">Abgeschlossen</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var period in cnt.Contract.BillingPeriods.OrderByDescending(bp => bp.Begin))
-                                        {
-                                            <tr id="@string.Format("{0}_{1}_BP", contractIndex, billingPeriodIndex)">
-                                                <td class="col-xs-1">
-                                                    <input style="height: 11px;" type="radio"
-                                                           name='@string.Format("{0}", contractIndex)'
-                                                           value='@string.Format("{0}_{1}", contractIndex, billingPeriodIndex)'
-                                                           onclick="selectBillingPeriod(@contractIndex, @billingPeriodIndex, '@period.Begin.ToIso8601()', '@period.End.GetEndTimeOrNow().RoundDown(15).ToIso8601()', 'BP');"
-                                                           @(billingPeriodIndex == 0 ? "checked" : "")>
-                                                </td>
-                                                <td class="col-xs-3">@period.Begin.ToFormatedString()</td>
-                                                <td class="col-xs-3">@period.End.ToFormatedString()</td>
-                                                <td class="col-xs-5">@period.IsCompletedText()</td>
-                                            </tr>
+                                <div style="font-weight: bold; width:96%;">
+                                    <div class="row">
+                                        <div class="col-xs-1">&nbsp;</div>
+                                        <div class="col-xs-3">Von</div>
+                                        <div class="col-xs-3">Bis</div>
+                                        <div class="col-xs-5">Abgeschlossen</div>
+                                    </div>
+                                </div>
+                                <div class="table-container-fixed">
+                                    @foreach (var period in cnt.Contract.BillingPeriods.OrderByDescending(bp => bp.Begin))
+                                    {
+                                        <div class="row" style="border-bottom: 1px solid #ddd;" id="@string.Format("{0}_{1}_BP", contractIndex, billingPeriodIndex)">
 
-                                            billingPeriodIndex++;
-                                        }
-                                    </tbody>
-                                </table>
+
+                                            <div class="col-xs-1">
+                                                <input style="height: 11px;" type="radio"
+                                                       name='@string.Format("{0}", contractIndex)'
+                                                       value='@string.Format("{0}_{1}", contractIndex, billingPeriodIndex)'
+                                                       onclick="selectBillingPeriod(@contractIndex, @billingPeriodIndex, '@period.Begin.ToIso8601()', '@period.End.GetEndTimeOrNow().RoundDown(15).ToIso8601()', 'BP');"
+                                                       @(billingPeriodIndex == 0 ? "checked" : "")>
+                                            </div>
+                                            <div class="col-xs-3">@period.Begin.ToFormatedString()</div>
+                                            <div class="col-xs-3">@period.End.ToFormatedString()</div>
+                                            <div class="col-xs-2">@period.IsCompletedText()</div>
+
+                                        </div>
+                                        billingPeriodIndex++;
+                                    }
+                                </div>
                             </div>
                         }
 
@@ -193,36 +193,32 @@
                                 selectedBillingPeriods.push(@contractIndex, { BillingPeriod: @billingPeriodIndex, Mode: "TAF6" });
                             </script>
 
-
                             <div role="tabpanel" class="tab-pane" id="@string.Format("tab_dayvalues_{0}", contractIndex)">
-                                <table class="table table-fixed">
-                                    <thead>
-                                        <tr>
-                                            <th class="col-xs-1">&nbsp;</th>
-                                            <th class="col-xs-3">Von</th>
-                                            <th class="col-xs-3">Bis</th>
-                                            <th class="col-xs-5">Abgeschlossen</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var period in cnt.Taf6.BillingPeriods.OrderByDescending(bp => bp.Begin))
-                                        {
-                                            <tr id="@string.Format("{0}_{1}_TAF6", contractIndex, billingPeriodIndex)">
-                                                <td class="col-xs-1">
-                                                    <input style="height: 11px;" type="radio"
-                                                           name='@string.Format("{0}", contractIndex)'
-                                                           value='@string.Format("{0}_{1}", contractIndex, billingPeriodIndex)'
-                                                           onclick="selectBillingPeriod(@contractIndex, @billingPeriodIndex, '@period.Begin.ToIso8601()', '@period.End.GetEndTimeOrNow().RoundDown(15).ToIso8601()', 'TAF6');">
-                                                </td>
-                                                <td class="col-xs-3">@period.Begin.ToFormatedString()</td>
-                                                <td class="col-xs-3">@period.End.ToFormatedString()</td>
-                                                <td class="col-xs-5">@period.IsCompletedText()</td>
-                                            </tr>
-
-                                            billingPeriodIndex++;
-                                        }
-                                    </tbody>
-                                </table>
+                                <div style="font-weight: bold; width:96%;">
+                                    <div class="row">
+                                        <div class="col-xs-1">&nbsp;</div>
+                                        <div class="col-xs-3">Von</div>
+                                        <div class="col-xs-3">Bis</div>
+                                        <div class="col-xs-5">Abgeschlossen</div>
+                                    </div>
+                                </div>
+                                <div class="table-container-fixed">
+                                    @foreach (var period in cnt.Taf6.BillingPeriods.OrderByDescending(bp => bp.Begin))
+                                    {
+                                        <div class="row" style="border-bottom: 1px solid #ddd;" id="@string.Format("{0}_{1}_BP", contractIndex, billingPeriodIndex)">
+                                            <div class="col-xs-1">
+                                                <input style="height: 11px;" type="radio"
+                                                       name='@string.Format("{0}", contractIndex)'
+                                                       value='@string.Format("{0}_{1}", contractIndex, billingPeriodIndex)'
+                                                       onclick="selectBillingPeriod(@contractIndex, @billingPeriodIndex, '@period.Begin.ToIso8601()', '@period.End.GetEndTimeOrNow().RoundDown(15).ToIso8601()', 'TAF6');">
+                                            </div>
+                                            <div class="col-xs-3">@period.Begin.ToFormatedString()</div>
+                                            <div class="col-xs-3">@period.End.ToFormatedString()</div>
+                                            <div class="col-xs-2">@period.IsCompletedText()</div>
+                                        </div>
+                                        billingPeriodIndex++;
+                                    }
+                                </div>
                             </div>
                         }
                         else
@@ -349,7 +345,7 @@
     <div class="panel panel-primary">
         <div class="panel-heading">Keine Vertragsdaten vorhanden</div>
         <div class="panel-body">
-        
+
             <p>Dem angegebenen Benutzer sind keine Vertragsdaten zugeordnet.</p>
 
         </div>
