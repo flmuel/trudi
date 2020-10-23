@@ -499,7 +499,7 @@ Verbraucher relevanten Verträge zu erhalten.
 
 Feld | Beschreibung|XML|Beispiel
 ---  | --- | --- | ---
-TafId| Nummer des TAF | | TAF-1, TAF-2, TAF-6, TAF-7
+TafId| Nummer des TAF | | TAF-1, TAF-2, TAF-6, TAF-7, TAF-9, TAF-10, TAF-14
 TafName|Eindeutige Identifikation des TAF, **muss geliefert werden**| tariffName | TAF-2-ID
 Description|Kurze Beschreibung des TAF, **optional** | |HT/NT Tarif
 Meters|Liste der mit dem TAF verbundenen Zähler, **muss geliefert werden**| meterId
@@ -523,7 +523,12 @@ UsagePoint.AnalysisProfile.tariffId|TafName|UsagePoint.tariffName
 
 TAF-6 wird als eigenes ``ContractInfo`` zurückgeliefert, welches sich nur druch die TAF-ID vom zugehörigen Vertrag unterscheidet.
 
-#### Beispiel für TAF-1/TAF-2
+#### TAF-9, 10 und 14
+
+Für diese TAFs wird jeweils ein eigenes ``ContractInfo`` ohne ``BillingPeriods`` zurückgeliefert. In TRuDI wird nur angezeigt, dass ein entsprechender TAF vorhanden ist. 
+Weitere Aktionen sind damit aus TRuDI nicht möglich.
+
+#### Beispiel für TAF-1, TAF-2, TAF-7 und TAF-9/10/14
 
 ```javascript
 [
@@ -598,6 +603,22 @@ TAF-6 wird als eigenes ``ContractInfo`` zurückgeliefert, welches sich nur druch
     "End": null,
 
     // TAF-7 enthält keine Abbrechnungsperioden
+    "BillingPeriods": null,
+  },
+  
+  // Beispiel für TAF-9/10/14
+  {
+    "TafId": "Taf9",
+    "TafName": "Weitere-Eindeutige-TAF-ID-0003",
+    "Description": "Auswertungsprofil mit TAF-9",
+    "Meters": [ "0A01454D480000519725" ],
+    "MeteringPointId": "DE000000000000000000000000000001",
+    "SupplierId": "Strom Lieferant AG",
+    "ConsumerId": "user1234",
+    "Begin": "2018-01-01T00:00:00.0000000+01:00",
+    "End": null,
+
+    // TAF-9/10/14 enthält keine Abbrechnungsperioden
     "BillingPeriods": null,
   }
 ]
