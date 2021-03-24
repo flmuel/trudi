@@ -98,8 +98,7 @@
 
         public bool Validate()
         {
-            return this.BzStatusWord.HasFlag(BzStatusWord.BzStatusWordIdentification)
-                   && this.SmgwStatusWord.HasFlag(SmgwStatusWord.SmgwStatusWordIdentification);
+            return this.SmgwStatusWord.HasFlag(SmgwStatusWord.SmgwStatusWordIdentification);
         }
     }
 }
