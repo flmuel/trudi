@@ -1,4 +1,4 @@
-﻿namespace TRuDI.Models.BasicData
+namespace TRuDI.Models.BasicData
 {
     /// <summary>
     /// Das Datenelement uom codiert die Maßeinheit, welche für alle Messwerte der Messwertliste gilt. 

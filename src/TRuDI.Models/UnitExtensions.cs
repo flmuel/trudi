@@ -1,4 +1,4 @@
-﻿namespace TRuDI.Models
+namespace TRuDI.Models
 {
     using System;
     using System.Globalization;
@@ -118,6 +118,39 @@
             }
         }
 
+        public static string GetUnitSymbolPower(this Uom uom)
+        {
+            switch (uom)
+            {
+                case Uom.Not_Applicable:
+                    return string.Empty;
+
+                case Uom.Real_power:
+                    return "W";
+
+                case Uom.Apparent_power:
+                    return "VA";
+
+                case Uom.Reactive_power:
+                    return "var";
+
+                case Uom.Apparent_energy:
+                    return "VA";
+
+                case Uom.Real_energy:
+                    return "W";
+
+                case Uom.Reactive_energie:
+                    return "var";
+
+                case Uom.Ampere_hours:
+                    return "A";
+
+                default:
+                    return string.Empty;
+            }
+        }
+
         public static string GetDisplayUnit(this Uom? uom, PowerOfTenMultiplier multiplier)
         {
             if (uom == null)
@@ -126,6 +159,16 @@
             }
 
             return uom.Value.GetDisplayUnit(multiplier);
+        }
+
+        public static string GetDisplayUnitPower(this Uom? uom, PowerOfTenMultiplier multiplier)
+        {
+            if (uom == null)
+            {
+                return string.Empty;
+            }
+
+            return uom.Value.GetDisplayUnitPower(multiplier);
         }
 
         public static string GetDisplayUnit(this Uom uom, PowerOfTenMultiplier multiplier)
@@ -142,6 +185,28 @@
             }
 
             return multiplier.GetSiPrefix() + uom.GetUnitSymbol();
+        }
+
+        public static string GetDisplayUnitPower(this Uom uom, PowerOfTenMultiplier multiplier)
+        {
+            if (uom == Uom.Not_Applicable)
+            {
+                return string.Empty;
+            }
+
+            // Special case for Wh --> return kWh
+            if (multiplier == PowerOfTenMultiplier.None && uom == Uom.Real_energy)
+            {
+                return "kW";
+            }
+
+            var unit = uom.GetUnitSymbolPower();
+            if (string.IsNullOrWhiteSpace(unit))
+            {
+                return string.Empty;
+            }
+
+            return multiplier.GetSiPrefix() + unit;
         }
 
         public static string GetDisplayValue(this long? value, ReadingType readingType)

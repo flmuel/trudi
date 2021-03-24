@@ -1,4 +1,4 @@
-﻿namespace TRuDI.Models.BasicData
+namespace TRuDI.Models.BasicData
 {
     using System;
     using System.Diagnostics;

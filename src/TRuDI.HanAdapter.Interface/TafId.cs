@@ -36,7 +36,7 @@ namespace TRuDI.HanAdapter.Interface
         Taf6 = 6,
 
         /// <summary>
-        /// Zählerstandsgangsmessung
+        /// ZÃ¤hlerstandsgangsmessung
         /// </summary>
         Taf7 = 7,
 
@@ -66,12 +66,12 @@ namespace TRuDI.HanAdapter.Interface
         Taf12 = 12,
 
         /// <summary>
-        /// Bereitstellung von Messwertsätzen zur Visualisierung für den Letztverbraucher über die WAN-Schnittstelle
+        /// Bereitstellung von MesswertsÃ¤tzen zur Visualisierung fÃ¼r den Letztverbraucher Ã¼ber die WAN-Schnittstelle
         /// </summary>
         Taf13 = 13,
 
         /// <summary>
-        /// Hochfrequente Messwertbereitstellung für Mehrwertdienste
+        /// Hochfrequente Messwertbereitstellung fÃ¼r Mehrwertdienste
         /// </summary>
         Taf14 = 14
     }

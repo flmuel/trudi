@@ -1,8 +1,7 @@
-﻿namespace TRuDI.Models
+namespace TRuDI.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
 
     using TRuDI.Models.BasicData;
@@ -29,6 +28,7 @@
 
             this.Obis = new ObisId(this.MeterReading.ReadingType.ObisCode);
             this.DisplayUnit = this.MeterReading.ReadingType.Uom.GetDisplayUnit(this.MeterReading.ReadingType.PowerOfTenMultiplier ?? PowerOfTenMultiplier.None);
+            this.DisplayUnitPower = this.MeterReading.ReadingType.Uom.GetDisplayUnitPower(this.MeterReading.ReadingType.PowerOfTenMultiplier ?? PowerOfTenMultiplier.None);
 
             this.MeasurementPeriod = meterReading.GetMeasurementPeriod();
             foreach (var block in this.MeterReading.IntervalBlocks)
@@ -80,6 +80,8 @@
         /// </summary>
         public bool IsTargetTimeUsed => this.MeterReading.IsTargetTimeUsed;
 
+        public bool HasCalculatedPowerValue => !string.IsNullOrWhiteSpace(this.DisplayUnitPower);
+
         public bool HasErrors => this.FatalErrorCount > 0 || this.WarningCount > 0 || this.TempErrorCount > 0
                                  || this.CriticalTempErrorCount > 0 || this.WarningCount > 0;
 
@@ -88,6 +90,8 @@
         public ObisId Obis { get; }
 
         public string DisplayUnit { get; }
+
+        public string DisplayUnitPower { get; }
 
         public Uom Uom => this.MeterReading.ReadingType.Uom ?? Uom.Not_Applicable;
 
@@ -102,7 +106,7 @@
 
         public bool HasData => this.MeterReading.IntervalBlocks.Count != 0;
 
-        public IEnumerable<IntervalReading> GetReadings(DateTime start, DateTime end)
+        public IEnumerable<IntervalReadingExt> GetReadings(DateTime start, DateTime end)
         {
             if (this.MeterReading.IntervalBlocks.Count == 0)
             {
@@ -122,6 +126,7 @@
                     currentTimestamp += this.MeasurementPeriod;
                 }
 
+                IntervalReading prevIntervalReading = null;
                 foreach (var block in this.MeterReading.IntervalBlocks)
                 {
                     foreach (var reading in block.IntervalReadings)
@@ -143,13 +148,12 @@
                                     if (currentTimestamp >= start && currentTimestamp <= end)
                                     {
                                         // found a gap: create the missing element with only the timestamp.
-                                        yield return new IntervalReading
+                                        yield return new IntervalReadingExt
                                         {
                                             TimePeriod =
                                                 new Interval
                                                 {
-                                                    Start = currentTimestamp
-                                                            .Value.ToLocalTime()
+                                                    Start = currentTimestamp.Value.ToLocalTime()
                                                 },
                                             TargetTime = currentTimestamp?.ToLocalTime()
                                         };
@@ -173,7 +177,20 @@
 
                         if (reading.TargetTime?.ToUniversalTime() >= start)
                         {
-                            yield return reading;
+                            var resultReading = new IntervalReadingExt(reading);
+
+                            if (prevIntervalReading != null)
+                            {
+                                var timeDiff = reading.CaptureTime.ToUniversalTime() - prevIntervalReading.CaptureTime.ToUniversalTime();
+                                var valueDiff = reading.Value - prevIntervalReading.Value;
+
+                                if (timeDiff.TotalSeconds > 0)
+                                {
+                                    resultReading.PowerValue = valueDiff * 3600 / (int)timeDiff.TotalSeconds;
+                                }
+                            }
+
+                            yield return resultReading;
 
                             lastTimestamp = reading.TargetTime.Value.ToUniversalTime();
                             if (reading.TargetTime?.ToUniversalTime() >= currentTimestamp)
@@ -189,6 +206,8 @@
                                 currentTimestamp += this.MeasurementPeriod;
                             }
                         }
+
+                        prevIntervalReading = reading;
                     }
                 }
             }
@@ -205,7 +224,7 @@
 
                         if (reading.TargetTime?.ToUniversalTime() <= end)
                         {
-                            yield return reading;
+                            yield return new IntervalReadingExt(reading);
                         }
                         else
                         {

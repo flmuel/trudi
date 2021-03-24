@@ -1,4 +1,4 @@
-﻿namespace TRuDI.Backend.Components
+namespace TRuDI.Backend.Components
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +8,7 @@
 
     public class OriginalValueListRange
     {
-        public OriginalValueListRange(DateTime start, DateTime end, OriginalValueList list, IEnumerable<IntervalReading> items)
+        public OriginalValueListRange(DateTime start, DateTime end, OriginalValueList list, IEnumerable<IntervalReadingExt> items)
         {
             this.Source = list;
             this.Items = items;
@@ -21,7 +21,7 @@
         public DateTime End { get; }
 
         public OriginalValueList Source { get; }
-    
-        public IEnumerable<IntervalReading> Items { get; }
+
+        public IEnumerable<IntervalReadingExt> Items { get; }
     }
 }
