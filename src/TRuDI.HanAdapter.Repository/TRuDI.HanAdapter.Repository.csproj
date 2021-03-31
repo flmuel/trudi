@@ -11,7 +11,7 @@
     <PackageReference Include="TRuDI.HanAdapter.Kiwigrid" Version="2.0.1" />
     <PackageReference Include="TRuDI.HanAdapter.LandisGyr" Version="1.0.10" />
     <PackageReference Include="TRuDI.HanAdapter.Ppc" Version="1.0.33" />
-    <PackageReference Include="TRuDI.HanAdapter.ThebenAG" Version="1.0.11" />
+    <PackageReference Include="TRuDI.HanAdapter.ThebenAG" Version="1.0.12" />
     <PackageReference Include="TRuDI.HanAdapter.Efr" Version="1.0.3" />
 	<PackageReference Include="TRuDI.HanAdapter.Emh" Version="1.0.13" />
   </ItemGroup>
