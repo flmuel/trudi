@@ -1,5 +1,6 @@
 @using TRuDI.Backend.Application
 @using TRuDI.Backend.Utils
+@using TRuDI.HanAdapter.Interface
 @using TRuDI.Models
 @using TRuDI.Models.BasicData
 @using TRuDI.TafAdapter.Interface.Taf2
@@ -107,6 +108,11 @@
 
         <table class="table">
             <tr>
+                @if (StateService.CurrentDataResult.TafId == TafId.Taf8)
+                {
+                    <th>Zeit</th>
+                }
+
                 <th>Register</th>
                 <th class="text-right">Wert</th>
                 <th>Einheit</th>
@@ -120,15 +126,20 @@
                 var status = reading.IntervalBlocks.FirstOrDefault()?.IntervalReadings.FirstOrDefault();
                 var description = obisId.GetLabel();
 
-                <tr class="@status.ToStatusBackground()">
-                    <td style="white-space: nowrap;">@obisId.ToReadableString()</td>
-                    <td style="white-space: nowrap;" class="text-right">
-                        @reading.IntervalBlocks.FirstOrDefault()?.IntervalReadings.FirstOrDefault()?.Value.GetDisplayValue(reading.ReadingType.Uom ?? Uom.Not_Applicable, reading.ReadingType.PowerOfTenMultiplier ?? PowerOfTenMultiplier.None, reading.ReadingType.Scaler)
-                    </td>
-                    <td>@reading.ReadingType.Uom.GetDisplayUnit(@reading.ReadingType.PowerOfTenMultiplier ?? PowerOfTenMultiplier.None)</td>
-                    <td style="white-space: nowrap;"><i class="@status.ToStatusIcon()"></i> @status.ToStatusString()</td>
-                    <td>@description</td>
-                </tr>
+        <tr class="@status.ToStatusBackground()">
+            @if (StateService.CurrentDataResult.TafId == TafId.Taf8)
+            {
+                <td>@reading.IntervalBlocks.FirstOrDefault()?.IntervalReadings?.FirstOrDefault()?.TargetTime</td>
+            }
+
+            <td style="white-space: nowrap;">@obisId.ToReadableString()</td>
+            <td style="white-space: nowrap;" class="text-right">
+                @reading.IntervalBlocks.FirstOrDefault()?.IntervalReadings.FirstOrDefault()?.Value.GetDisplayValue(reading.ReadingType.Uom ?? Uom.Not_Applicable, reading.ReadingType.PowerOfTenMultiplier ?? PowerOfTenMultiplier.None, reading.ReadingType.Scaler)
+            </td>
+            <td>@reading.ReadingType.Uom.GetDisplayUnit(@reading.ReadingType.PowerOfTenMultiplier ?? PowerOfTenMultiplier.None)</td>
+            <td style="white-space: nowrap;"><i class="@status.ToStatusIcon()"></i> @status.ToStatusString()</td>
+            <td>@description</td>
+        </tr>
             }
 
         </table>
