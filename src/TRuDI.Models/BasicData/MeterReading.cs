@@ -1,5 +1,6 @@
 ﻿namespace TRuDI.Models.BasicData
 {
+    using System.Diagnostics;
     using System.Collections.Generic;
 
     /// <summary>
@@ -14,6 +15,7 @@
     /// 	- Muss auf mindestens eine Instanz der Klasse Meter verweisen
     /// 	
     /// </summary>
+    [DebuggerDisplay("{Meters[0].MeterId} - {ReadingType.QualifiedLogicalName}")]
     public class MeterReading
     {
         /// <summary>

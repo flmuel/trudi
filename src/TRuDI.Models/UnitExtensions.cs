@@ -184,6 +184,11 @@ namespace TRuDI.Models
                 return "kWh";
             }
 
+            if (multiplier == PowerOfTenMultiplier.None && uom == Uom.Real_power)
+            {
+                return "kW";
+            }
+
             return multiplier.GetSiPrefix() + uom.GetUnitSymbol();
         }
 
@@ -194,8 +199,8 @@ namespace TRuDI.Models
                 return string.Empty;
             }
 
-            // Special case for Wh --> return kWh
-            if (multiplier == PowerOfTenMultiplier.None && uom == Uom.Real_energy)
+            // Special case for Wh/W --> return kWh/kW
+            if (multiplier == PowerOfTenMultiplier.None && (uom == Uom.Real_energy || uom == Uom.Real_power))
             {
                 return "kW";
             }
@@ -234,7 +239,7 @@ namespace TRuDI.Models
 
         public static string GetDisplayValue(this long value, Uom uom, PowerOfTenMultiplier multiplier, int scaler)
         {
-            if (multiplier == PowerOfTenMultiplier.None && uom == Uom.Real_energy)
+            if (multiplier == PowerOfTenMultiplier.None && (uom == Uom.Real_energy || uom == Uom.Real_power))
             {
                 scaler = scaler - 3;
                 decimal scaledValue = scaler != 0 ? value * (decimal)Math.Pow(10, scaler) : value;
