@@ -1,4 +1,6 @@
-﻿namespace TRuDI.Models
+﻿using NodaTime;
+
+namespace TRuDI.Models
 {
     using System;
     using System.Collections.Generic;
@@ -472,6 +474,8 @@
                 throw new AggregateException("Han Adapter Parsing error:>", exceptions);
             }
 
+            var timeZone = DateTimeZoneProviders.Tzdb["Europe/Berlin"];
+
             foreach (var meterReading in usagePoint.MeterReadings)
             {
                 meterReading.IntervalBlocks.Sort((a, b) => a.Interval.Start.ToUniversalTime().CompareTo(b.Interval.Start.ToUniversalTime()));
@@ -480,16 +484,11 @@
                 foreach (var block in meterReading.IntervalBlocks)
                 {
                     block.IntervalReadings.Sort((a, b) =>
-                        {
-                            if (a.TargetTime != null && b.TargetTime != null)
-                            {
-                                return a.TargetTime.Value.ToUniversalTime()
-                                    .CompareTo(b.TargetTime.Value.ToUniversalTime());
-                            }
-
-                            return a.TimePeriod.Start.ToUniversalTime()
-                                    .CompareTo(b.TimePeriod.Start.ToUniversalTime());
-                        });
+                    {
+                        return ZonedDateTime.Comparer.Instant.Compare(
+                            a.TimePeriod.Start.ToZonedDateTime(timeZone),
+                            b.TimePeriod.Start.ToZonedDateTime(timeZone));
+                    });
 
                     if (meterReading.IsOriginalValueList())
                     {
