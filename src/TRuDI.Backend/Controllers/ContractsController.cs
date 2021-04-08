@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
 
+    using Serilog;
     using Microsoft.AspNetCore.Mvc;
 
     using TRuDI.Backend.Application;
@@ -34,6 +35,8 @@
             DateTime endTime,
             string mode)
         {
+            Log.Information("Start Readout: contractIndex = {0}, billingPeriodIndex = {1}, start = {2}, end = {3}, mode = {4}", contractIndex, startTime, endTime);
+
             var contractContainer = this.applicationState.Contracts[contractIndex];
             var contract = mode == "BP" ? contractContainer.Contract : contractContainer.Taf6;
 
@@ -73,6 +76,8 @@
             DateTime startTime,
             DateTime endTime)
         {
+            Log.Information("Start Readout TAF7: contractIndex = {0}, start = {1}, end = {2}", contractIndex, startTime, endTime);
+
             var contractContainer = this.applicationState.Contracts[contractIndex];
 
             var ctx = new AdapterContext
