@@ -34,6 +34,7 @@ v1.2  - 27.07.2018 - IVU - customerId und invoicingPartyId auf 64 Zeichen erweit
                          - Datentyp von tariffId auf String64 geändert
 v1.3  - 23.05.2019 - IVU - String8192 durch String16384 ersetzt (wird für Meldungstexte verwendet)
 v1.4  - 11.07.2019 - IVU - usagePointId von String64 auf String256 geändert
+v1.5  - 19.03.2020 - IVU - tariffId von String64 auf String256 geändert
 
  NOTICE
 ______________________________________________________
@@ -72,7 +73,7 @@ ______________________________________________________
 					<!-- Change: Element "tariffUseCase" aus dem Element "TariffStage" eine Ebene nach oben geholt (v0.97, 18.05.2017) -->
 					<!-- Change: Elemente "tariffUseCase" und "tariffId" analog if_3d_con v1.0 nach vorne gezogen (v0.99, 09.06.2017) -->
 					<xs:element name="tariffUseCase" type="espi:UInt16"/>
-					<xs:element name="tariffId" type="espi:String64"/>
+					<xs:element name="tariffId" type="espi:String256"/>
 					<xs:element name="description" type="espi:String256" minOccurs="0"/>
 					<!-- Change: Element "billingPeriod" von Datentyp "espi:DateTimeInterval" auf "DateTimeInterval" angepasst (v0.98, 08.06.2017) -->
 					<xs:element name="billingPeriod" type="DateTimeInterval"/>
