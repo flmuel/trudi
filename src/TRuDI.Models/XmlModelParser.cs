@@ -485,6 +485,13 @@ namespace TRuDI.Models
                 {
                     block.IntervalReadings.Sort((a, b) =>
                     {
+                        if (a.TargetTime != null && b.TargetTime != null)
+                        {
+                            return ZonedDateTime.Comparer.Instant.Compare(
+                                a.TargetTime.Value.ToZonedDateTime(timeZone),
+                                b.TargetTime.Value.ToZonedDateTime(timeZone));
+                        }
+
                         return ZonedDateTime.Comparer.Instant.Compare(
                             a.TimePeriod.Start.ToZonedDateTime(timeZone),
                             b.TimePeriod.Start.ToZonedDateTime(timeZone));
@@ -500,7 +507,7 @@ namespace TRuDI.Models
                                 {
                                     ir.TargetTime = ModelExtensions.GetAlignedTimestamp(
                                         ir.TimePeriod.Start,
-                                        measurementPeriod, 
+                                        measurementPeriod,
                                         3);
                                 }
                                 else
