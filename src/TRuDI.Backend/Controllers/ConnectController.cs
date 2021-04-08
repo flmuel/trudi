@@ -41,7 +41,8 @@
         {
             try
             {
-                var hanAdapter = new HanAdapterContainer(HanAdapterRepository.LoadAdapter(deviceId), deviceId);
+                this.applicationState.LoadAdapter(deviceId);
+                var hanAdapter = this.applicationState.ActiveHanAdapter;
 
                 var manufacturerParametersView = hanAdapter.ManufacturerParametersView;
                 if (manufacturerParametersView != null)

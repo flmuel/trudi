@@ -1,5 +1,8 @@
 ﻿@model string
 
-<h2>Gerätespezifische Parameter</h2>
-
-@await Component.InvokeAsync(ViewData["ManufacturerParametersViewName"].ToString(), new { deviceId = Model })
+<div class="panel panel-primary">
+    <div class="panel-heading">Gerätespezifische Parameter</div>
+    <div class="panel-body">
+        @await Component.InvokeAsync(ViewData["ManufacturerParametersViewName"].ToString(), new { deviceId = Model })
+    </div>
+</div>
