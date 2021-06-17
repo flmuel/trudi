@@ -741,6 +741,10 @@ namespace TRuDI.Models
                         usagePoint.AnalysisProfile.TariffChangeTrigger.TimeTrigger.SpecialDayProfiles.LastOrDefault()
                           .SpecialDayDate.DayOfMonth = Convert.ToByte(e.Value);
                         break;
+
+                    case "GeneratorVersion":
+                        break;
+
                     default:
                         if (usagePoint == null)
                         {

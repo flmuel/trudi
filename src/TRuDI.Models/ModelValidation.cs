@@ -497,22 +497,33 @@ namespace TRuDI.Models
                 }
             }
 
-            if (analysisProfile.TariffChangeTrigger == null)
+            switch(analysisProfile.TariffUseCase)
             {
-                exceptions.Add(new InvalidOperationException("Das Element \"AnalysisProfile\" muss das Element \"TariffChangeTrigger\" enthalten."));
-            }
-            else
-            {
-                ValidateTariffChangeTrigger(analysisProfile.TariffChangeTrigger, exceptions);
-            }
+                case TafId.Taf1:
+                case TafId.Taf2:
+                    if (analysisProfile.TariffChangeTrigger == null)
+                    {
+                        exceptions.Add(new InvalidOperationException("Das Element \"AnalysisProfile\" muss das Element \"TariffChangeTrigger\" enthalten."));
+                    }
+                    else
+                    {
+                        ValidateTariffChangeTrigger(analysisProfile.TariffChangeTrigger, exceptions);
+                    }
 
-            if (ValidateInterval(analysisProfile.BillingPeriod, "Billing Period", exceptions))
-            {
-                // Validate if we have at least one full day in the BillingPeriod
-                if ((analysisProfile.BillingPeriod.GetEnd().Date - analysisProfile.BillingPeriod.Start.Date).Days < 1)
-                {
-                    exceptions.Add(new InvalidOperationException("Die Abrechnungsperiode in der Tarifdatei muss mindestens einen vollen Tag umfassen."));
-                }
+                    if (ValidateInterval(analysisProfile.BillingPeriod, "Billing Period", exceptions))
+                    {
+                        // Validate if we have at least one full day in the BillingPeriod
+                        if ((analysisProfile.BillingPeriod.GetEnd().Date - analysisProfile.BillingPeriod.Start.Date).Days < 1)
+                        {
+                            exceptions.Add(new InvalidOperationException("Die Abrechnungsperiode in der Tarifdatei muss mindestens einen vollen Tag umfassen."));
+                        }
+                    }
+
+                    break;
+
+                case TafId.Taf8:
+
+                    break;
             }
 
             ValidateAnalysisProfileTariffUseCase(analysisProfile.TariffUseCase, exceptions);
@@ -521,28 +532,38 @@ namespace TRuDI.Models
         // Taf-7: Validate if the supplier periods have a duration of 15 minutes
         private static void ValidateTaf7SupplierDayProfiles(UsagePointLieferant supplier, List<Exception> exceptions)
         {
-            var profiles = supplier.AnalysisProfile.TariffChangeTrigger.TimeTrigger.DayProfiles;
-
-            foreach (DayProfile profile in profiles)
+            switch (supplier.AnalysisProfile.TariffUseCase)
             {
-                var dtProfiles = profile.DayTimeProfiles;
-                for (int i = 0; i < dtProfiles.Count; i++)
-                {
-                    if (i + 1 == dtProfiles.Count)
+                case TafId.Taf1:
+                case TafId.Taf2:
+                    var profiles = supplier.AnalysisProfile.TariffChangeTrigger.TimeTrigger.DayProfiles;
+
+                    foreach (DayProfile profile in profiles)
                     {
-                        break;
+                        var dtProfiles = profile.DayTimeProfiles;
+                        for (int i = 0; i < dtProfiles.Count; i++)
+                        {
+                            if (i + 1 == dtProfiles.Count)
+                            {
+                                break;
+                            }
+
+                            var current = new TimeSpan((int)dtProfiles[i].StartTime.Hour, (int)dtProfiles[i].StartTime.Minute, 0);
+                            var next = new TimeSpan((int)dtProfiles[i + 1].StartTime.Hour, (int)dtProfiles[i + 1].StartTime.Minute, 0);
+
+                            if ((int)(next - current).TotalSeconds == 900)
+                            {
+                                continue;
+                            }
+
+                            exceptions.Add(new InvalidOperationException($"TAF-7: Die Tarifschaltzeiten für Tagesprofil {profile.DayId} in der Tarifdatei des Lieferanten sind nicht für jede 15-Minuten-Messperiode angegeben: {current} zu {next}"));
+                        }
                     }
 
-                    var current = new TimeSpan((int)dtProfiles[i].StartTime.Hour, (int)dtProfiles[i].StartTime.Minute, 0);
-                    var next = new TimeSpan((int)dtProfiles[i + 1].StartTime.Hour, (int)dtProfiles[i + 1].StartTime.Minute, 0);
+                    break;
 
-                    if ((int)(next - current).TotalSeconds == 900)
-                    {
-                        continue;
-                    }
-
-                    exceptions.Add(new InvalidOperationException($"TAF-7: Die Tarifschaltzeiten für Tagesprofil {profile.DayId} in der Tarifdatei des Lieferanten sind nicht für jede 15-Minuten-Messperiode angegeben: {current} zu {next}"));
-                }
+                case TafId.Taf8:
+                    break;
             }
         }
 
@@ -552,12 +573,10 @@ namespace TRuDI.Models
             switch (tariffUseCase)
             {
                 case TafId.Taf1:
-                    break;
                 case TafId.Taf2:
-                    break;
                 case TafId.Taf6:
-                    break;
                 case TafId.Taf7:
+                case TafId.Taf8:
                     break;
 
                 case TafId.Taf9:

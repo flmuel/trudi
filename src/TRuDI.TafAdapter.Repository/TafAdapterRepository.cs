@@ -7,6 +7,7 @@
     using TRuDI.TafAdapter.Interface;
     using TRuDI.TafAdapter.Taf1;
     using TRuDI.TafAdapter.Taf2;
+    using TRuDI.TafAdapter.Taf8;
 
     /// <summary>
     /// Manages the list of available TAF adapters.
@@ -20,6 +21,7 @@
             {
                 new TafAdapterInfo(TafId.Taf1, "Standard Adapter für TAF-1", typeof(TafAdapterTaf1)),
                 new TafAdapterInfo(TafId.Taf2, "Standard Adapter für TAF-2", typeof(TafAdapterTaf2)),
+                new TafAdapterInfo(TafId.Taf8, "Standard Adapter für TAF-8", typeof(TafAdapterTaf8)),
             };
 
         /// <summary>

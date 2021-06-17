@@ -9,6 +9,7 @@
     <ProjectReference Include="..\TRuDI.TafAdapter.Interface\TRuDI.TafAdapter.Interface.csproj" />
     <ProjectReference Include="..\TRuDI.TafAdapter.Taf1\TRuDI.TafAdapter.Taf1.csproj" />
     <ProjectReference Include="..\TRuDI.TafAdapter.Taf2\TRuDI.TafAdapter.Taf2.csproj" />
+    <ProjectReference Include="..\TRuDI.TafAdapter.Taf8\TRuDI.TafAdapter.Taf8.csproj" />
   </ItemGroup>
 
 </Project>

@@ -132,6 +132,14 @@
             return this.ViewComponent(typeof(OriginalValueListView), new { ovl, startTime });
         }
 
+        public ViewComponentResult FilterOvlPower(string ovlId, DateTime startTime)
+        {
+            var ovl = this.applicationState.CurrentDataResult.OriginalValueLists.FirstOrDefault(
+                l => l.GetOriginalValueListIdent() == ovlId);
+
+            return this.ViewComponent(typeof(PowerValueListView), new { ovl, startTime });
+        }
+
         public ViewComponentResult ShowErrorsList(string ovlId)
         {
             var ovl = this.applicationState.CurrentDataResult.OriginalValueLists.FirstOrDefault(

@@ -3,67 +3,50 @@
 @using TRuDI.Models.BasicData
 @model TRuDI.Backend.Components.OriginalValueListRange
 
-
 <h3>Messwerte vom @Model.Start.ToString("dd.MM.yyyy")</h3>
 
 <table class="table-condensed table-column-padding">
-   <tr>
-      @if (Model.Source.IsTargetTimeUsed)
-      {
-         <th>Sollzeitpunkt</th>
-      }
-      <th>Zeitstempel</th>
+    <tr>
+        @if (Model.Source.IsTargetTimeUsed)
+        {
+            <th>Sollzeitpunkt</th>
+        }
+        
+        <th>Zeitstempel</th>
+        <th class="text-right">Wert (@Model.Source.DisplayUnit)</th>
+        <th>Status</th>
+    </tr>
 
-      @if (Model.Source.HasCalculatedPowerValue)
-      {
-         <th class="text-right">Zählerstand (@Model.Source.DisplayUnit)</th>
-         <th class="text-right">Leistungs-<br />mittelwert (@Model.Source.DisplayUnitPower)</th>
-      }
-      else
-      {
-         <th class="text-right">Wert (@Model.Source.DisplayUnit)</th>
-      }
-      <th>Status</th>
-   </tr>
+    @foreach (var entry in Model.Items)
+    {
+        if (entry.Value != null)
+        {
+            <tr class="@entry.ToStatusBackground()">
+                @if (Model.Source.IsTargetTimeUsed)
+                {
+                    <td>@entry.TargetTime</td>
+                }
 
-   @foreach (var entry in Model.Items)
-   {
-      if (entry.Value != null)
-      {
-         <tr class="@entry.ToStatusBackground()">
-            @if (Model.Source.IsTargetTimeUsed)
-            {
-               <td>@entry.TargetTime</td>
-            }
+                <td>@entry.CaptureTime</td>
+                <td class="text-right">@entry.Value.GetDisplayValue(Model.Source.Uom, Model.Source.PowerOfTenMultiplier, Model.Source.Scaler)</td>
+                <td><i class="@entry.ToStatusIcon()"></i> @entry.ToStatusString()</td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                @if (Model.Source.IsTargetTimeUsed)
+                {
+                    <td>@entry.TargetTime</td>
+                }
+                else
+                {
+                    <td>@entry.CaptureTime</td>
+                }
 
-            <td>@entry.CaptureTime</td>
-            @if (Model.Source.HasCalculatedPowerValue)
-            {
-               <td class="text-right">@entry.Value.GetDisplayValue(Model.Source.Uom, Model.Source.PowerOfTenMultiplier, Model.Source.Scaler)</td>
-               <td class="text-right">@entry.PowerValue.GetDisplayValue(Model.Source.Uom, Model.Source.PowerOfTenMultiplier, Model.Source.Scaler)</td>
-            }
-            else
-            {
-               <td class="text-right">@entry.Value.GetDisplayValue(Model.Source.Uom, Model.Source.PowerOfTenMultiplier, Model.Source.Scaler)</td>
-            }
-            <td><i class="@entry.ToStatusIcon()"></i> @entry.ToStatusString()</td>
-         </tr>
-      }
-      else
-      {
-         <tr>
-            @if (Model.Source.IsTargetTimeUsed)
-            {
-               <td>@entry.TargetTime</td>
-            }
-            else
-            {
-               <td>@entry.CaptureTime</td>
-            }
-
-            <td colspan="3" class="warning"><span><i class="fa fa-warning"></i> kein Messwert vorhanden</span></td>
-         </tr>
-      }
-   }
+                <td colspan="2" class="warning"><span><i class="fa fa-warning"></i> kein Messwert vorhanden</span></td>
+            </tr>
+        }
+    }
 
 </table>

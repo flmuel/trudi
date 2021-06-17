@@ -223,7 +223,7 @@ namespace TRuDI.Models
         {
             if (value == null)
             {
-                return string.Empty;
+                return "---";
             }
 
             return value.Value.GetDisplayValue(uom, multiplier, scaler);

@@ -86,6 +86,68 @@
     </tr>
 </table>
 
+<h3>Leistungsmittelwertberechnung</h3>
+
+<p>
+    TRuDI berechnet aus den Zählerständen der Originären Messwertliste automatisch Leistungsmittelwerte. Dazu wird die Energiemenge zwischen zwei aufeinanderfolgende Zählerständen ermittelt und mit einem der folgenden Faktoren multipliziert:
+</p>
+
+<p>
+    <ul>
+        <li>60 bei einer Messperiode von einer Minute</li>
+        <li>4 bei einer Messperiode von 15 Minute</li>
+        <li>1 bei einer Messperiode von 60 Minute</li>
+    </ul>
+</p>
+
+<h4>Beispiel</h4>
+<p>
+    <table class="table-condensed table-column-padding">
+        <tr>
+            <th>Zeitstempel</th>
+            <th>Zählerstand</th>
+        </tr>
+
+        <tr>
+            <td>11:30:00</td>
+            <td class="text-right">1798,043 kWh</td>
+        </tr>
+
+        <tr>
+            <td>11:45:00</td>
+            <td class="text-right">1974,257 kWh</td>
+        </tr>
+
+    </table>
+</p>
+
+<p>
+    <table class="table-condensed">
+        <tr>
+            <td>Energiemenge zwischen 11:30 und 11:45:</td>
+            <td> </td>
+            <td>1974,257 kWh - 1798,043 kWh = 176,214 kWh</td>
+        </tr>
+
+        <tr>
+            <td>Leisungsmittelwert: </td>
+            <td> </td>
+            <td>176,214 kWh * 4 = <b>704,856 kW</b></td>
+        </tr>
+    </table>
+
+</p>
+
+<p>Unter folgenden Umständen kann kein Leistungsmittelwert berechnet werden:</p>
+
+<p>
+    <ul>
+        <li>kein vorhergehender Zählerstand</li>
+        <li>kein gültiger vorhergehender Zählerstand</li>
+        <li>kein gültiger Zählerstand</li>
+    </ul>
+</p>
+
 <h3>Begriffe</h3>
 
 <ul>

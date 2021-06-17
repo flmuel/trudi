@@ -27,5 +27,6 @@ namespace TRuDI.Models.BasicData
         }
 
         public long? PowerValue { get; set; }
+        public string PowerValueInfo { get; set; }
     }
 }

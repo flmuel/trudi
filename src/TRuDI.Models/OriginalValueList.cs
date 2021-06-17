@@ -117,6 +117,7 @@ namespace TRuDI.Models
             end = end.ToUniversalTime();
 
             var lastTimestamp = this.Start.Value.ToUniversalTime();
+            var obisId = new ObisId(this.MeterReading.ReadingType.ObisCode);
 
             if (this.MeasurementPeriod != TimeSpan.Zero)
             {
@@ -179,14 +180,50 @@ namespace TRuDI.Models
                         {
                             var resultReading = new IntervalReadingExt(reading);
 
-                            if (prevIntervalReading != null)
+                            if (obisId.Medium == HanAdapter.Interface.ObisMedium.Electricity)
                             {
-                                var timeDiff = reading.CaptureTime.ToUniversalTime() - prevIntervalReading.CaptureTime.ToUniversalTime();
-                                var valueDiff = reading.Value - prevIntervalReading.Value;
-
-                                if (timeDiff.TotalSeconds > 0)
+                                if (prevIntervalReading != null)
                                 {
-                                    resultReading.PowerValue = valueDiff * 3600 / (int)timeDiff.TotalSeconds;
+                                    if (reading.StatusPTB <= StatusPTB.Warning
+                                        && prevIntervalReading.StatusPTB <= StatusPTB.Warning)
+                                    {
+                                        var valueDiff = reading.Value - prevIntervalReading.Value;
+                                        var currentTimeDiff = (int)(reading.TargetTime.Value - prevIntervalReading.TargetTime.Value).TotalSeconds;
+
+                                        if (currentTimeDiff == (int)this.MeasurementPeriod.TotalSeconds)
+                                        {
+                                            switch ((int)this.MeasurementPeriod.TotalSeconds)
+                                            {
+                                                case 60:
+                                                    resultReading.PowerValue = valueDiff * 60;
+                                                    break;
+
+                                                case 900:
+                                                    resultReading.PowerValue = valueDiff * 4;
+                                                    break;
+
+                                                case 3600:
+                                                    resultReading.PowerValue = valueDiff;
+                                                    break;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (prevIntervalReading.StatusPTB > StatusPTB.Warning)
+                                        {
+                                            resultReading.PowerValueInfo = "kein gültiger vorhergehender Zählerstand";
+                                        }
+
+                                        if (reading.StatusPTB > StatusPTB.Warning)
+                                        {
+                                            resultReading.PowerValueInfo = "kein gültiger Zählerstand";
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    resultReading.PowerValueInfo = "kein vorhergehender Zählerstand";
                                 }
                             }
 

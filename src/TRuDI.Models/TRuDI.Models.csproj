@@ -5,7 +5,7 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <RestoreSources>$(RestoreSources);../../private-packages;https://api.nuget.org/v3/index.json</RestoreSources>
         <PackageOutputPath>..\..\private-packages</PackageOutputPath>
-        <Version>1.0.7</Version>
+        <Version>1.0.8</Version>
     </PropertyGroup>
 
     <ItemGroup>

@@ -1,4 +1,4 @@
-@using TRuDI.Backend.Application
+﻿@using TRuDI.Backend.Application
 @using TRuDI.Backend.Utils
 @using TRuDI.Models
 @using TRuDI.Models.BasicData
@@ -48,7 +48,7 @@
 
 <div>
     <ul class="nav nav-tabs" role="tablist">
-        @if (StateService.CurrentSupplierFile?.TafData != null)
+        @if (StateService.CurrentSupplierFile?.TafData != null && StateService.CurrentSupplierFile?.TafData?.DetailView != null)
         {
             <li role="presentation" class="active"><a href="#tab_tariffdata" aria-controls="tab_tariffdata" role="tab" data-toggle="tab">Tarifdaten</a></li>
         }
@@ -56,17 +56,22 @@
         @if (originalValueLists?.Count == 1)
         {
             var ovl = originalValueLists.First();
-            <li role="presentation" class="@(StateService.CurrentSupplierFile?.TafData == null ? "active" : "")"><a href="#tab_hvl_@ovl.GetOriginalValueListIdent()" aria-controls="tab_hvl_@ovl.GetOriginalValueListIdent()" role="tab" data-toggle="tab">Historische Verbrauchswerte</a></li>
+            <li role="presentation" class="@(StateService.CurrentSupplierFile?.TafData?.DetailView == null ? "active" : "")"><a href="#tab_hvl_@ovl.GetOriginalValueListIdent()" aria-controls="tab_hvl_@ovl.GetOriginalValueListIdent()" role="tab" data-toggle="tab">Historische Verbrauchswerte</a></li>
             <li role="presentation"><a href="#tab_@ovl.GetOriginalValueListIdent()" aria-controls="tab_@ovl.GetOriginalValueListIdent()" role="tab" data-toggle="tab">Originäre Messwertliste</a></li>
+
+            @if (ovl.HasCalculatedPowerValue)
+            {
+                <li role="presentation"><a href="#tab_@ovl.GetOriginalValueListIdent()_power" aria-controls="tab_@ovl.GetOriginalValueListIdent()_power" role="tab" data-toggle="tab">Leistungsmittelwerte</a></li>
+            }
         }
         else
         {
-            <li role="presentation" class="dropdown @(StateService.CurrentSupplierFile?.TafData == null ? "active" : "")">
+            <li role="presentation" class="dropdown @(StateService.CurrentSupplierFile?.TafData?.DetailView == null ? "active" : "")">
                 <a href="#" class="dropdown-toggle" id="tab-dropdown-hvl" data-toggle="dropdown" aria-controls="tab-dropdown-contents" aria-expanded="false">Historische Verbrauchswerte<span class="caret"></span></a>
                 <ul class="dropdown-menu" aria-labelledby="tab-dropdown-hvl" id="tab-dropdown-hvl-contents">
                     @foreach (var ovl in originalValueLists ?? new List<OriginalValueList>())
                     {
-                        <li class="@(StateService.CurrentSupplierFile?.TafData == null && originalValueLists.First() == ovl ? "active" : "")"><a href="#tab_hvl_@ovl.GetOriginalValueListIdent()" id="#tab_hvl_@ovl.GetOriginalValueListIdent()-tab" aria-expanded="false" aria-controls="tab_hvl_@ovl.GetOriginalValueListIdent()" role="tab" data-toggle="tab">@ovl.Meter.ToFormattedDeviceId() (@ovl.Obis.ToReadableString())</a></li>
+                        <li class="@(StateService.CurrentSupplierFile?.TafData?.DetailView == null && originalValueLists.First() == ovl ? "active" : "")"><a href="#tab_hvl_@ovl.GetOriginalValueListIdent()" id="#tab_hvl_@ovl.GetOriginalValueListIdent()-tab" aria-expanded="false" aria-controls="tab_hvl_@ovl.GetOriginalValueListIdent()" role="tab" data-toggle="tab">@ovl.Meter.ToFormattedDeviceId() (@ovl.Obis.ToReadableString())</a></li>
                     }
                 </ul>
             </li>
@@ -80,6 +85,19 @@
                     }
                 </ul>
             </li>
+
+            @if (originalValueLists.Any(l => l.HasCalculatedPowerValue))
+            {
+                <li role="presentation" class="dropdown">
+                    <a href="#" class="dropdown-toggle" id="tab-dropdown-power" data-toggle="dropdown" aria-controls="tab-dropdown-contents" aria-expanded="false">Leistungsmittelwerte<span class="caret"></span></a>
+                    <ul class="dropdown-menu" aria-labelledby="tab-dropdown-power" id="tab-dropdown-ovl-contents">
+                        @foreach (var ovl in originalValueLists.Where(l => l.HasCalculatedPowerValue))
+                        {
+                            <li class=""><a href="#tab_@ovl.GetOriginalValueListIdent()_power" id="#tab_@ovl.GetOriginalValueListIdent()_power-tab" aria-expanded="false" aria-controls="tab_@ovl.GetOriginalValueListIdent()_power" role="tab" data-toggle="tab">@ovl.Meter.ToFormattedDeviceId() (@ovl.Obis.ToReadableString())</a></li>
+                        }
+                    </ul>
+                </li>
+            }
         }
 
         <li role="presentation"><a href="#tab_logdata" aria-controls="tab_logdata" role="tab" data-toggle="tab">Logbuchdaten</a></li>
@@ -371,6 +389,160 @@
                         </div>
                     </div>
                 </div>
+
+
+                if (ovl.HasCalculatedPowerValue)
+                {
+                    <div role="tabpanel" class="tab-pane" id="tab_@ovl.GetOriginalValueListIdent()_power">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Leistungsmittelwerte @ovl.Meter.ToFormattedDeviceId() (@ovl.Obis.ToReadableString())</div>
+                            <div class="panel-body">
+
+                                <table class="table">
+                                    <tr>
+                                        <th>Zähler</th>
+                                        <th>Messperiode</th>
+                                        <th>Register</th>
+                                        <th>Beschreibung</th>
+                                    </tr>
+                                    <tr>
+                                        <td>@ovl.Meter.ToFormattedDeviceId()</td>
+                                        <td>@ovl.MeasurementPeriod.GetMeasurementPeriodString()</td>
+                                        <td>@ovl.Obis.ToReadableString()</td>
+                                        <td>@ovl.Obis.GetLabel()</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Startzeitpunkt</th>
+                                        <th>Endzeitpunkt</th>
+                                        <th>Werte</th>
+                                        <th>Lücken/Fehler</th>
+                                    </tr>
+
+                                    <tr>
+                                        <td>@ovl.Start.ToFormatedString()</td>
+                                        <td>@ovl.End.ToFormatedString()</td>
+                                        <td>@ovl.ValueCount</td>
+
+                                        <td>
+                                            @if (!ovl.HasErrors && ovl.GapCount == 0)
+                                            {
+                                                <span>keine Fehler</span>
+                                            }
+                                            else
+                                            {
+                                                if (ovl.GapCount > 0)
+                                                {
+                                                    <span>
+                                                        <i class="fa fa-warning"></i>
+                                                        @ovl.GapCount @(ovl.GapCount == 1 ? "Lücke" : "Lücken") gefunden
+                                                    </span>
+                                                }
+
+                                                if (ovl.FatalErrorCount > 0)
+                                                {
+                                                    <div>
+                                                        <span>
+                                                            <i class="@StatusPTB.FatalError.ToStatusIcon()"></i>
+                                                            @ovl.FatalErrorCount @(StatusPTB.FatalError.GetStatusString(ovl.FatalErrorCount))
+                                                        </span>
+                                                    </div>
+                                                }
+
+                                                {
+                                                    <div>
+                                                        <span>
+                                                            <i class="@StatusPTB.CriticalTemporaryError.ToStatusIcon()"></i>
+                                                            @(ovl.CriticalTempErrorCount) @(StatusPTB.CriticalTemporaryError.GetStatusString(ovl.CriticalTempErrorCount))
+                                                        </span>
+                                                    </div>
+                                                }
+
+                                                if (ovl.TempErrorCount > 0)
+                                                {
+                                                    <div>
+                                                        <span>
+                                                            <i class="@StatusPTB.TemporaryError.ToStatusIcon()"></i>
+                                                            @(ovl.TempErrorCount) @(StatusPTB.TemporaryError.GetStatusString(ovl.TempErrorCount))
+                                                        </span>
+                                                    </div>
+                                                }
+
+                                                if (ovl.WarningCount > 0)
+                                                {
+                                                    <div>
+                                                        <span>
+                                                            <i class="@StatusPTB.Warning.ToStatusIcon()"></i>
+                                                            @ovl.WarningCount @(StatusPTB.Warning.GetStatusString(ovl.WarningCount))
+                                                        </span>
+                                                    </div>
+                                                }
+                                            }
+
+                                        </td>
+
+                                    </tr>
+                                </table>
+
+                                <div>
+                                    <p>Die angezeigten Leistungsmittelwerte wurden durch TRuDI auf Basis der Zählerstände aus der Originären Messwertliste berechnet.</p>
+                                    @if (StateService.CurrentDataResult.TafId != TRuDI.HanAdapter.Interface.TafId.Taf8 && StateService.CurrentSupplierFile?.TafId != TRuDI.HanAdapter.Interface.TafId.Taf8)
+                                    {
+                                        @if (StateService.CurrentSupplierFile == null)
+                                        {
+                                            <p>Die Leistungsmittelwerte werden für den Tarifanwendungsfall "@StateService.CurrentDataResult.TafId.TafToFriendlyName()" nur informativ angezeigt.</p>
+                                        }
+                                        else
+                                        {
+                                            <p>Die Leistungsmittelwerte werden für den Tarifanwendungsfall "@StateService.CurrentSupplierFile.TafId.TafToFriendlyName()" nur informativ angezeigt.</p>
+                                        }
+                                    }
+                                </div>
+
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td>
+                                            <div class='input-group date' id="dp_start_@ovl.GetOriginalValueListIdent()_power" style="width: auto;">
+                                                <input type='text' class="form-control" />
+                                                <span class="input-group-addon" style="width: auto;">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <div id="ovl_@ovl.GetOriginalValueListIdent()_power">
+                                    @await Component.InvokeAsync("PowerValueListView", new { ovl, startTime = ovlBegin })
+                                </div>
+
+                                <script type="text/javascript">
+                                $(function() {
+                                    $("#dp_start_@ovl.GetOriginalValueListIdent()_power").datetimepicker({
+                                        locale: 'de',
+                                        format: 'DD.MM.YYYY'
+                                    });
+
+                                    $("#dp_start_@ovl.GetOriginalValueListIdent()_power").data("DateTimePicker").minDate(moment('@ovlBegin.Date.ToIso8601()'));
+                                    $("#dp_start_@ovl.GetOriginalValueListIdent()_power").data("DateTimePicker").maxDate(moment('@ovlEnd.GetDateTimePickerEndDate().ToIso8601()'));
+                                    $("#dp_start_@ovl.GetOriginalValueListIdent()_power").data("DateTimePicker").date(moment('@ovlBegin.Date.ToIso8601()'));
+
+                                    $("#dp_start_@ovl.GetOriginalValueListIdent()_power").on("dp.change", function (e) {
+                                        loadOvlPowerDay("@ovl.GetOriginalValueListIdent()");
+                                    });
+
+                                    $("#dp_start_@ovl.GetOriginalValueListIdent()_power").on("dp.hide", function (e) {
+                                        loadOvlPowerDay("@ovl.GetOriginalValueListIdent()");
+                                    });
+                                });
+                                </script>
+
+                            </div>
+                        </div>
+                    </div>
+                }
             }
             else
             {
@@ -386,6 +558,35 @@
         }
 
         <script type="text/javascript">
+
+            function loadOvlPowerDay(ovlId) {
+                $("#btnFilterOvlErrors_" + ovlId).show();
+                $("#btnShowOvlData_" + ovlId).hide();
+
+                $.ajax({
+                    url: '/DataView/FilterOvlPower',
+                    type: "POST",
+                    data: "startTime=" +
+                        encodeURIComponent($("#dp_start_" + ovlId + "_power").data("DateTimePicker").date().toISOString()) +
+                        "&ovlId=" +
+                        encodeURIComponent(ovlId),
+                    contentType: 'application/x-www-form-urlencoded',
+                    processData: false,
+                    success: function (result) {
+                        $("#ovl_" + ovlId + "_power").html(result);
+                    },
+                    error: function (err) { }
+                });
+            };
+
+            function selectOvlPowerDay(ovlId, timestamp) {
+                var currentDate = $("#dp_start_" + ovlId + "_power").data("DateTimePicker").date();
+                if (currentDate.isSame(timestamp)) {
+                    loadOvlPowerDay(ovlId);
+                } else {
+                    $("#dp_start_" + ovlId + "_power").data("DateTimePicker").date(timestamp);
+                }
+            };
 
             function loadOvlDay(ovlId) {
                 $("#btnFilterOvlErrors_" + ovlId).show();
@@ -445,7 +646,7 @@
 
         @foreach (var ovl in originalValueLists)
         {
-            <div role="tabpanel" class="tab-pane @(StateService.CurrentSupplierFile?.TafData == null && originalValueLists.First() == ovl ? "active" : "")" id="tab_hvl_@ovl.GetOriginalValueListIdent()">
+            <div role="tabpanel" class="tab-pane @(StateService.CurrentSupplierFile?.TafData?.DetailView == null && originalValueLists.First() == ovl ? "active" : "")" id="tab_hvl_@ovl.GetOriginalValueListIdent()">
                 <div class="panel panel-primary">
                     <div class="panel-heading">Historische Verbrauchswerte @ovl.Meter.ToFormattedDeviceId() (@ovl.Obis.ToReadableString())</div>
                     <div class="panel-body">
@@ -457,7 +658,7 @@
             </div>
         }
 
-        @if (StateService.CurrentSupplierFile?.TafData?.Data != null)
+        @if (StateService.CurrentSupplierFile?.TafData?.Data != null && StateService.CurrentSupplierFile?.TafData?.DetailView != null)
         {
             <div role="tabpanel" class="tab-pane active" id="tab_tariffdata">
                 <div class="panel panel-primary">

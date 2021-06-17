@@ -103,7 +103,7 @@ namespace TRuDI.Backend.Utils
                return "TAF-7: Zählerstandgangmessung";
 
             case TafId.Taf8:
-               return "TAF-8: Erfassung von Extremwerten";
+               return "TAF-8: Erfassung von Extremwerten der Leistungsmittelwerte";
 
             case TafId.Taf9:
                return "TAF-9: Abruf der IST-Einspeisung";

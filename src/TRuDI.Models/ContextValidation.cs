@@ -281,6 +281,11 @@
         // Check whether all referenced tarif stages which are used in the DayTimeProfiles are valid
         private static void ValidateTarifStageOccurence(UsagePointLieferant supplier, List<Exception> exceptions)
         {
+            if (supplier.AnalysisProfile.TariffUseCase != TafId.Taf1 || supplier.AnalysisProfile.TariffUseCase != TafId.Taf2)
+            {
+                return;
+            }
+
             var tarifStages = new List<ushort>();
 
             foreach (TariffStage stage in supplier.AnalysisProfile.TariffStages)
@@ -312,6 +317,11 @@
         // Check whether all referenced DayIds in SpecialDayProfiles are valid DayIds
         private static void ValidateSupplierModelDayProfileOccurence(UsagePointLieferant supplier, List<Exception> exceptions)
         {
+            if (supplier.AnalysisProfile.TariffUseCase != TafId.Taf1 || supplier.AnalysisProfile.TariffUseCase != TafId.Taf2)
+            {
+                return;
+            }
+
             var dayProfileIds = new List<ushort?>();
 
             foreach (DayProfile profile in supplier.AnalysisProfile.TariffChangeTrigger.TimeTrigger.DayProfiles)
@@ -362,6 +372,11 @@
         // Check if the delivered supplier xml has an completely enrolled calendar
         private static void ValidateSupplierModelCompletelyEnrolledCalendar(UsagePointAdapterTRuDI model, UsagePointLieferant supplier, List<Exception> exceptions)
         {
+            if (supplier.AnalysisProfile.TariffUseCase != TafId.Taf1 || supplier.AnalysisProfile.TariffUseCase != TafId.Taf2)
+            {
+                return;
+            }
+
             var period = supplier.AnalysisProfile.BillingPeriod;
             var profiles = supplier.AnalysisProfile.TariffChangeTrigger.TimeTrigger.SpecialDayProfiles;
 
@@ -396,6 +411,11 @@
         // Check if any SpecialDayProfiles are within the billing period
         private static void ValidateSpecialDayProfilesWithinBillingPeriod(UsagePointLieferant supplier, List<Exception> exceptions)
         {
+            if (supplier.AnalysisProfile.TariffUseCase != TafId.Taf1 || supplier.AnalysisProfile.TariffUseCase != TafId.Taf2)
+            {
+                return;
+            }
+
             var begin = supplier.AnalysisProfile.BillingPeriod.Start;
             var end = supplier.AnalysisProfile.BillingPeriod.GetEnd();
             var counter = 0;

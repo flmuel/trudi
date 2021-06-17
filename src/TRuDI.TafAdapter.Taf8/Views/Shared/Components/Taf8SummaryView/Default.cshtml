@@ -1,22 +1,24 @@
 ﻿@using TRuDI.Models
-@using TRuDI.TafAdapter.Interface.Taf2
-@model ITaf2Data
+@using TRuDI.TafAdapter.Interface.Taf8
+@model ITaf8Data
+
 
     <h3>Durch TRuDI nachberechnete Registerwerte</h3>
     <p>Nachberechnet aus TAF-7-Zählerstandsgangsdaten aus dem Smart Meter Gateway.</p>
 
-
     <table class="table">
         <tr>
+            <th>Zeit</th>
             <th>Register</th>
             <th class="text-right">Wert</th>
             <th>Einheit</th>
             <th>Beschreibung</th>
         </tr>
 
-        @foreach (var register in Model.SummaryRegister.GetAccountingRegistersWithTotal())
+        @foreach (var register in Model.Registers)
         {
             <tr>
+                <td>@register.Timestamp</td>
                 <td>@register.ObisCode.ToString()</td>
 
                 @if (register.SourceType != null)
@@ -24,7 +26,7 @@
                     <td class="text-right">
                         @register.Amount.GetDisplayValue(register.SourceType)
                     </td>
-                    <td>@register.SourceType.Uom.GetDisplayUnit(register.SourceType.PowerOfTenMultiplier.Value)</td>
+                    <td>@register.SourceType.Uom.GetDisplayUnitPower(register.SourceType.PowerOfTenMultiplier.Value)</td>
                 }
                 else
                 {

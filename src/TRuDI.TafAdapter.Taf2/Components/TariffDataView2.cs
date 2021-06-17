@@ -7,11 +7,11 @@
     using TRuDI.TafAdapter.Interface;
     using TRuDI.TafAdapter.Interface.Taf2;
 
-    public class TariffDataView : ViewComponent
+    public class TariffDataView2 : ViewComponent
     {
         private readonly ITaf2Data data;
 
-        public TariffDataView(ITafData data)
+        public TariffDataView2(ITafData data)
         {
             this.data = data as ITaf2Data;
         }

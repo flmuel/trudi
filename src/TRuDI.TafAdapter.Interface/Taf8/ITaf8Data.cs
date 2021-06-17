@@ -1,10 +1,12 @@
-﻿namespace TRuDI.TafAdapter.Interface
+﻿namespace TRuDI.TafAdapter.Interface.Taf8
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Interface used for the TAF-8 data (Erfassung von Extremwerten).
     /// </summary>
     public interface ITaf8Data : ITafData
     {
-        // To be defined if a implementation of this TAF is required.
+        IReadOnlyList<Taf8Register> Registers { get; }
     }
 }
