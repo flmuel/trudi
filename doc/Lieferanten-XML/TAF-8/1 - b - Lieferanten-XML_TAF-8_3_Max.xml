@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UsagePoints xmlns="http://vde.de/AR_2418-6.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://vde.de/AR_2418-6.xsd AR_2418-6.xsd" xmlns:espi="http://naesb.org/espi" xmlns:atom="http://www.w3.org/2005/Atom">
+  <UsagePoint>
+    <espi:ServiceCategory>
+      <espi:kind>0</espi:kind>
+    </espi:ServiceCategory>
+    <usagePointId>DE18006095119EFRTAF89101400000000</usagePointId>
+    <Customer>
+      <customerId>eusr0016457648</customerId>
+    </Customer>
+    <InvoicingParty>
+      <invoicingPartyId>eemt0000000108</invoicingPartyId>
+    </InvoicingParty>
+
+    <SMGW>
+      <smgwId>eefr2011110011</smgwId>
+    </SMGW>
+    
+    <tariffName>1</tariffName>
+
+    <AnalysisProfile>
+      <tariffUseCase>8</tariffUseCase>
+      <tariffId>1</tariffId>
+      <billingPeriod>
+        <duration>86400</duration>
+        <start>2021-06-10T00:00:00.0000000+02:00</start>
+      </billingPeriod>
+      <TariffStage>
+        <tariffNumber>0</tariffNumber>
+        <description></description>
+        <obisCode>0100010600ff</obisCode>
+      </TariffStage>
+	  <TariffStage>
+		<tariffNumber>0</tariffNumber>
+		<obisCode>0100011000ff</obisCode><!-- 1-0:1.16.0 Maximum 2, optional je nach Konfiguration -->
+	  </TariffStage>
+	  <TariffStage>
+		<tariffNumber>0</tariffNumber>
+		<obisCode>0100011a00ff</obisCode><!-- 1-0:1.26.0 Maximum 3, optional je nach Konfiguration -->
+	  </TariffStage>
+      <defaultTariffNumber>0</defaultTariffNumber>
+    </AnalysisProfile>
+
+  </UsagePoint>
+</UsagePoints>
