@@ -698,7 +698,29 @@
             this.CurrentDataResult.MeterReadings = model.MeterReadings;
             this.CurrentDataResult.Begin = model.MeterReadings.FirstOrDefault()?.IntervalBlocks?.FirstOrDefault()?.Interval?.Start;
             var usagePoint = this.CurrentDataResult.Raw.Root.Elements().FirstOrDefault();
-            var readings = raw?.Root?.Elements().FirstOrDefault().Elements().Where(e => e.Name.LocalName == "MeterReading");
+            var readings = raw?.Root?.Elements().FirstOrDefault().Elements().Where(e => e.Name.LocalName == "MeterReading").ToList();
+
+            XNamespace ns = "http://vde.de/AR_2418-6.xsd";
+
+            // remove existing meter readings and replace them with the current values
+            foreach (var reading in readings)
+            {
+                var meterReadingId = reading.Elements(ns + "meterReadingId").Select(e => e.Value).FirstOrDefault();
+                var meterId = reading.Elements(ns + "Meter").Elements(ns + "meterId").Select(e => e.Value).FirstOrDefault();
+
+                if (meterReadingId.Contains("." + meterId + "."))
+                {
+                    // don't remove original value lists
+                    continue;
+                }
+
+                var existingMeterReadingElement = usagePoint.Elements(ns + "MeterReading").Where(e => e.Elements(ns + "meterReadingId").FirstOrDefault(mrid => mrid.Value == meterReadingId) != null).FirstOrDefault();
+                if (existingMeterReadingElement != null)
+                {
+                    existingMeterReadingElement.Remove();
+                }
+            }
+            
             usagePoint.Add(readings);
 
             if (this.CurrentDataResult.Begin != null)
