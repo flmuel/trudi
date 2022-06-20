@@ -322,6 +322,7 @@ namespace TRuDI.Models
             switch (powerOfTenMultiplier)
             {
                 case PowerOfTenMultiplier.deca:
+                case PowerOfTenMultiplier.deci:
                 case PowerOfTenMultiplier.Giga:
                 case PowerOfTenMultiplier.hecto:
                 case PowerOfTenMultiplier.kilo:
@@ -364,6 +365,7 @@ namespace TRuDI.Models
                 case Uom.Volltage:
                 case Uom.Volts_squared:
                 case Uom.AngleDegrees:
+                case Uom.Bel_mW:
                     break;
 
                 default:

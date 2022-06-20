@@ -56,6 +56,11 @@ namespace TRuDI.Models
                     return GetGasLabel(id);
 
                 default:
+                    if (id.C == 96)
+                    {
+                        return "Herstellerspezifische Kennziffer";
+                    }
+
                     return $"Für die Kennziffer {id} ist keine Beschreibung hinterlegt.";
             }
         }
@@ -72,6 +77,11 @@ namespace TRuDI.Models
             if (id.C == 3 && id.D == 0 && id.E == 0)
             {
                 return "Volumen";
+            }
+
+            if (id.C == 96)
+            {
+                return "Herstellerspezifische Kennziffer";
             }
 
             return $"Für die Kennziffer {id} ist keine Beschreibung hinterlegt.";
@@ -234,6 +244,11 @@ namespace TRuDI.Models
 
                 case 2:
                     return "Elektrische Wirkarbeit Lieferung " + tariff;
+            }
+
+            if (id.C == 96)
+            {
+                return "Herstellerspezifische Kennziffer";
             }
 
             return $"Für die Kennziffer {id} ist keine Beschreibung hinterlegt.";

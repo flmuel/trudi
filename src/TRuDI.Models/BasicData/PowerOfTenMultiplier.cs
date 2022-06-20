@@ -6,6 +6,7 @@
     /// 
     ///         0 = None
     ///         1 = deca= x10
+    ///        -1 = deci = x10-1
     ///         2 = hecto= x100
     ///        –3 = mili= x10–3
     ///         3 = kilo= x1000
@@ -19,6 +20,7 @@
     {
         micro = -6,
         mili = -3,
+        deci = -1,
         None = 0,
         deca = 1,
         hecto = 2,

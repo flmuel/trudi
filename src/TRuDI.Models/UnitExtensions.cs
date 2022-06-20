@@ -22,6 +22,9 @@ namespace TRuDI.Models
 
                 case PowerOfTenMultiplier.None:
                     return string.Empty;
+                
+                case PowerOfTenMultiplier.deci:
+                    return "d";
 
                 case PowerOfTenMultiplier.deca:
                     return "da";
@@ -112,6 +115,9 @@ namespace TRuDI.Models
 
                 case Uom.US_Gallons_per_hour:
                     return "US gl/h";
+
+                case Uom.Bel_mW:
+                    return "Bm";
 
                 default:
                     return string.Empty;

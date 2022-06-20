@@ -47,6 +47,7 @@
         Real_energy = 72,
         Reactive_energie = 73,
         Ampere_hours = 106,
+        Bel_mW = 113,
         Cubic_feet = 119,
         Cubic_feet_per_hour = 122,
         Cubic_meter_per_hour = 125,
