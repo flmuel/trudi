@@ -32,7 +32,7 @@
         public IReadOnlyList<string> Meters { get; set; }
 
         /// <summary>
-        /// Gets or sets the metering point identifier (Zählpunktbezeichnung).
+        /// Gets or sets the metering point identifier (Messlokation/Zählpunktbezeichnung).
         /// </summary>
         public string MeteringPointId { get; set; }
 

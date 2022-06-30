@@ -241,6 +241,7 @@ textarea {
 .error {
     color: red;
 }
+
 .table-condensed.table-column-padding > tbody > tr > td, .table-condensed.table-column-padding > tbody > tr > th {
     padding-left: 12px;
     padding-right: 12px;
