@@ -279,7 +279,7 @@ function createWindow() {
         }
     });
 
-    //mainWindow.removeMenu();
+    mainWindow.removeMenu();
 
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'startup.html'),
