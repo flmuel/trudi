@@ -58,7 +58,7 @@
     "nsis": {
       "oneClick": false,
       "allowElevation": false,
-      "artifactName": "NSIS_OUTPUT_${productName}-Setup-${version}-${arch}.${ext}"
+      "artifactName": "${productName}-Setup-${version}-${arch}.${ext}"
     }
   }
 }
