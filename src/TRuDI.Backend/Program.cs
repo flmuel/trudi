@@ -1,5 +1,18 @@
 ﻿namespace TRuDI.Backend
 {
+    using System.Diagnostics;
+    using System.Reflection;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Mvc.Razor;
+    using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.FileProviders;
+    using Microsoft.Extensions.Hosting;
+    using TRuDI.Backend.MessageHandlers;
+    using TRuDI.Backend.Utils;
+    using TRuDI.TafAdapter.Interface;
+    using TRuDI.TafAdapter.Repository;
+    using WebSocketManager;
     using System;
     using System.Globalization;
     using System.IO;
@@ -19,10 +32,7 @@
     using TRuDI.Backend.Application;
     using TRuDI.HanAdapter.Repository;
 
-#if !DEBUG
     using Microsoft.AspNetCore.Server.Kestrel.Https;
-    using TRuDI.Backend.Utils;
-#endif
 
     public class Program
     {
@@ -43,8 +53,11 @@
 
             commandLineApplication.HelpOption("-? | -h | --help");
             commandLineApplication.Execute(args);
-
+#if DEBUG
+            var logLevelSwitch = new LoggingLevelSwitch { MinimumLevel = LogEventLevel.Verbose };
+#else
             var logLevelSwitch = new LoggingLevelSwitch { MinimumLevel = LogEventLevel.Information };
+#endif
 
             if (logLevelOption.HasValue())
             {
@@ -100,9 +113,11 @@
                     .CreateLogger();
             }
 
+            var fileVersionInfo = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location);
+
             Log.Information(
                 "Starting TRuDI {0} on {1}",
-                Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion,
+                fileVersionInfo.FileVersion,
                 System.Runtime.InteropServices.RuntimeInformation.OSDescription);
 
             if (testFileOption.HasValue())
@@ -128,18 +143,92 @@
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            var webhost = BuildWebHost();
+            var builder = WebApplication.CreateBuilder();
+
+            builder.Services.AddMvc(options =>
+            {
+                options.EnableEndpointRouting = false;
+                options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
+            });
+
+            builder.Services.Configure<MvcRazorRuntimeCompilationOptions>(options =>
+            {
+                foreach (var hanAdapterInfo in HanAdapterRepository.AvailableAdapters)
+                {
+                    options.FileProviders.Add(new EmbeddedFileProvider(hanAdapterInfo.Assembly, hanAdapterInfo.BaseNamespace));
+                }
+
+                foreach (var tafAdapterInfo in TafAdapterRepository.AvailableAdapters)
+                {
+                    options.FileProviders.Add(new EmbeddedFileProvider(tafAdapterInfo.Assembly, tafAdapterInfo.BaseNamespace));
+                }
+            });
+
+            builder.Services.AddWebSocketManager();
+            builder.Services.AddSingleton<ApplicationState>();
+            builder.Services.AddTransient<ITafData, ITafData>((ctx) =>
+            {
+                var state = ctx.GetService<ApplicationState>();
+                return state.CurrentSupplierFile?.TafData?.Data;
+            });
+
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+#if DEBUG
+                options.Listen(IPAddress.Loopback, 5000);
+                backendServerPort = 5000;
+#else
+                // Get free TCP port and write it to STDOUT where the Electron frontend can catch it.
+                backendServerPort = FindFreeTcpPort();
+                options.Listen(IPAddress.Loopback, backendServerPort, listenOptions =>
+                    {
+                        var httpsOptions =
+                            new Microsoft.AspNetCore.Server.Kestrel.Https.HttpsConnectionAdapterOptions()
+                            {
+                                ServerCertificate =
+                                        CertificateGenerator
+                                            .GenerateCertificate(
+                                                $"CN={DigestUtils.GetDigestFromAssembly(typeof(Program).Assembly).ToLowerInvariant()}")
+                            };
+
+                        listenOptions.UseHttps(httpsOptions);
+                    });
+#endif
+            });
+
+            var app = builder.Build();
+
+            app.UseExceptionHandler("/Error/InternalError");
+
+            if (Log.IsEnabled(LogEventLevel.Debug))
+            {
+                app.UseRequestLogging();
+            }
+
+            app.UseStaticFiles();
+            app.UseRouting();
+            app.UseWebSockets();
+            app.MapWebSocketManager("/notifications", app.Services.GetService<NotificationsMessageHandler>());
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=OperatingModeSelection}/{action=Index}/{id?}");
+
+                routes.MapRoute("resources", "{*path}",
+                    new { controller = "Ressources", action = "Get", path = string.Empty });
+            });
 
             var doneEvent = new ManualResetEventSlim(false);
             using (var cts = new CancellationTokenSource())
             {
-                Log.Information("Using backend port: {0}", backendServerPort);
-
                 AttachCtrlcSigtermShutdown(cts, doneEvent);
 
                 try
                 {
-                    webhost.Start();
+                    app.Start();
+                    Log.Information("Using backend port: {0}", backendServerPort);
                 }
                 catch (Exception ex)
                 {
@@ -178,12 +267,12 @@
 
             AppDomain.CurrentDomain.ProcessExit += (sender, eventArgs) => Shutdown();
             Console.CancelKeyPress += (sender, eventArgs) =>
-                {
-                    Shutdown();
+            {
+                Shutdown();
 
-                    // Don't terminate the process immediately, wait for the Main thread to exit gracefully.
-                    eventArgs.Cancel = true;
-                };
+                // Don't terminate the process immediately, wait for the Main thread to exit gracefully.
+                eventArgs.Cancel = true;
+            };
         }
 
         /// <summary>
@@ -198,34 +287,5 @@
             listener.Stop();
             return port;
         }
-
-        public static IWebHost BuildWebHost() =>
-            WebHost.CreateDefaultBuilder()
-                .UseKestrel(
-                    options =>
-                        {
-#if DEBUG
-                            options.Listen(IPAddress.Loopback, 5000);
-                            backendServerPort = 5000;
-#else
-                            // Get free TCP port and write it to STDOUT where the Electron frontend can catch it.
-                            backendServerPort = FindFreeTcpPort();
-                            options.Listen(IPAddress.Loopback, backendServerPort, listenOptions =>
-                                {
-                                    var httpsOptions =
-                                        new HttpsConnectionAdapterOptions
-                                        {
-                                            ServerCertificate =
-                                                    CertificateGenerator
-                                                        .GenerateCertificate(
-                                                            $"CN={DigestUtils.GetDigestFromAssembly(typeof(Program).Assembly).ToLowerInvariant()}")
-                                        };
-
-                                    listenOptions.UseHttps(httpsOptions);
-                                });
-#endif
-                        })
-                .UseStartup<Startup>()
-                .Build();
     }
 }

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <RestoreSources>$(RestoreSources);../../private-packages;https://api.nuget.org/v3/index.json</RestoreSources>
         <PackageOutputPath>..\..\private-packages</PackageOutputPath>
@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="NodaTime" Version="3.0.5" />
+        <PackageReference Include="NodaTime" Version="3.1.0" />
     </ItemGroup>
 
     <ItemGroup>

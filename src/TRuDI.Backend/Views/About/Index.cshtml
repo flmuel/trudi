@@ -2,9 +2,13 @@
 @using TRuDI.Backend.Utils
 @using TRuDI.HanAdapter.Repository
 @using TRuDI.TafAdapter.Repository
+@using System.Diagnostics
+@using System.Reflection
 @inject ApplicationState StateService
 @{
     ViewData["Title"] = "Über TRuDI";
+
+    var fileVersionInfo = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location);
 }
 
 <div class="panel panel-primary">
@@ -13,7 +17,7 @@
 
         <p>
             <strong>Transparenz- und Display-Software (TRuDI)</strong><br />
-            Version @Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion
+            Version @fileVersionInfo.FileVersion
         </p>
 
         <p style="margin-bottom: 2em;">

@@ -1,4 +1,7 @@
-﻿namespace TRuDI.Backend.Models
+﻿using System.Diagnostics;
+using System.Reflection;
+
+namespace TRuDI.Backend.Models
 {
     using System;
     using System.Collections.Generic;
@@ -63,7 +66,8 @@
                     var generatorVersion = this.Raw.Root.Descendants().FirstOrDefault(n => n.Name.LocalName == "GeneratorVersion");
                     if(generatorVersion == null)
                     {
-                        var versionText = $"TRuDI {Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion} on {System.Runtime.InteropServices.RuntimeInformation.OSDescription}".Trim();
+                        var fileVersionInfo = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location);
+                        var versionText = $"TRuDI {fileVersionInfo.FileVersion} on {System.Runtime.InteropServices.RuntimeInformation.OSDescription}".Trim();
                         this.Raw.Root.AddFirst(new XElement(ar + "GeneratorVersion", versionText));
                     }
                 }

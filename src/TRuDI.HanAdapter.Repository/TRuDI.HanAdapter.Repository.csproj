@@ -1,19 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RestoreSources>$(RestoreSources);../../private-packages;https://api.nuget.org/v3/index.json</RestoreSources>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TRuDI.HanAdapter.Discovergy" Version="1.0.0" />
-	<PackageReference Include="TRuDI.HanAdapter.DrNeuhaus" Version="1.0.29" />
-    <PackageReference Include="TRuDI.HanAdapter.Kiwigrid" Version="2.0.1" />
-    <PackageReference Include="TRuDI.HanAdapter.LandisGyr" Version="1.0.10" />
-    <PackageReference Include="TRuDI.HanAdapter.Ppc" Version="1.0.36" />
-    <PackageReference Include="TRuDI.HanAdapter.ThebenAG" Version="1.0.14" />
-    <PackageReference Include="TRuDI.HanAdapter.Efr" Version="1.0.4" />
-	<PackageReference Include="TRuDI.HanAdapter.Emh" Version="1.0.18" />
+    <PackageReference Include="TRuDI.HanAdapter.Discovergy" Version="1.0.1" />
+	<PackageReference Include="TRuDI.HanAdapter.DrNeuhaus" Version="1.0.30" />
+    <PackageReference Include="TRuDI.HanAdapter.Kiwigrid" Version="2.0.2" />
+    <PackageReference Include="TRuDI.HanAdapter.LandisGyr" Version="1.0.11" />
+    <PackageReference Include="TRuDI.HanAdapter.Ppc" Version="1.0.37" />
+    <PackageReference Include="TRuDI.HanAdapter.ThebenAG" Version="1.0.15" />
+    <PackageReference Include="TRuDI.HanAdapter.Efr" Version="1.0.5" />
+	<PackageReference Include="TRuDI.HanAdapter.Emh" Version="1.0.19" />
   </ItemGroup>
   
   <ItemGroup>

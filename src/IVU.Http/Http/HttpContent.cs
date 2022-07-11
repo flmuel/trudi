@@ -151,9 +151,7 @@ namespace IVU.Http
 
         internal bool TryGetBuffer(out ArraySegment<byte> buffer)
         {
-#if NET46
             buffer = default(ArraySegment<byte>);
-#endif
             return _bufferedContent != null && _bufferedContent.TryGetBuffer(out buffer);
         }
 

@@ -20,6 +20,9 @@ const backendPathLinux = '../TRuDI.Backend/bin/dist/linux-x64';
 
 let backendCheckFailed = false;
 
+const remoteMain = require('@electron/remote/main');
+remoteMain.initialize();
+
 const backendConfig = {
     // The executable used to start the backend process.
     executablePath: "",
@@ -88,22 +91,22 @@ for (let i = 0; i < argv.length; i++) {
 
 // Generates a RIPEMD-160 digest value for the specified file
 function generateRipeMd160(filename, callback) {
-        var hash = crypto.createHash('RIPEMD160');
-        var fileStream = fs.ReadStream(filename);
+    var hash = crypto.createHash('RIPEMD160');
+    var fileStream = fs.ReadStream(filename);
 
-        fileStream.on('error', function(err) {
-            writeLog("Error on file '" + filename + "', error message: " + err);
-            var digest = hash.digest('hex');
-            callback(null, digest);
-        });
+    fileStream.on('error', function (err) {
+        writeLog("Error on file '" + filename + "', error message: " + err);
+        var digest = hash.digest('hex');
+        callback(null, digest);
+    });
 
-        fileStream.on('data', function (data) {
-            hash.update(data);
-        });
-        fileStream.on('end', function () {
-            var digest = hash.digest('hex');
-            callback(null, digest);
-        });
+    fileStream.on('data', function (data) {
+        hash.update(data);
+    });
+    fileStream.on('end', function () {
+        var digest = hash.digest('hex');
+        callback(null, digest);
+    });
 }
 
 // Generates a list of all files with RIPEMD-160 digest values for the specified directory
@@ -157,7 +160,7 @@ function generateChecksumsForTree(dir, done) {
                     }
                 }
             });
-         });
+        });
     });
 };
 
@@ -165,7 +168,7 @@ function generateChecksumsForTree(dir, done) {
 // Check if the backend has the expected digest values
 function checkIntegrity() {
     writeLog("Checking application integrity...");
-
+    // return;
     generateChecksumsForTree(backendConfig.workPath,
         function (err, results) {
             if (err) {
@@ -248,6 +251,8 @@ app.on('certificate-error',
             callback(true);
         }
         else {
+            //callback(true);
+            //return;
             callback(false);
             writeLog("Integrity check failed: invalid CommonName used in TLS certificate");
 
@@ -266,12 +271,15 @@ let mainWindow;
 
 // Create the browser window.
 function createWindow() {
-   mainWindow = new BrowserWindow({
-      width: 1240, height: 740, webPreferences: {
-         nodeIntegration: true,
-         enableRemoteModule: true
-      } });
-    mainWindow.removeMenu();
+    mainWindow = new BrowserWindow({
+        width: 1240, height: 740, webPreferences: {
+            nodeIntegration: true,
+            enableRemoteModule: true,
+            contextIsolation: false
+        }
+    });
+
+    //mainWindow.removeMenu();
 
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'startup.html'),
@@ -286,6 +294,8 @@ function createWindow() {
         // when you should delete the corresponding element.
         mainWindow = null;
     });
+
+    remoteMain.enable(mainWindow.webContents);
 
     mainWindow.webContents.on("did-fail-load", function () {
         writeLog("did-fail-load: %d, %s", arguments[1], arguments[3]);
@@ -357,7 +367,7 @@ function startBackendService() {
             });
 
         backendServiceProcess.on('exit',
-            function(exitCode) {
+            function (exitCode) {
                 writeLog('Backend process exited: ' + exitCode);
                 mainWindow.loadURL(url.format({
                     pathname: path.join(__dirname, 'backend_connect_failed.html'),

@@ -1,38 +1,39 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Description>TAF adapter interface of the TRuDI application.</Description>
-    <Authors>Thomas Müller</Authors>
-    <Company>IVU Softwareentwicklung GmbH</Company>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <Description>TAF adapter interface of the TRuDI application.</Description>
+        <Authors>Thomas Müller</Authors>
+        <Company>IVU Softwareentwicklung GmbH</Company>
+        <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <RestoreSources>$(RestoreSources);../../private-packages;https://api.nuget.org/v3/index.json</RestoreSources>
-    <Version>1.0.0</Version>
-    <ApplicationIcon />
-    <OutputType>Library</OutputType>
-    <StartupObject />
-  </PropertyGroup>
+    <PropertyGroup>
+        <RestoreSources>$(RestoreSources);../../private-packages;https://api.nuget.org/v3/index.json</RestoreSources>
+        <Version>1.0.0</Version>
+        <ApplicationIcon />
+        <OutputType>Library</OutputType>
+        <StartupObject />
+    </PropertyGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Views\Shared\Components\TariffDataView2\Default.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Views\Shared\Components\TariffDataView2\Default.cshtml">
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </EmbeddedResource>
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Views\Shared\Components\Taf2SummaryView\Default.cshtml" />
-    <EmbeddedResource Include="Views\Shared\Components\Taf2DetailView\Default.cshtml" />
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Views\Shared\Components\Taf2SummaryView\Default.cshtml" />
+        <EmbeddedResource Include="Views\Shared\Components\Taf2DetailView\Default.cshtml" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\TRuDI.TafAdapter.Interface\TRuDI.TafAdapter.Interface.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\TRuDI.TafAdapter.Interface\TRuDI.TafAdapter.Interface.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
-  </ItemGroup>
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
 
 </Project>

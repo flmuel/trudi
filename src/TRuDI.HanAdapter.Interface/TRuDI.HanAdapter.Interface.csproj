@@ -1,25 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>HAN adapter interface of the TRuDI application.</Description>
-    <Authors>Thomas Müller</Authors>
-    <Company>IVU Softwareentwicklung GmbH</Company>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Description>HAN adapter interface of the TRuDI application.</Description>
+        <Authors>Thomas Müller</Authors>
+        <Company>IVU Softwareentwicklung GmbH</Company>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <RestoreSources>$(RestoreSources);../../private-packages;https://api.nuget.org/v3/index.json</RestoreSources>
-    <PackageOutputPath>..\..\private-packages</PackageOutputPath>
-    <Version>1.0.10</Version>
-  </PropertyGroup>
+    <PropertyGroup>
+        <RestoreSources>$(RestoreSources);../../private-packages;https://api.nuget.org/v3/index.json</RestoreSources>
+        <PackageOutputPath>..\..\private-packages</PackageOutputPath>
+        <Version>1.0.11</Version>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netcoreapp2.0\TRuDI.HanAdapter.Interface.xml</DocumentationFile>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DocumentationFile>bin\Debug\netcoreapp2.0\TRuDI.HanAdapter.Interface.xml</DocumentationFile>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netcoreapp2.0\TRuDI.HanAdapter.Interface.xml</DocumentationFile>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <DocumentationFile>bin\Release\netcoreapp2.0\TRuDI.HanAdapter.Interface.xml</DocumentationFile>
+    </PropertyGroup>
 
 </Project>

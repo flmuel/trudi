@@ -58,7 +58,7 @@
         function exportData() {
             var exportType = $('input[name="ExportDataRadio"]:checked').val();
 
-            if (window.hasOwnProperty("process")) {
+            if (isElectron()) {
                 switch (exportType) {
                 case "XML":
                     showSaveFileDialog("/DataView/ExportToFile/" + exportType, "XML-Datei nach VDE AR 2418-6", "xml");
