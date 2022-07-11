@@ -48,7 +48,7 @@
 
                     target.Append(interval.StatusPTB.HasValue ? $"{(int)interval.StatusPTB};" : $";");
                     target.Append(interval.StatusFNN != null ? $"{interval.StatusFNN.Status};" : $";");
-                    target.Append($"{interval.Value.GetDisplayValue(ovl.MeterReading.ReadingType)};");
+                    target.Append($"{interval.Value.GetDisplayValue(ovl.MeterReading.ReadingType, ovl.MeterReading.ReadingType.ObisCode)};");
                     target.Append($"{ovl.DisplayUnit};");
                     target.Append(!string.IsNullOrWhiteSpace(interval.Signature) ? $"{interval.Signature};" : ";");
                     target.Append(!string.IsNullOrWhiteSpace(interval.MeterSignature) ? $"{interval.MeterSignature};" : ";");

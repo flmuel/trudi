@@ -17,7 +17,7 @@
             {
                 this.Value = endReading.Value - startReading.Value;
             }
-            
+
             this.UnitOfTime = unitOfTime;
             this.Begin = begin;
             this.End = end;

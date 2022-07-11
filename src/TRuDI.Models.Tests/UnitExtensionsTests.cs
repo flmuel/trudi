@@ -37,12 +37,12 @@ namespace TRuDI.Models.Tests
         {
             long value = 123456789;
 
-            Assert.AreEqual("12.345,6789", value.GetDisplayValue(Uom.Real_energy, PowerOfTenMultiplier.None, -1));
-            Assert.AreEqual("12.345.678,9", value.GetDisplayValue(Uom.Real_energy, PowerOfTenMultiplier.kilo, -1));
-            Assert.AreEqual("12.345,6789", value.GetDisplayValue(Uom.Real_energy, PowerOfTenMultiplier.kilo, -4));
-            Assert.AreEqual("12.345.678,9", value.GetDisplayValue(Uom.Cubic_meter, PowerOfTenMultiplier.None, -1));
+            Assert.AreEqual("12.345,6789", value.GetDisplayValue(Uom.Real_energy, PowerOfTenMultiplier.None, -1, "1-0:1.8.0*255"));
+            Assert.AreEqual("12.345.678,9", value.GetDisplayValue(Uom.Real_energy, PowerOfTenMultiplier.kilo, -1, "1-0:1.8.0*255"));
+            Assert.AreEqual("12.345,6789", value.GetDisplayValue(Uom.Real_energy, PowerOfTenMultiplier.kilo, -4, "1-0:1.8.0*255"));
+            Assert.AreEqual("12.345.678,9", value.GetDisplayValue(Uom.Cubic_meter, PowerOfTenMultiplier.None, -1, "7-0:3.0.0*255"));
 
-            Assert.AreEqual("12.345.678.900,00", value.GetDisplayValue(Uom.Real_energy, PowerOfTenMultiplier.kilo, 2));
+            Assert.AreEqual("12.345.678.900,000", value.GetDisplayValue(Uom.Real_energy, PowerOfTenMultiplier.kilo, 2, "1-0:1.8.0*255"));
         }
     }
 }

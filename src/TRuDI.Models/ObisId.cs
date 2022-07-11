@@ -12,6 +12,21 @@
         {
         }
 
+        public static implicit operator ObisId(string value)
+        {
+            return new ObisId(value);
+        }
+
+        public static implicit operator ObisId(ulong value)
+        {
+            return new ObisId(value);
+        }
+
+        public static implicit operator ulong(ObisId value)
+        {
+            return value;
+        }
+
         public ObisId(ObisId src)
         {
             this.A = src.A;
@@ -162,7 +177,7 @@
                 return false;
             }
 
-            return a.A == b.A 
+            return a.A == b.A
                 && a.B == b.B
                 && a.C == b.C
                 && a.D == b.D

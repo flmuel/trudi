@@ -21,7 +21,7 @@ else
             {
                 <tr>
                     <td>@entry.ToHistoricValueDescription()</td>
-                    <td class="text-right">@entry.Value.GetDisplayValue(Model.Uom, Model.PowerOfTenMultiplier, Model.Scaler)</td>
+                    <td class="text-right">@entry.Value.GetDisplayValue(Model.Uom, Model.PowerOfTenMultiplier, Model.Scaler, Model.Obis)</td>
                     <td>@Model.DisplayUnit</td>
                 </tr>
             }

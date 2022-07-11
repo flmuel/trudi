@@ -220,30 +220,31 @@ namespace TRuDI.Models
             return multiplier.GetSiPrefix() + unit;
         }
 
-        public static string GetDisplayValue(this long? value, ReadingType readingType)
+        public static string GetDisplayValue(this long? value, ReadingType readingType, ObisId obisId)
         {
-            return value.GetDisplayValue(readingType.Uom.Value, readingType.PowerOfTenMultiplier.Value, readingType.Scaler);
+            return value.GetDisplayValue(readingType.Uom.Value, readingType.PowerOfTenMultiplier.Value, readingType.Scaler, obisId);
         }
 
-        public static string GetDisplayValue(this long? value, Uom uom, PowerOfTenMultiplier multiplier, int scaler)
+        public static string GetDisplayValue(this long? value, Uom uom, PowerOfTenMultiplier multiplier, int scaler, ObisId obisId)
         {
             if (value == null)
             {
                 return "---";
             }
 
-            return value.Value.GetDisplayValue(uom, multiplier, scaler);
+            return value.Value.GetDisplayValue(uom, multiplier, scaler, obisId);
         }
 
-        public static string GetDisplayValue(this long value, ReadingType readingType)
+        public static string GetDisplayValue(this long value, ReadingType readingType, ObisId obisId)
         {
             return value.GetDisplayValue(
                 readingType.Uom.Value,
                 readingType.PowerOfTenMultiplier.Value,
-                readingType.Scaler);
+                readingType.Scaler,
+                obisId);
         }
 
-        public static string GetDisplayValue(this long value, Uom uom, PowerOfTenMultiplier multiplier, int scaler)
+        public static string GetDisplayValue(this long value, Uom uom, PowerOfTenMultiplier multiplier, int scaler, ObisId obisId)
         {
             if (multiplier == PowerOfTenMultiplier.None && (uom == Uom.Real_energy || uom == Uom.Real_power))
             {

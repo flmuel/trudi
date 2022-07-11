@@ -19,11 +19,11 @@
         {
             <tr class="@entry.ToStatusBackground()">
                 <td>@entry.TargetTime</td>
-                <td class="text-right">@entry.Value.GetDisplayValue(Model.Source.Uom, Model.Source.PowerOfTenMultiplier, Model.Source.Scaler)</td>
+                <td class="text-right">@entry.Value.GetDisplayValue(Model.Source.Uom, Model.Source.PowerOfTenMultiplier, Model.Source.Scaler, Model.Source.Obis)</td>
                 
                 @if (entry.PowerValue != null)
                 {
-                    <td class="text-right">@entry.PowerValue.GetDisplayValue(Model.Source.Uom, Model.Source.PowerOfTenMultiplier, Model.Source.Scaler)</td>
+                    <td class="text-right">@entry.PowerValue.GetDisplayValue(Model.Source.Uom, Model.Source.PowerOfTenMultiplier, Model.Source.Scaler, Model.Source.Obis)</td>
                 }
                 else
                 {

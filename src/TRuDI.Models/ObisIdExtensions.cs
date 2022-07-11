@@ -55,6 +55,14 @@ namespace TRuDI.Models
                 case ObisMedium.Gas:
                     return GetGasLabel(id);
 
+                case ObisMedium.Cooling:
+                case ObisMedium.Heat:
+                    return GetHeatOrCoolingLabel(id);
+
+                case ObisMedium.WaterHot:
+                case ObisMedium.WaterCold:
+                    return GetWaterLabel(id);
+
                 default:
                     if (id.C == 96)
                     {
@@ -63,6 +71,92 @@ namespace TRuDI.Models
 
                     return $"Für die Kennziffer {id} ist keine Beschreibung hinterlegt.";
             }
+        }
+
+        private static string GetWaterLabel(ObisId id)
+        {
+            // 8-0:1.0.0*255 - Volume (V), accumulated, total, current value
+            if (id.C == 3 && id.D == 0 && id.E == 0)
+            {
+                return "Volumen";
+            }
+
+            // 8-0:1.2.0*255 - Volume (V), accumulated, total, due date value
+            if (id.C == 3 && id.D == 0 && id.E == 0)
+            {
+                return "Volumen";
+            }
+
+            // 8-0:2.0.0*255 - Flow rate, average (Va/t), current value
+            if (id.C == 2 && id.D == 0 && id.E == 0)
+            {
+                return "Durchfluss";
+            }
+
+            if (id.C == 96)
+            {
+                return "Herstellerspezifische Kennziffer";
+            }
+
+            return $"Für die Kennziffer {id} ist keine Beschreibung hinterlegt.";
+        }
+
+        private static string GetHeatOrCoolingLabel(ObisId id)
+        {
+            // 6-0:1.0.0*255 - Energy (A), total, current value
+            if (id.C == 1 && id.D == 0 && id.E == 0)
+            {
+                return "Energie";
+            }
+
+            // 6-0:1.2.0*255 - Energy (A), total, due date value
+            if (id.C == 1 && id.D == 2 && id.E == 0)
+            {
+                return "Energie";
+            }
+
+            // 6-0:2.0.0*255 - Volume (V), accumulated, total, current value
+            if (id.C == 2 && id.D == 0 && id.E == 0)
+            {
+                return "Volumen";
+            }
+
+            // 6-0:2.2.0*255 - Volume (V), accumulated, total, due date value
+            if (id.C == 2 && id.D == 2 && id.E == 0)
+            {
+                return "Volumen";
+            }
+
+            // 6-0:8.0.0*255 - Power (energy flow) (P), average, current value
+            if (id.C == 8 && id.D == 0 && id.E == 0)
+            {
+                return "Leistung";
+            }
+
+            // 6-0:9.0.0*255 - Flow rate, average (Va/t), current value
+            if (id.C == 8 && id.D == 0 && id.E == 0)
+            {
+                return "Durchfluss";
+            }
+
+            // 6-0:10.0.0*255 - Flow temperature, current value
+            if (id.C == 10 && id.D == 0 && id.E == 0)
+            {
+                return "Vorlauftemperatur";
+            }
+
+            // 6-0:11.0.0*255 - Return temperature, current value
+            if (id.C == 11 && id.D == 0 && id.E == 0)
+            {
+                return "Rücklauftemperatur";
+            }
+
+            if (id.C == 96)
+            {
+                return "Herstellerspezifische Kennziffer";
+            }
+
+            return $"Für die Kennziffer {id} ist keine Beschreibung hinterlegt.";
         }
 
         private static string GetGasLabel(ObisId id)

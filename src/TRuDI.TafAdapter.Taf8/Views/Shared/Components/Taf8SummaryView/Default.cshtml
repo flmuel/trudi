@@ -24,7 +24,7 @@
                 @if (register.SourceType != null)
                 {
                     <td class="text-right">
-                        @register.Amount.GetDisplayValue(register.SourceType)
+                        @register.Amount.GetDisplayValue(register.SourceType, register.SourceType.ObisCode)
                     </td>
                     <td>@register.SourceType.Uom.GetDisplayUnitPower(register.SourceType.PowerOfTenMultiplier.Value)</td>
                 }

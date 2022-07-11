@@ -90,7 +90,7 @@
 
                         <div>
                             Tarif @mr.TariffId von @mr.Start.ToString("HH:mm") Uhr bis @(mr.End.Hour == 0 && mr.End.Minute == 0 ? "24:00" : mr.End.ToString("HH:mm")) Uhr<br/>
-                            <strong>@mr.Amount.GetDisplayValue(sourceType) @unit</strong>
+                            <strong>@mr.Amount.GetDisplayValue(sourceType, sourceType.ObisCode) @unit</strong>
                         </div>
                     </div>
                 }
@@ -131,7 +131,7 @@
                         <tr>
                             <td>@tariffDescription</td>
                             <td class="text-right">
-                                @register.Amount.GetDisplayValue(sourceType)
+                                @register.Amount.GetDisplayValue(sourceType, sourceType.ObisCode)
                             </td>
                             <td>@unit</td>
                         </tr>
@@ -141,7 +141,7 @@
                     <tr>
                         <td><strong>Gesamt</strong></td>
                         <td class="text-right">
-                            <strong>@totalAmount.GetDisplayValue(sourceType)</strong>
+                            <strong>@totalAmount.GetDisplayValue(sourceType, sourceType.ObisCode)</strong>
                         </td>
                         <td><strong>@unit</strong></td>
                     </tr>
