@@ -365,6 +365,7 @@ namespace TRuDI.Models
                 case Uom.Volltage:
                 case Uom.Volts_squared:
                 case Uom.AngleDegrees:
+                case Uom.Degrees_Celsius:
                 case Uom.Bel_mW:
                     break;
 

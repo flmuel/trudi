@@ -59,6 +59,9 @@ namespace TRuDI.Models
                 case ObisMedium.Heat:
                     return GetHeatOrCoolingLabel(id);
 
+                case ObisMedium.HeatCostAllocator:
+                    return GetHeatCostAllocatorLabel(id);
+
                 case ObisMedium.WaterHot:
                 case ObisMedium.WaterCold:
                     return GetWaterLabel(id);
@@ -69,20 +72,20 @@ namespace TRuDI.Models
                         return "Herstellerspezifische Kennziffer";
                     }
 
-                    return $"Für die Kennziffer {id} ist keine Beschreibung hinterlegt.";
+                    return $"Für die Kennziffer {id} ist keine Beschreibung hinterlegt";
             }
         }
 
         private static string GetWaterLabel(ObisId id)
         {
             // 8-0:1.0.0*255 - Volume (V), accumulated, total, current value
-            if (id.C == 3 && id.D == 0 && id.E == 0)
+            if (id.C == 1 && id.D == 0 && id.E == 0)
             {
                 return "Volumen";
             }
 
             // 8-0:1.2.0*255 - Volume (V), accumulated, total, due date value
-            if (id.C == 3 && id.D == 0 && id.E == 0)
+            if (id.C == 1 && id.D == 2 && id.E == 0)
             {
                 return "Volumen";
             }
@@ -98,7 +101,29 @@ namespace TRuDI.Models
                 return "Herstellerspezifische Kennziffer";
             }
 
-            return $"Für die Kennziffer {id} ist keine Beschreibung hinterlegt.";
+            return $"Für die Kennziffer {id} ist keine Beschreibung hinterlegt";
+        }
+        
+        private static string GetHeatCostAllocatorLabel(ObisId id)
+        {
+            // 4-0:1.0.0*255 - Unrated integral, current value
+            if (id.C == 1 && id.D == 0 && id.E == 0)
+            {
+                return "Unbewerteter Zählerstand";
+            }
+
+            // 4-0:1.2.0*255 - Unrated integral, due date value
+            if (id.C == 1 && id.D == 2 && id.E == 0)
+            {
+                return "Unbewerteter Zählerstand";
+            }
+
+            if (id.C == 96)
+            {
+                return "Herstellerspezifische Kennziffer";
+            }
+
+            return $"Für die Kennziffer {id} ist keine Beschreibung hinterlegt";
         }
 
         private static string GetHeatOrCoolingLabel(ObisId id)
@@ -134,7 +159,7 @@ namespace TRuDI.Models
             }
 
             // 6-0:9.0.0*255 - Flow rate, average (Va/t), current value
-            if (id.C == 8 && id.D == 0 && id.E == 0)
+            if (id.C == 9 && id.D == 0 && id.E == 0)
             {
                 return "Durchfluss";
             }
@@ -156,7 +181,7 @@ namespace TRuDI.Models
                 return "Herstellerspezifische Kennziffer";
             }
 
-            return $"Für die Kennziffer {id} ist keine Beschreibung hinterlegt.";
+            return $"Für die Kennziffer {id} ist keine Beschreibung hinterlegt";
         }
 
         private static string GetGasLabel(ObisId id)
@@ -178,7 +203,7 @@ namespace TRuDI.Models
                 return "Herstellerspezifische Kennziffer";
             }
 
-            return $"Für die Kennziffer {id} ist keine Beschreibung hinterlegt.";
+            return $"Für die Kennziffer {id} ist keine Beschreibung hinterlegt";
         }
 
         private static string GetElectricityLabel(ObisId id)
@@ -345,7 +370,7 @@ namespace TRuDI.Models
                 return "Herstellerspezifische Kennziffer";
             }
 
-            return $"Für die Kennziffer {id} ist keine Beschreibung hinterlegt.";
+            return $"Für die Kennziffer {id} ist keine Beschreibung hinterlegt";
         }
     }
 }

@@ -68,6 +68,9 @@ namespace TRuDI.Models
                 case Uom.AngleDegrees:
                     return "°";
 
+                case Uom.Degrees_Celsius:
+                    return "°C";
+
                 case Uom.Real_power:
                     return "W";
 
