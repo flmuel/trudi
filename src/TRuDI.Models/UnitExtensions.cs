@@ -203,13 +203,13 @@ namespace TRuDI.Models
 
         public static string GetDisplayUnitPower(this Uom uom, PowerOfTenMultiplier multiplier)
         {
-            if (uom == Uom.Not_Applicable)
+            if (uom != Uom.Real_energy)
             {
                 return string.Empty;
             }
 
             // Special case for Wh/W --> return kWh/kW
-            if (multiplier == PowerOfTenMultiplier.None && (uom == Uom.Real_energy || uom == Uom.Real_power))
+            if (multiplier == PowerOfTenMultiplier.None)
             {
                 return "kW";
             }

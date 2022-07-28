@@ -9,6 +9,34 @@ namespace TRuDI.Models
             return new ObisId(hexId).ToString();
         }
 
+        public static bool IsCounter(this ObisId id)
+        {
+            switch (id.Medium)
+            {
+                case ObisMedium.Electricity:
+                    return id.D == 8;
+
+                case ObisMedium.HeatCostAllocator:
+                    return (id.C == 1 && id.D == 0 && id.E == 0) || (id.C == 1 && id.D == 2 && id.E == 0);
+
+                case ObisMedium.Cooling:
+                case ObisMedium.Heat:
+                    return (id.C == 1 && id.D == 0 && id.E == 0) || (id.C == 1 && id.D == 2 && id.E == 0) || (id.C == 2 && id.D == 0 && id.E == 0) || (id.C == 2 && id.D == 2 && id.E == 0);
+
+                case ObisMedium.Gas:
+                    return (id.C == 3 && id.D == 0 && id.E == 0) || (id.C == 3 && id.D == 1 && id.E == 0);
+
+                case ObisMedium.WaterCold:
+                case ObisMedium.WaterHot:
+                    return id.C == 1 && id.D == 0 && id.E == 0;
+
+                case ObisMedium.Abstract:
+                case ObisMedium.Communication:
+                default:
+                    return false;
+            }
+        }
+
         public static string GetMediumLabel(this ObisId id)
         {
             switch (id.Medium)
@@ -103,7 +131,7 @@ namespace TRuDI.Models
 
             return $"Für die Kennziffer {id} ist keine Beschreibung hinterlegt";
         }
-        
+
         private static string GetHeatCostAllocatorLabel(ObisId id)
         {
             // 4-0:1.0.0*255 - Unrated integral, current value

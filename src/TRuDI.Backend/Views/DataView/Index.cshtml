@@ -69,7 +69,7 @@
             <li role="presentation" class="dropdown @(StateService.CurrentSupplierFile?.TafData?.DetailView == null ? "active" : "")">
                 <a href="#" class="dropdown-toggle" id="tab-dropdown-hvl" data-toggle="dropdown" aria-controls="tab-dropdown-contents" aria-expanded="false">Historische Verbrauchswerte<span class="caret"></span></a>
                 <ul class="dropdown-menu" aria-labelledby="tab-dropdown-hvl" id="tab-dropdown-hvl-contents">
-                    @foreach (var ovl in originalValueLists ?? new List<OriginalValueList>())
+                    @foreach (var ovl in originalValueLists.Where(ovl => ovl.Obis.IsCounter()) ?? new List<OriginalValueList>())
                     {
                         <li class="@(StateService.CurrentSupplierFile?.TafData?.DetailView == null && originalValueLists.First() == ovl ? "active" : "")"><a href="#tab_hvl_@ovl.GetOriginalValueListIdent()" id="#tab_hvl_@ovl.GetOriginalValueListIdent()-tab" aria-expanded="false" aria-controls="tab_hvl_@ovl.GetOriginalValueListIdent()" role="tab" data-toggle="tab">@ovl.Meter.ToFormattedDeviceId() (@ovl.Obis.ToReadableString())</a></li>
                     }
