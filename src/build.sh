@@ -6,6 +6,8 @@
 #   sudo apt-get install --no-install-recommends -y icnsutils graphicsmagick xz-utils
 #   sudo apt-get install xorriso -y
 #   sudo npm install electron-builder -g
+#   sudo curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
+#   sudo apt -y install nodejs
 
 
 cd TRuDI.Backend
@@ -43,6 +45,7 @@ npm install
 # Generate checksums file
 node ../Utils/createDigestList.js ../TRuDI.Backend/bin/dist/linux-x64 checksums-linux.json
 
-USE_SYSTEM_XORRISO=true npm run dist
+export NODE_OPTIONS=--openssl-legacy-provider
+USE_SYSTEM_XORRISO=true electron-builder
 
 
