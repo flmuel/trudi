@@ -33,7 +33,8 @@ mkdir bin/dist/linux-x64/netcoredeps
 cp /usr/lib/x86_64-linux-gnu/libunwind.so.8 bin/dist/linux-x64/netcoredeps
 cp /usr/lib/x86_64-linux-gnu/libunwind-x86_64.so.8 bin/dist/linux-x64/netcoredeps
 cp /lib/x86_64-linux-gnu/libssl.so.1.0.0 bin/dist/linux-x64/netcoredeps
-cp /lib/x86_64-linux-gnu/libcrypto.so.1.0.0 bin/dist/linux-x64/netcoredeps
+cp /lib/x86_64-linux-gnu/libssl.so.3 bin/dist/linux-x64/netcoredeps
+cp /lib/x86_64-linux-gnu/libcrypto.so.3 bin/dist/linux-x64/netcoredeps
 
 # Copy precompiled Views to self-contained output
 cp bin/Release/netcoreapp2.0/TRuDI.Backend.PrecompiledViews.dll bin/dist/linux-x64/TRuDI.Backend.PrecompiledViews.dll
@@ -42,10 +43,10 @@ cp bin/Release/netcoreapp2.0/TRuDI.Backend.PrecompiledViews.dll bin/dist/linux-x
 cd ../TRuDI.Frontend
 npm install
 
+export NODE_OPTIONS=--openssl-legacy-provider
 # Generate checksums file
 node ../Utils/createDigestList.js ../TRuDI.Backend/bin/dist/linux-x64 checksums-linux.json
 
-export NODE_OPTIONS=--openssl-legacy-provider
 USE_SYSTEM_XORRISO=true electron-builder
 
 
