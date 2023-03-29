@@ -1,4 +1,6 @@
-﻿namespace TRuDI.Backend.Application
+﻿using System.IO;
+
+namespace TRuDI.Backend.Application
 {
     using System;
     using System.Collections.Generic;
@@ -697,15 +699,15 @@
             model.MeterReadings.Sort((a, b) => string.Compare(a.ReadingType.ObisCode, b.ReadingType.ObisCode, StringComparison.InvariantCultureIgnoreCase));
             this.CurrentDataResult.MeterReadings = model.MeterReadings;
             this.CurrentDataResult.Begin = model.MeterReadings.FirstOrDefault()?.IntervalBlocks?.FirstOrDefault()?.Interval?.Start;
-            var usagePoint = this.CurrentDataResult.Raw.Root.Elements().FirstOrDefault();
-            var readings = raw?.Root?.Elements().FirstOrDefault().Elements().Where(e => e.Name.LocalName == "MeterReading").ToList();
+            var usagePoint = this.CurrentDataResult?.Raw?.Root?.Elements().FirstOrDefault();
+            var readings = raw?.Root?.Elements().FirstOrDefault()?.Elements().Where(e => e.Name.LocalName == "MeterReading").ToList();
 
             XNamespace ns = "http://vde.de/AR_2418-6.xsd";
 
             // remove existing meter readings and replace them with the current values
             foreach (var reading in readings)
             {
-                var meterReadingId = reading.Elements(ns + "meterReadingId").Select(e => e.Value).FirstOrDefault();
+                var meterReadingId = reading.Elements(ns + "ReadingType").Elements(ns + "qualifiedLogicalName").Select(e => e.Value).FirstOrDefault();
                 var meterId = reading.Elements(ns + "Meter").Elements(ns + "meterId").Select(e => e.Value).FirstOrDefault();
 
                 if (meterReadingId.Contains("." + meterId + "."))
@@ -714,7 +716,7 @@
                     continue;
                 }
 
-                var existingMeterReadingElement = usagePoint.Elements(ns + "MeterReading").Where(e => e.Elements(ns + "meterReadingId").FirstOrDefault(mrid => mrid.Value == meterReadingId) != null).FirstOrDefault();
+                var existingMeterReadingElement = usagePoint.Elements(ns + "MeterReading").Where(e => e.Elements(ns + "ReadingType").Elements(ns + "qualifiedLogicalName").FirstOrDefault(mrid => mrid.Value == meterReadingId) != null).FirstOrDefault();
                 if (existingMeterReadingElement != null)
                 {
                     existingMeterReadingElement.Remove();
