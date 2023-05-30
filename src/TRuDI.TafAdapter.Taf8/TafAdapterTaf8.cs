@@ -33,6 +33,20 @@
             this.originalValueLists =
                 device.MeterReadings.Where(mr => mr.IsOriginalValueList()).Select(mr => new OriginalValueList(mr, device.ServiceCategory.Kind ?? Kind.Electricity)).ToList();
 
+            var ovlGroups = this.originalValueLists.GroupBy(i => i.MeterReading.ReadingType.QualifiedLogicalName).ToList();
+            foreach (var ovlGroup in ovlGroups)
+            {
+                if (ovlGroup.Count() == 2)
+                {
+                    // Remove current data reading from OVL
+                    var currentDataReadout = ovlGroup.FirstOrDefault(i => i.ValueCount == 1);
+                    if (currentDataReadout != null)
+                    {
+                        this.originalValueLists.Remove(currentDataReadout);
+                    }
+                }
+            }
+
             if (!this.originalValueLists.Any())
             {
                 throw new InvalidOperationException("Es ist keine originäre Messwertliste verfügbar.");

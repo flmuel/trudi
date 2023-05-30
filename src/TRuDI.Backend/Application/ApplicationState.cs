@@ -534,10 +534,30 @@ namespace TRuDI.Backend.Application
                 throw;
             }
 
-            var originalValueLists = 
+            var originalValueLists =
                 this.CurrentDataResult.Model.MeterReadings.Where(mr => mr.IsOriginalValueList()).Select(mr => new OriginalValueList(mr, this.CurrentDataResult.Model.ServiceCategory.Kind ?? Kind.Electricity)).ToList();
 
+            var ovlMeterReadings = new List<MeterReading>();
+            var ovlGroups = originalValueLists.GroupBy(i => i.MeterReading.ReadingType.QualifiedLogicalName).ToList();
+            foreach (var ovlGroup in ovlGroups)
+            {
+                if (ovlGroup.Count() == 2)
+                {
+                    var currentDataReadout = ovlGroup.FirstOrDefault(i => i.ValueCount == 1);
+                    if (currentDataReadout != null)
+                    {
+                        originalValueLists.Remove(currentDataReadout);
+                        ovlMeterReadings.Add(currentDataReadout.MeterReading);
+                    }
+                }
+            }
+
             var meterReadings = this.CurrentDataResult.Model.MeterReadings.Where(mr => !mr.IsOriginalValueList()).ToList();
+            if (!meterReadings.Any())
+            {
+                meterReadings = ovlMeterReadings;
+            }
+
             meterReadings.Sort((a, b) => string.Compare(a.ReadingType.ObisCode, b.ReadingType.ObisCode, StringComparison.InvariantCultureIgnoreCase));
 
             var ovlRegisters = originalValueLists.Where(ovl => ovl.MeterReading?.IntervalBlocks?.FirstOrDefault()?.Interval.Duration == 0).ToList();
@@ -722,7 +742,7 @@ namespace TRuDI.Backend.Application
                     existingMeterReadingElement.Remove();
                 }
             }
-            
+
             usagePoint.Add(readings);
 
             if (this.CurrentDataResult.Begin != null)

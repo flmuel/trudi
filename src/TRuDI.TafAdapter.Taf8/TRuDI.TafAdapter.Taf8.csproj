@@ -5,6 +5,14 @@
         <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <RestoreSources>$(RestoreSources);../../private-packages;https://api.nuget.org/v3/index.json</RestoreSources>
+        <Version>1.0.1</Version>
+        <ApplicationIcon />
+        <OutputType>Library</OutputType>
+        <StartupObject />
+    </PropertyGroup>
+
     <ItemGroup>
         <None Remove="Views\Shared\Components\Taf8DetailView\Default.cshtml" />
         <None Remove="Views\Shared\Components\Taf8SummaryView\Default.cshtml" />
