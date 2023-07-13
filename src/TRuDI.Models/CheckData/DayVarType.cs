@@ -11,7 +11,7 @@
 	/// Die Klasse DayVarType verweist auf keine weiteren Klassen.
     ///
     /// </summary>
-    [DebuggerDisplay("{Year}-{Month}-{DayOfMonth")]
+    [DebuggerDisplay("{Year}-{Month}-{DayOfMonth}")]
     public class DayVarType
     {
         /// <summary>
