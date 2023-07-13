@@ -16,19 +16,37 @@
         {
             this.Status = status.PadLeft(16, '0');
             var smgwStat = Reverse(Convert.ToUInt32(this.Status.Substring(0, 8), 16));
-            var bzStat = Reverse(Convert.ToUInt32(this.Status.Substring(8), 16));
             this.SmgwStatusWord = (SmgwStatusWord)smgwStat;
-            this.BzStatusWord = (BzStatusWord)bzStat;
+
+            if (this.SmgwStatusWord.HasFlag(SmgwStatusWord.Identification_Meter_Status_Word_OMS))
+            {
+                var meterStat = Convert.ToUInt32(this.Status.Substring(8), 16);
+                this.OmsStatusWord = (OmsStatusWord)meterStat;
+            }
+            else
+            {
+                var meterStat = Reverse(Convert.ToUInt32(this.Status.Substring(8), 16));
+                this.BzStatusWord = (BzStatusWord)meterStat;
+            }
         }
 
         public StatusFNN(ulong status)
         {
             var smgwStat = (uint)(status >> 32);
-            var bzStat = (uint)(status & 0xFFFFFFFF);
-            this.SmgwStatusWord = (SmgwStatusWord)smgwStat;
-            this.BzStatusWord = (BzStatusWord)bzStat;
+            var meterStat = (uint)(status & 0xFFFFFFFF);
 
-            this.Status = Reverse(smgwStat).ToString("X8") + Reverse(bzStat).ToString("X8");
+            this.SmgwStatusWord = (SmgwStatusWord)smgwStat;
+
+            if (this.SmgwStatusWord.HasFlag(SmgwStatusWord.Identification_Meter_Status_Word_OMS))
+            {
+                this.OmsStatusWord = (OmsStatusWord)meterStat;
+                this.Status = Reverse(smgwStat).ToString("X8") + meterStat.ToString("X8");
+            }
+            else
+            {
+                this.BzStatusWord = (BzStatusWord)meterStat;
+                this.Status = Reverse(smgwStat).ToString("X8") + Reverse(meterStat).ToString("X8");
+            }
         }
 
         public StatusFNN(SmgwStatusWord smgwStat, BzStatusWord bzStat)
@@ -37,6 +55,14 @@
             this.BzStatusWord = bzStat;
 
             this.Status = Reverse((uint)smgwStat).ToString("X8") + Reverse((uint)bzStat).ToString("X8");
+        }
+
+        public StatusFNN(SmgwStatusWord smgwStat, OmsStatusWord omsStat)
+        {
+            this.SmgwStatusWord = smgwStat;
+            this.OmsStatusWord = omsStat;
+
+            this.Status = Reverse((uint)smgwStat).ToString("X8") + ((uint)omsStat).ToString("X8");
         }
 
         public string Status
@@ -50,6 +76,11 @@
         }
 
         public BzStatusWord BzStatusWord
+        {
+            get; set;
+        }
+
+        public OmsStatusWord OmsStatusWord
         {
             get; set;
         }
