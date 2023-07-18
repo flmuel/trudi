@@ -693,18 +693,20 @@ namespace TRuDI.TafAdapter.Taf2
         /// <returns>True if the status is valid.</returns>
         private bool IsStatusValid(IntervalReading reading)
         {
-            if (reading != null)
+            if (reading == null)
             {
-                var fnnStatusToPtbStatus = reading.StatusFNN?.MapToStatusPtb();
-                var ptbStatus = reading.StatusPTB;
-
-                return fnnStatusToPtbStatus != StatusPTB.CriticalTemporaryError &&
-                       fnnStatusToPtbStatus != StatusPTB.FatalError &&
-                       ptbStatus != StatusPTB.CriticalTemporaryError &&
-                       ptbStatus != StatusPTB.FatalError;
+                return false;
             }
 
-            return false;
+            if (reading.StatusPTB == null && reading.StatusFNN == null)
+            {
+                return false;
+            }
+
+            var ptbStatus = reading.StatusPTB ?? reading.StatusFNN.MapToStatusPtb();
+            return ptbStatus != StatusPTB.CriticalTemporaryError &&
+                   ptbStatus != StatusPTB.TemporaryError &&
+                   ptbStatus != StatusPTB.FatalError;
         }
     }
 }
