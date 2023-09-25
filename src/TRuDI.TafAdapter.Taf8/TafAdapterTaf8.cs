@@ -52,16 +52,7 @@
                 throw new InvalidOperationException("Es ist keine originäre Messwertliste verfügbar.");
             }
 
-            this.ValidateOriginalValueLists(originalValueLists, supplier, device.MeterReadings.Count);
-
             var accountingPeriod = new Taf8Data();
-            //var bpStart = ovl.MeterReading.GetFirstReadingTimestamp(supplier.AnalysisProfile.BillingPeriod.Start, supplier.AnalysisProfile.BillingPeriod.GetEnd());
-            //var bpEnd = ovl.MeterReading.GetLastReadingTimestamp(supplier.AnalysisProfile.BillingPeriod.Start, supplier.AnalysisProfile.BillingPeriod.GetEnd());
-            //if (bpEnd == null || bpStart == null || bpStart == bpEnd)
-            //{
-            //    throw new InvalidOperationException("Keine Messwerte innerhalb des Abbrechnungszeitraums gefunden.");
-            //}
-
             accountingPeriod.SetBillingPeriod(supplier.AnalysisProfile.BillingPeriod.Start, supplier.AnalysisProfile.BillingPeriod.GetEnd());
 
             var registers = new List<Taf8Register>();
@@ -133,20 +124,6 @@
             registers.RemoveAll(r => r.Amount == null);
 
             return new TafAdapterData(typeof(Taf8SummaryView), null, accountingPeriod);
-        }
-
-        /// <summary>
-        /// Check if the count of the original value lists are valid and if all meterReadings are original value lists.
-        /// The TariffStages count is also checked. The max is one TariffStage per original value list.
-        /// </summary>
-        /// <param name="originalValueList">The list with all original value lists.</param>
-        /// <param name="supplier">raw data from the supplier.</param>
-        public void ValidateOriginalValueLists(List<OriginalValueList> originalValueLists, UsagePointLieferant supplier, int meterReadingsCount)
-        {
-            if (originalValueLists.Count != meterReadingsCount)
-            {
-                throw new InvalidOperationException("Es sind nur originäre Messwertlisten zulässig.");
-            }
         }
     }
 }
