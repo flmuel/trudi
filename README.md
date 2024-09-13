@@ -1,6 +1,14 @@
 ﻿# TRuDI - Transparenz- und Display-Software
 
-Ansprechpartner:
+## Wichtiger Hinweis
+
+Die IVU Softwareentwicklung GmbH ist nicht für den Endkunden-Support der TRuDI-Software zuständig.
+Auch wenn dies durch Support-Mitarbeiter des jeweiligen Energieunternehmens fälschlicherweise so kommuniziert wird.
+
+Insbesondere gilt dies bei Fragen zu den Zugangsdaten: diese können ausschließlich vom Betreiber des Smart Meter Gateways kommen. 
+Egal was der Support-Mitarbeit oder Zähler-Monteur diesbezüglich behauptet!
+
+Ansprechpartner bzgl. Quellcodes von TRuDI:
 
 	Thomas Müller
 	IVU Softwareentwicklung GmbH
@@ -92,3 +100,4 @@ Um TRuDI aus Visual Studio heraus zu starten, sind folgende Einstellungen auf de
 - App URL: http://localhost:5000/
 
 Wird TRuDI.Backend mit der Debug-Konfiguration kompiliert und gestartet, so wird immer der Port 5000 für die Webseite verwendet.
+
