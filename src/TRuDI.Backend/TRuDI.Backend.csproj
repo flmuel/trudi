@@ -16,8 +16,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <RestoreSources>$(RestoreSources);../../private-packages;https://api.nuget.org/v3/index.json</RestoreSources>
-    <Version>1.6.11</Version>
+    <Version>1.6.12</Version>
     <Product>Transparenz- und Display-Software (TRuDI)</Product>
     <Authors />
     <Company>Arbeitskreis Bundesdisplay</Company>
@@ -99,7 +98,7 @@
         <PackageReference Include="WebSocketManager" Version="1.0.1" />
         <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="3.0.1" />
     
-    <PackageReference Include="IVU.Http" Version="1.0.20.1" />
+    <PackageReference Include="IVU.Http" Version="1.1.1" />
     <PackageReference Include="IVU.Common.Tls" Version="2.1.5" />
     <PackageReference Include="IVU.BouncyCastle.Crypto" Version="2.1.2" />
   </ItemGroup>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31112.23
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TRuDI.HanAdapter.Interface", "TRuDI.HanAdapter.Interface\TRuDI.HanAdapter.Interface.csproj", "{A8C045F9-D593-407B-8C6B-B528C48CF0B9}"
 EndProject
@@ -18,6 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		build.cmd = build.cmd
 		build.sh = build.sh
+		NuGet.config = NuGet.config
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TRuDI.TafAdapter.Taf2", "TRuDI.TafAdapter.Taf2\TRuDI.TafAdapter.Taf2.csproj", "{336EFA96-ACF4-4B5B-B03D-A897D165EADF}"
