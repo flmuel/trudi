@@ -430,7 +430,7 @@ namespace IVU.Http.Headers.Managed
         private sealed class ChunkedEncodingWriteStream : HttpContentWriteStream
         {
             public ChunkedEncodingWriteStream(HttpConnection connection)
-                : base (connection)
+                : base(connection)
             {
             }
 
@@ -540,8 +540,8 @@ namespace IVU.Http.Headers.Managed
             HttpConnectionPool pool,
             HttpConnectionKey key,
             string requestIdnHost,
-            Stream stream, 
-            TransportContext transportContext, 
+            Stream stream,
+            TransportContext transportContext,
             bool usingProxy)
         {
             Debug.Assert(pool != null);
@@ -625,9 +625,14 @@ namespace IVU.Http.Headers.Managed
         {
             await WriteBytesAsync(s_hostKeyAndSeparator, cancellationToken).ConfigureAwait(false);
 
-            await (_idnHostAsciiBytes != null ?
-                WriteBytesAsync(_idnHostAsciiBytes, cancellationToken) :
-                WriteAsciiStringAsync(uri.IdnHost, cancellationToken)).ConfigureAwait(false);
+            if (uri.HostNameType == UriHostNameType.IPv6)
+            {
+                await WriteAsciiStringAsync(uri.Host, cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                await WriteAsciiStringAsync(uri.IdnHost, cancellationToken).ConfigureAwait(false);
+            }
 
             if (!uri.IsDefaultPort)
             {
