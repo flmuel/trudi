@@ -12,13 +12,31 @@
     public static class DigestUtils
     {
         /// <summary>
-        /// Gets the digest for the specified assembly.
+        /// Gets the RIPEMD160 digest for the specified assembly.
         /// </summary>
         /// <param name="assembly">The assembly to calculate the digest from.</param>
         /// <returns>The digest string.</returns>
-        public static string GetDigestFromAssembly(Assembly assembly)
+        public static string GetRipemd160DigestFromAssembly(Assembly assembly)
         {
             var digest = new RipeMD160Digest();
+            var data = File.ReadAllBytes(assembly.Location);
+
+            digest.BlockUpdate(data, 0, data.Length);
+
+            var result = new byte[digest.GetDigestSize()];
+            digest.DoFinal(result, 0);
+
+            return BitConverter.ToString(result).Replace("-", "");
+        }
+
+        /// <summary>
+        /// Gets the SHA256 digest for the specified assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly to calculate the digest from.</param>
+        /// <returns>The digest string.</returns>
+        public static string GetSha256DigestFromAssembly(Assembly assembly)
+        {
+            var digest = new Sha256Digest();
             var data = File.ReadAllBytes(assembly.Location);
 
             digest.BlockUpdate(data, 0, data.Length);
@@ -74,6 +92,31 @@
                 int bytesRead;
 
                 var digest = new RipeMD160Digest();
+                while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    digest.BlockUpdate(buffer, 0, bytesRead);
+                }
+
+                var result = new byte[digest.GetDigestSize()];
+                digest.DoFinal(result, 0);
+
+                return BitConverter.ToString(result).Replace("-", "");
+            }
+        }
+        
+        /// <summary>
+        /// Gets the RIPEMD160 digest for the specified filename.
+        /// </summary>
+        /// <param name="filename">The filename.</param>
+        /// <returns>The digest string.</returns>
+        public static string GetSha256(string filename)
+        {
+            using (var fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Delete | FileShare.ReadWrite))
+            {
+                byte[] buffer = new byte[4092];
+                int bytesRead;
+
+                var digest = new Sha256Digest();
                 while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
                 {
                     digest.BlockUpdate(buffer, 0, bytesRead);

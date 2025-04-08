@@ -45,12 +45,12 @@ namespace TRuDI.Backend.Application
                 {
                     foreach (var hanAdapter in HanAdapterRepository.AvailableAdapters)
                     {
-                        hanAdapter.Hash = DigestUtils.GetDigestFromAssembly(hanAdapter.Assembly).AddSpace(4).Value;
+                        hanAdapter.Hash = DigestUtils.GetSha256DigestFromAssembly(hanAdapter.Assembly).AddSpace(4).Value;
                     }
 
                     foreach (var tafAdapter in TafAdapterRepository.AvailableAdapters)
                     {
-                        tafAdapter.Hash = DigestUtils.GetDigestFromAssembly(tafAdapter.Assembly).AddSpace(4).Value;
+                        tafAdapter.Hash = DigestUtils.GetSha256DigestFromAssembly(tafAdapter.Assembly).AddSpace(4).Value;
                     }
                 });
         }
@@ -71,7 +71,7 @@ namespace TRuDI.Backend.Application
 
             if (File.Exists(filepath))
             {
-                item.Digest = DigestUtils.GetRipemd160(filepath).AddSpace(4).Value;
+                item.Digest = DigestUtils.GetSha256(filepath).AddSpace(4).Value;
             }
             else
             {

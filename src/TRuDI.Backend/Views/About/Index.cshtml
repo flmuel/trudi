@@ -27,7 +27,7 @@
         <table class="table">
             <tr>
                 <th>Komponente</th>
-                <th>RIPEMD-160-Prüfsummen</th>
+                <th>SHA256-Prüfsummen</th>
             </tr>
 
             @foreach (var item in StateService.BackendChecksums.Items)
@@ -61,7 +61,7 @@
                 <th>FLAG-Id</th>
                 <th>Adapter</th>
                 <th>Version</th>
-                <th>RIPEMD-160-Prüfsumme</th>
+                <th>SHA256-Prüfsumme</th>
             </tr>
 
             @foreach (var adapter in HanAdapterRepository.AvailableAdapters)
@@ -109,7 +109,7 @@
                 <th>TAF</th>
                 <th>Adapter</th>
                 <th>Version</th>
-                <th>RIPEMD-160-Prüfsumme</th>
+                <th>SHA256-Prüfsumme</th>
             </tr>
 
             @foreach (var adapter in TafAdapterRepository.AvailableAdapters)

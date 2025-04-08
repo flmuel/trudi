@@ -188,7 +188,7 @@
                                 ServerCertificate =
                                         CertificateGenerator
                                             .GenerateCertificate(
-                                                $"CN={DigestUtils.GetDigestFromAssembly(typeof(Program).Assembly).ToLowerInvariant()}")
+                                                $"CN={DigestUtils.GetRipemd160DigestFromAssembly(typeof(Program).Assembly).ToLowerInvariant()}")
                             };
 
                         listenOptions.UseHttps(httpsOptions);
