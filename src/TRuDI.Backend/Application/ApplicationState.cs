@@ -5,6 +5,7 @@ namespace TRuDI.Backend.Application
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Cryptography.X509Certificates;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml.Linq;
@@ -205,6 +206,19 @@ namespace TRuDI.Backend.Application
                                                      this.ManufacturerParameters,
                                                      ct,
                                                      this.ProgressCallback);
+
+                        // get SMGW HUID from the certificate CN
+                        X500DistinguishedName subjectName = this.LastConnectResult.Certificate.SubjectName;
+                        var cn = subjectName.Format(multiLine: false)
+                            .Split(',')
+                            .FirstOrDefault(s => s.TrimStart().StartsWith("CN=", StringComparison.OrdinalIgnoreCase))
+                            ?.Substring(3).Trim();
+
+                        Log.Information("Received SMGW ident from certificate: {0}", cn);
+                        if (cn.StartsWith("E") && cn.Length == 14)
+                        {
+                            this.activeHanAdapter.DeviceId = cn;
+                        }
 
                         Log.Information("Loading available contracts from SMGW {0}", this.ConnectData.DeviceId);
                         var contracts = await this.activeHanAdapter.LoadAvailableContracts(ct, this.ProgressCallback);

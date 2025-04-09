@@ -54,7 +54,7 @@
         /// <summary>
         /// Gets the device identifier used for this HAN adapter.
         /// </summary>
-        public string DeviceId { get; }
+        public string DeviceId { get; set; }
 
         /// <summary>
         /// Gets the gateway image view of the HAN adapter.
