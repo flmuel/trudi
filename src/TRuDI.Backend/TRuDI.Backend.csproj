@@ -1,11 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
         <RazorCompileOnBuild>true</RazorCompileOnBuild>
         <RazorCompileOnPublish>true</RazorCompileOnPublish>
-        <RuntimeIdentifiers>win7-x86;win7-x64;linux-x64</RuntimeIdentifiers>
+        <RuntimeIdentifiers>win7-x86;win7-x64;linux-x64;osx-x64;osx-arm64</RuntimeIdentifiers>
         <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
         <UserSecretsId>aspnet-TRuDI.HanAdapter.UiTest-49A490D1-55E7-44CF-93EE-45F9EBEA9A38</UserSecretsId>
         <AssemblyName>TRuDI.Backend</AssemblyName>

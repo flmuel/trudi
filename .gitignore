@@ -35,5 +35,13 @@ node_modules/
 checksums-linux.json
 checksums-win32-x64.json
 checksums-win32-x86.json
+checksums-darwin-x64.json
+checksums-darwin-arm64.json
 package-lock.json
 /src/TRuDI.HanAdapter.Test/Properties/launchSettings.json
+
+# Nix
+.direnv/
+
+# macos
+.DS_Store

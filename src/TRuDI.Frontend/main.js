@@ -17,6 +17,8 @@ const fs = require('fs');
 const backendPathWindows32 = '../TRuDI.Backend/bin/dist/win7-x86';
 const backendPathWindows64 = '../TRuDI.Backend/bin/dist/win7-x64';
 const backendPathLinux = '../TRuDI.Backend/bin/dist/linux-x64';
+const backendPathMacosX64 = '../TRuDI.Backend/bin/dist/osx-x64';
+const backendPathMacosArm64 = '../TRuDI.Backend/bin/dist/osx-arm64';
 
 let backendCheckFailed = false;
 
@@ -44,6 +46,19 @@ const backendConfig = {
     certCommonName: "",
 };
 
+function getMainAssemblyDigestHash(checksums) {
+    const mainAssemblyRelativePath = '/TRuDI.Backend.dll';
+    const checksumItem = checksums.find(function (f) {
+        return f.path.replace(/\\/g, '/').endsWith(mainAssemblyRelativePath);
+    });
+
+    if (!checksumItem) {
+        throw new Error("Cannot determine backend certificate common name: TRuDI.Backend.dll was not found in checksum file.");
+    }
+
+    return checksumItem.hash;
+}
+
 writeLog(`Running on plattform ${os.platform()}, arch ${os.arch()}`);
 
 if (os.platform() === 'linux') {
@@ -51,21 +66,35 @@ if (os.platform() === 'linux') {
     backendConfig.executablePath = path.join(__dirname, backendPathLinux, 'TRuDI.Backend');
     backendConfig.mainAssembly = path.join(__dirname, backendPathLinux, 'TRuDI.Backend.dll');
     backendConfig.checksums = JSON.parse(fs.readFileSync(path.join(__dirname, "checksums-linux.json"), 'utf-8'));
-    backendConfig.certCommonName = backendConfig.checksums.find(function (f) { return f.path === "/TRuDI.Backend.dll" }).hash;
+    backendConfig.certCommonName = getMainAssemblyDigestHash(backendConfig.checksums);
+}
+else if (os.platform() === 'darwin' && os.arch() === 'x64') {
+    backendConfig.workPath = path.join(__dirname, backendPathMacosX64);
+    backendConfig.executablePath = path.join(__dirname, backendPathMacosX64, 'TRuDI.Backend');
+    backendConfig.mainAssembly = path.join(__dirname, backendPathMacosX64, 'TRuDI.Backend.dll');
+    backendConfig.checksums = JSON.parse(fs.readFileSync(path.join(__dirname, "checksums-darwin-x64.json"), 'utf-8'));
+    backendConfig.certCommonName = getMainAssemblyDigestHash(backendConfig.checksums);
+}
+else if (os.platform() === 'darwin' && os.arch() === 'arm64') {
+    backendConfig.workPath = path.join(__dirname, backendPathMacosArm64);
+    backendConfig.executablePath = path.join(__dirname, backendPathMacosArm64, 'TRuDI.Backend');
+    backendConfig.mainAssembly = path.join(__dirname, backendPathMacosArm64, 'TRuDI.Backend.dll');
+    backendConfig.checksums = JSON.parse(fs.readFileSync(path.join(__dirname, "checksums-darwin-arm64.json"), 'utf-8'));
+    backendConfig.certCommonName = getMainAssemblyDigestHash(backendConfig.checksums);
 }
 else if (os.platform() === 'win32' && os.arch() === 'x64') {
     backendConfig.workPath = path.join(__dirname, backendPathWindows64);
     backendConfig.executablePath = path.join(__dirname, backendPathWindows64, 'TRuDI.Backend.exe');
     backendConfig.mainAssembly = path.join(__dirname, backendPathWindows64, 'TRuDI.Backend.dll');
     backendConfig.checksums = JSON.parse(fs.readFileSync(path.join(__dirname, "checksums-win32-x64.json"), 'utf-8'));
-    backendConfig.certCommonName = backendConfig.checksums.find(function (f) { return f.path === "\\TRuDI.Backend.dll" }).hash;
+    backendConfig.certCommonName = getMainAssemblyDigestHash(backendConfig.checksums);
 }
 else if (os.platform() === 'win32' && os.arch() === 'ia32') {
     backendConfig.workPath = path.join(__dirname, backendPathWindows32);
     backendConfig.executablePath = path.join(__dirname, backendPathWindows32, 'TRuDI.Backend.exe');
     backendConfig.mainAssembly = path.join(__dirname, backendPathWindows32, 'TRuDI.Backend.dll');
     backendConfig.checksums = JSON.parse(fs.readFileSync(path.join(__dirname, "checksums-win32-x86.json"), 'utf-8'));
-    backendConfig.certCommonName = backendConfig.checksums.find(function (f) { return f.path === "\\TRuDI.Backend.dll" }).hash;
+    backendConfig.certCommonName = getMainAssemblyDigestHash(backendConfig.checksums);
 }
 
 // Parse command line options.

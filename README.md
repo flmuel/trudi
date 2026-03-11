@@ -1,4 +1,4 @@
-﻿# TRuDI - Transparenz- und Display-Software
+# TRuDI - Transparenz- und Display-Software
 
 ## Wichtiger Hinweis
 
@@ -52,6 +52,35 @@ Erzeugt ein AppImage sowie ein DEB-Software-Paket.
 Sollte es beim Build zu der Fehlermeldung ``"error NU1101: Unable to find package ILLink.Tasks"`` kommen, 
 so muss in der Datei ``~/.nuget/NuGet/NuGet.Config`` das Verzeichnis ``private-packages`` 
 unter ``packageSources`` aufgenommen werden.
+
+#### macOS: src/build-macos.sh
+
+Erzeugt ein macOS-Desktop-Paket auf Basis von Electron sowie ein selbstenthaltendes Backend-Publish
+(``osx-x64`` und/oder ``osx-arm64``). Unterstützte Parameter:
+
+- ``./build-macos.sh x64``
+- ``./build-macos.sh arm64``
+- ``./build-macos.sh all``
+
+Ohne Parameter wird automatisch die Architektur des Build-Rechners verwendet.
+
+Für die lokale Ausführung auf macOS (ohne Paketbau) werden folgende Schritte empfohlen:
+
+1. ``cd src/TRuDI.Backend``
+2. ``dotnet publish -c Release -r osx-arm64 --self-contained -o bin/dist/osx-arm64 -p:SelfContainedBuild=true``  
+   (auf Intel-Mac stattdessen ``osx-x64`` verwenden)
+3. ``cd ../TRuDI.Frontend``
+4. ``npm install``
+5. ``node ../Utils/createDigestList.js ../TRuDI.Backend/bin/dist/osx-arm64 checksums-darwin-arm64.json``  
+   (auf Intel-Mac ``checksums-darwin-x64.json`` erzeugen)
+6. ``npm start``
+
+Hinweise:
+
+- Das Projekt verwendet ``net6.0`` und benötigt daher ein installiertes .NET 6 SDK.
+- Bei fehlenden privaten NuGet-Paketen muss der lokale Pfad ``../private-packages`` (aus Sicht ``src/``)
+  als Paketquelle verfügbar sein.
+- Nicht signierte macOS-Builds können durch Gatekeeper blockiert werden (lokal ggf. einmalig freigeben).
 
 ## Installations-Pakete
 
